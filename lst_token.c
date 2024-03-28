@@ -19,7 +19,7 @@ t_token	*ft_token_last(t_token *lst)
 
 	cur = lst;
 	if (!lst)
-		return (0);
+		return (NULL);
 	while (cur->next)
 		cur = cur->next;
 	return (cur);
@@ -33,5 +33,13 @@ void    ft_token_add_back(t_token **lst, t_token *token)
 		*lst = token;
 	else
 		ft_token_last(*lst)->next = token;
+}
 
+void print_tokens(t_token *lst)
+{
+	while (lst)
+	{
+		printf("%s$\n", lst->str);
+		lst = lst->next;
+	}
 }

@@ -6,7 +6,7 @@
 /*   By: emagueri <emagueri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/07 17:36:19 by emagueri          #+#    #+#             */
-/*   Updated: 2024/03/27 23:21:36 by emagueri         ###   ########.fr       */
+/*   Updated: 2024/03/28 03:34:54 by emagueri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -106,11 +106,11 @@ char	**ft_split_cmd(char const *s, char *splitter)
 	return (res);
 }
 
-int main(int argc, char const *argv[])
-{
-	char **s = ft_split_cmd("ls a", "\"\'|<> ");
-	int i = 0;
-	while (s[i])
-		printf("%s\n", s[i++]);
-	return 0;
-}
+// int main(int argc, char const *argv[])
+// {
+// 	char **s = ft_split_cmd("ls a", "\"\'|<> ");
+// 	int i = 0;
+// 	while (s[i])
+// 		printf("%s\n", s[i++]);
+// 	return 0;
+// }

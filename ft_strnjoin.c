@@ -6,7 +6,7 @@
 /*   By: emagueri <emagueri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/07 14:08:47 by emagueri          #+#    #+#             */
-/*   Updated: 2024/03/28 00:16:13 by emagueri         ###   ########.fr       */
+/*   Updated: 2024/03/28 03:35:50 by emagueri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ char	*ft_strnjoin(char const *s1, char const *s2,unsigned int n)
 		res[i] = s1[i];
 		i++;
 	}
-	while (i - lens1 < n)
+	while ((unsigned int)(i - lens1) < n)
 	{
 		res[i] = s2[i - lens1];
 		i++;

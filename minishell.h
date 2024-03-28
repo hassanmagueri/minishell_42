@@ -3,7 +3,6 @@
 
 #include "minishell.h"
 # include <unistd.h>
-<<<<<<< HEAD
 # include <limits.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -16,12 +15,6 @@
 #define ANSI_COLOR_CYAN    "\x1b[36m"
 #define ANSI_COLOR_RESET   "\x1b[0m"
 // # define SEP " |"
-=======
-# include <stdlib.h>
-# include <fcntl.h>
-# include <stdio.h>
-# include <string.h>
->>>>>>> 28967901a4daf181f53c7350e6b08b8bda1a6efc
 
 typedef struct s_cmd
 {
@@ -48,7 +41,7 @@ typedef struct s_list
 
 typedef enum e_type
 {
-	CMD,
+	WORD,
 	SPACE,
 	APPEND,//>>
 	HEARDOC,//<< 
@@ -71,6 +64,9 @@ t_token	*ft_new_token(char *str, t_type type);
 void    ft_token_add_back(t_token **lst, t_token *token);
 t_token	*ft_token_last(t_token *lst);
 
+void    ft_tokenize(t_token **token, char *cmd);
+
+void print_tokens(t_token *lst);
 char	*ft_strnjoin(char const *s1, char const *s2,unsigned int n);
 
 int		ft_strlen(const char *str);
