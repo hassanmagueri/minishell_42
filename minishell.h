@@ -3,6 +3,7 @@
 
 #include "minishell.h"
 # include <unistd.h>
+<<<<<<< HEAD
 # include <limits.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -15,7 +16,29 @@
 #define ANSI_COLOR_CYAN    "\x1b[36m"
 #define ANSI_COLOR_RESET   "\x1b[0m"
 // # define SEP " |"
+=======
+# include <stdlib.h>
+# include <fcntl.h>
+# include <stdio.h>
+# include <string.h>
+>>>>>>> 28967901a4daf181f53c7350e6b08b8bda1a6efc
 
+typedef struct s_cmd
+{
+    int type;
+}   t_cmd;
+
+typedef struct s_pipe
+{
+    int type;
+	int tub[2];
+	pid_t pid;
+	int	infile;
+	int	outfile;
+	int	sig;
+	char **env_path;
+	char **args;
+}   t_pipe;
 
 typedef struct s_list
 {
