@@ -14,6 +14,7 @@
 #define ANSI_COLOR_MAGENTA "\x1b[35m"
 #define ANSI_COLOR_CYAN    "\x1b[36m"
 #define ANSI_COLOR_RESET   "\x1b[0m"
+// # define SEP " |"
 
 
 typedef struct s_list
@@ -46,6 +47,8 @@ typedef struct s_token //| > < >> << "" '' $VAR SPACE
 t_token	*ft_new_token(char *str, t_type type);
 void    ft_token_add_back(t_token **lst, t_token *token);
 t_token	*ft_token_last(t_token *lst);
+
+char	*ft_strnjoin(char const *s1, char const *s2,unsigned int n);
 
 int		ft_strlen(const char *str);
 int		ft_isdigit(int c);

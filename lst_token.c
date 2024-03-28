@@ -27,9 +27,11 @@ t_token	*ft_token_last(t_token *lst)
 
 void    ft_token_add_back(t_token **lst, t_token *token)
 {
-	if (*lst == NULL || token == NULL)
+	if (lst == NULL || token == NULL)
 		return ;
 	if (*lst == NULL)
 		*lst = token;
-	ft_token_last(*lst)->next = token;
+	else
+		ft_token_last(*lst)->next = token;
+
 }
