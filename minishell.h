@@ -3,27 +3,10 @@
 
 #include "minishell.h"
 # include <unistd.h>
-<<<<<<< HEAD
-# include <limits.h>
-#include <stdio.h>
-#include <stdlib.h>
-#include <readline/readline.h>
-#define ANSI_COLOR_RED     "\x1b[31m"
-#define ANSI_COLOR_GREEN   "\x1b[32m"
-#define ANSI_COLOR_YELLOW  "\x1b[33m"
-#define ANSI_COLOR_BLUE    "\x1b[34m"
-#define ANSI_COLOR_MAGENTA "\x1b[35m"
-#define ANSI_COLOR_CYAN    "\x1b[36m"
-#define ANSI_COLOR_RESET   "\x1b[0m"
-=======
 # include <stdlib.h>
 # include <fcntl.h>
 # include <stdio.h>
 # include <string.h>
->>>>>>> 14c4726c2f7a4d4eb409e15649169521e3d9d341
-
-#define REDIR 1
-#define PIPE 2
 
 typedef struct s_cmd
 {
@@ -33,8 +16,13 @@ typedef struct s_cmd
 typedef struct s_pipe
 {
     int type;
-    t_cmd *left;
-    t_cmd *rigth;
+	int tub[2];
+	pid_t pid;
+	int	infile;
+	int	outfile;
+	int	sig;
+	char **env_path;
+	char **args;
 }   t_pipe;
 
 typedef struct s_list
