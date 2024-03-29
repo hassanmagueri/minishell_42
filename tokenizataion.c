@@ -53,11 +53,11 @@ void ft_tokenize(t_token **token, char *cmd)
 		}
 		else if (cmd[i] == ' ')
 		{
-			while (cmd[i] == ' ')
+			while (cmd[i] == ' ' || (cmd[i] >= 9 && cmd[i] <= 13))
 				i++;
 			ft_token_add_back(token, ft_new_token(" ", SPACE));
 		}
-		else if (cmd[i] == '$')
+		else if (cmd[i] == '$' && ft_isalnum(cmd[i + 1]))
 		{
 			int start = i;
 			i++;
@@ -65,23 +65,25 @@ void ft_tokenize(t_token **token, char *cmd)
 				i++;
 			ft_token_add_back(token, ft_new_token(ft_substr(cmd, start, i - start), VAR));
 		}
-		else
+		else //word
 		{
 			int start = i;
 			i++;
-			while (cmd[i] && !is_sep(cmd[i]))
+			while (cmd[i] && (cmd[i] == '$' || !is_sep(cmd[i])))
+			{
 				i++;
+				if (cmd[i] == '$' && cmd[i -1] == '$')
+					break;
+			}
 			ft_token_add_back(token, ft_new_token(ft_substr(cmd, start, i - start), WORD));
 		}
-		// sleep(1);
 	}
 }
 
 // int main(int argc, char const *argv[])
 // {
 // 	int i = 0;
-
-// 	char *str = "\"ls\"        \"hassan\"   \"pp\"   \"pp\"   ";
+// 	char *str = "\"ls\"  \"hassan\"   \"pp\"   \"pp\"   ";
 // 	printf("%s\n-------\n", str);
 // 	t_token *t = NULL;
 // 	ft_tokenize(&t, str);
@@ -95,4 +97,5 @@ void ft_tokenize(t_token **token, char *cmd)
 // 	}
 // 	return 0;
 // }
+
 // [ls," ", "-a", "|", "cat"]

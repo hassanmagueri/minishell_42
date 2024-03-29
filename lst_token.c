@@ -39,7 +39,28 @@ void print_tokens(t_token *lst)
 {
 	while (lst)
 	{
-		printf("%s$\n", lst->str);
+		printf("%s\t", lst->str);
+		if (lst->type == WORD)
+			printf("WORD\n");
+		else if (lst->type == SPACE)
+			printf("SPACE\n");
+		else if (lst->type == APPEND)
+			printf("APPEND\n");
+		else if (lst->type == HEARDOC)
+			printf("HEARDOC\n");
+		else if (lst->type == INPUT)
+			printf("INPUT\n");
+		else if (lst->type == OUTPUT)
+			printf("OUTPUT\n");
+		else if (lst->type == VAR)
+			printf("VAR\n");
+		else if (lst->type == PIPE)
+			printf("PIPE\n");
+		else if (lst->type == SING_Q)
+			printf("SING_Q\n");
+		else if (lst->type == DOUB_Q)
+			printf("DOUB_Q\n");
+
 		lst = lst->next;
 	}
 }

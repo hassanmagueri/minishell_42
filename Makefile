@@ -62,8 +62,8 @@ $(OBJ_DIR):
 
 clean:
 	rm -rf $(OBJ_DIR)
-	rm -f $(EXECUTABLE) $(TXT_FILES)
 
 fclean: clean
+	rm -f $(EXECUTABLE) $(TXT_FILES)
 
 re: fclean all
