@@ -2,7 +2,8 @@
 
 int is_sep(int c)
 {
-	return (c == ' ' || c == '|' || c == '\t' || c == '\"' || c == '\'' || c == '<' || c == '>' || c == '|' || c == '$');
+	return (c == ' ' || c == '|' || c == '\t' || c == '\"'
+			|| c == '\'' || c == '<' || c == '>' || c == '|' || c == '$');
 }
 
 int find_sec(char *s, char c)
@@ -28,6 +29,7 @@ void ft_void(void)
 void ft_tokenize(t_token **token, char *cmd)
 {
 	int i;
+	// static int possible_var;
 	int index;
 	// char	c;
 
@@ -57,25 +59,43 @@ void ft_tokenize(t_token **token, char *cmd)
 				i++;
 			ft_token_add_back(token, ft_new_token(" ", SPACE));
 		}
-		else if (cmd[i] == '$' && ft_isalnum(cmd[i + 1]))
+		else if (cmd[i] == '$' && (ft_isalnum(cmd[i + 1]) || cmd[i + 1] == '_'))
 		{
 			int start = i;
 			i++;
-			while (cmd[i] && !is_sep(cmd[i]))
+			while (cmd[i] && (!is_sep(cmd[i])))
 				i++;
 			ft_token_add_back(token, ft_new_token(ft_substr(cmd, start, i - start), VAR));
 		}
 		else //word
 		{
 			int start = i;
+			int counter;
+			int len;
+
+			counter = 0;
 			i++;
 			while (cmd[i] && (cmd[i] == '$' || !is_sep(cmd[i])))
 			{
-				i++;
-				if (cmd[i] == '$' && cmd[i -1] == '$')
+				if (cmd[i] == '$' || (ft_isalnum(cmd[i + 1]) || cmd[i + 1] == '_'))
 					break;
+				if (cmd[i] == '$')
+					counter++;
+				i++;
 			}
-			ft_token_add_back(token, ft_new_token(ft_substr(cmd, start, i - start), WORD));
+			len = i - start;
+			// if (counter % 2 == 0)
+			if (cmd[i - 1] == '$' && cmd[i] == '\"' && counter % 2 == 0)
+			{
+
+				len--;
+			}
+			// if (cmd[i - 1] == '$' && cmd[i] == '\"')
+			// {
+			// 	i -= 1;
+			// 	continue;
+			// }
+			ft_token_add_back(token, ft_new_token(ft_substr(cmd, start, len), WORD));
 		}
 	}
 }

@@ -1,0 +1,4 @@
+echo $1HOME
+echo $"LL"
+$_kk=0
+export +kk=0
