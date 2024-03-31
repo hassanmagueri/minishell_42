@@ -29,11 +29,6 @@ void ft_void(void)
 void ft_tokenize(t_token **token, char *cmd)
 {
 	int i;
-	// static int possible_var;
-	int index;
-	// char	c;
-
-	index = 0;
 	i = 0;
 	while (cmd[i])
 	{
@@ -59,43 +54,30 @@ void ft_tokenize(t_token **token, char *cmd)
 				i++;
 			ft_token_add_back(token, ft_new_token(" ", SPACE));
 		}
+		else if(cmd[i] == '$' && cmd[i + 1] == '$')
+		{
+			ft_token_add_back(token, ft_new_token(ft_substr(cmd, i, 2), WORD));
+			i+=2;
+		}	
 		else if (cmd[i] == '$' && (ft_isalnum(cmd[i + 1]) || cmd[i + 1] == '_'))
 		{
 			int start = i;
+
 			i++;
-			while (cmd[i] && (!is_sep(cmd[i])))
+			if (ft_isdigit(cmd[i]))
 				i++;
+			else
+				while (cmd[i] && (ft_isalnum(cmd[i]) || cmd[i] == '_'))
+					i++;
 			ft_token_add_back(token, ft_new_token(ft_substr(cmd, start, i - start), VAR));
 		}
 		else //word
 		{
 			int start = i;
-			int counter;
-			int len;
-
-			counter = 0;
-			i++;
-			while (cmd[i] && (cmd[i] == '$' || !is_sep(cmd[i])))
-			{
-				if (cmd[i] == '$' || (ft_isalnum(cmd[i + 1]) || cmd[i + 1] == '_'))
-					break;
-				if (cmd[i] == '$')
-					counter++;
+	
+			while (cmd[i] && (cmd[0] == '$' || !is_sep(cmd[i])))
 				i++;
-			}
-			len = i - start;
-			// if (counter % 2 == 0)
-			if (cmd[i - 1] == '$' && cmd[i] == '\"' && counter % 2 == 0)
-			{
-
-				len--;
-			}
-			// if (cmd[i - 1] == '$' && cmd[i] == '\"')
-			// {
-			// 	i -= 1;
-			// 	continue;
-			// }
-			ft_token_add_back(token, ft_new_token(ft_substr(cmd, start, len), WORD));
+			ft_token_add_back(token, ft_new_token(ft_substr(cmd, start, i - start), WORD));
 		}
 	}
 }
