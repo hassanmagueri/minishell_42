@@ -14,6 +14,8 @@
 #define ANSI_COLOR_MAGENTA "\x1b[35m"
 #define ANSI_COLOR_CYAN    "\x1b[36m"
 #define ANSI_COLOR_RESET   "\x1b[0m"
+# define ENV_LST 0
+# define TOKEN_LST 1
 // # define SEP " |"
 
 typedef struct s_cmd
@@ -58,17 +60,35 @@ typedef struct s_token //| > < >> << "" '' $VAR SPACE
 	char			*str;
 	t_type			type;
 	struct s_token	*next;
-} t_token;
+} t__lst_token;
 
-t_token	*ft_new_token(char *str, t_type type);
-void    ft_token_add_back(t_token **lst, t_token *token);
-t_token	*ft_token_last(t_token *lst);
+typedef	struct s_lst_env
+{
+	char				*key;
+	char				*value;
+	struct s_lst_env	*next;
+} t_lst_env;
 
-void    ft_tokenize(t_token **token, char *cmd);
+t__lst_token	*ft_new_token(char *str, t_type type);
+void    ft_lst_token_add_back(t__lst_token **lst, t__lst_token *token);
+t__lst_token	*ft__lst_token_last(t__lst_token *lst);
 
-void print_tokens(t_token *lst);
+void    ft__lst_tokenize(t__lst_token **token, char *cmd);
+
+void	print__lst_tokens(t__lst_token *lst);
 char	*ft_strnjoin(char const *s1, char const *s2,unsigned int n);
 
+// env
+int			init_env(t_lst_env **lst, char **env);
+int			ft_lst_remove_env(t_lst_env **lst_env,char *key);
+int			ft_lst_add_back_env(t_lst_env **lst_env, t_lst_env *node_env);
+void		print_lst_env(t_lst_env *lst);
+t_lst_env	*ft_get_env(t_lst_env **lst_env, char	*key);
+t_lst_env	*ft_new_env(char *key,char *value);
+t_lst_env	*ft_lst_env_last(t_lst_env *lst);
+//
+
+int		index_of(char *str, char c);
 int		ft_strlen(const char *str);
 int		ft_isdigit(int c);
 int		ft_toupper(int c);
@@ -114,5 +134,14 @@ void	ft_lstiter(t_list *lst, void (*f)(void *));
 t_list	*ft_lstmap(t_list *lst, void *(*f)(void *), void (*del)(void *));
 
 
+
+
+// char	*ft_strjoin(char const *s1, char const *s2, int lens2);
+int		ft_strlen(const char *str);
+char	*ft_strdup(const char *s1);
+void	ft_bzero(void *s, size_t n);
+char	*get_next_line(int fd);
+void	free_it(char *str);
+char	*wanted_line(int fd, char *buffer, char *res, int nl_index);
 
 #endif

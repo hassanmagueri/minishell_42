@@ -1,21 +1,21 @@
 #include "minishell.h"
 
-t_token *ft_new_token(char *str, t_type type)
+t__lst_token *ft_new_token(char *str, t_type type)
 {
-    t_token* token;
+    t__lst_token* token;
 
 	if (str == NULL)
 		return NULL;
-    token = malloc(sizeof(t_token));
+    token = malloc(sizeof(t__lst_token));
     token->str = str;
     token->type = type;
     token->next = NULL;
     return (token);
 }
 
-t_token	*ft_token_last(t_token *lst)
+t__lst_token	*ft__lst_token_last(t__lst_token *lst)
 {
-	t_token	*cur;
+	t__lst_token	*cur;
 
 	cur = lst;
 	if (!lst)
@@ -25,17 +25,17 @@ t_token	*ft_token_last(t_token *lst)
 	return (cur);
 }
 
-void    ft_token_add_back(t_token **lst, t_token *token)
+void    ft_lst_token_add_back(t__lst_token **lst, t__lst_token *token)
 {
 	if (lst == NULL || token == NULL)
 		return ;
 	if (*lst == NULL)
 		*lst = token;
 	else
-		ft_token_last(*lst)->next = token;
+		ft__lst_token_last(*lst)->next = token;
 }
 
-void print_tokens(t_token *lst)
+void print__lst_tokens(t__lst_token *lst)
 {
 	while (lst)
 	{

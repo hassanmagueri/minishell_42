@@ -34,11 +34,11 @@ SRC_DIR = .
 OBJ_DIR = obj
 
 # SRC_FILES = $(wildcard *.c)
-SRC_FILES = ft_split_cmd.c lst_token.c ft_strnjoin.c  main.c tokenizataion.c
+SRC_FILES = ft_split_cmd.c lst_token.c ft_strnjoin.c  main.c tokenizataion.c lst_env.c
 OBJ_FILES = $(addprefix $(OBJ_DIR)/, $(SRC_FILES:.c=.o))
 LIBFT_FILES = $(wildcard libft/*.c)
 LIBFT_OBJ_FILES = $(addprefix $(OBJ_DIR)/, $(notdir $(LIBFT_FILES:.c=.o)))
-
+ 
 EXECUTABLE = minishell
 TXT_FILES = a.out
 
