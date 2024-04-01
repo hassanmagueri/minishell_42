@@ -60,5 +60,8 @@
     "DOUB",
     "hassane",
     "HEARDOC"
-  ]
+  ],
+  "files.associations": {
+    "minishell.h": "c"
+  }
 }

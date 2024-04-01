@@ -4,6 +4,7 @@ int main(int argc, char *argv[], char **env) {
 	char *cmd;
 	t_lst_env *lst_env;
 
+	lst_env = NULL;
 	if (argc > 1)
 	{
 		printf("%s", argv[0]);
@@ -16,7 +17,7 @@ int main(int argc, char *argv[], char **env) {
 		// cmd = readline(ANSI_COLOR_CYAN "~ " ANSI_COLOR_BLUE "minishell 😎 " ANSI_COLOR_MAGENTA "↪ " ANSI_COLOR_RESET);
 		cmd = readline("minishell -> ");
 		ft__lst_tokenize(&t, cmd);
-		// ft_expand();
+		ft_expand(&t, &lst_env);
 		add_history(cmd);
 		print__lst_tokens(t);
 		free(cmd);

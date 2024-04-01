@@ -5,6 +5,7 @@
 # include <unistd.h>
 # include <limits.h>
 #include <stdio.h>
+#include <string.h>
 #include <stdlib.h>
 #include <readline/readline.h>
 #define ANSI_COLOR_RED     "\x1b[31m"
@@ -52,7 +53,8 @@ typedef enum e_type
 	VAR,//$
 	PIPE,//|
 	SING_Q,//""
-	DOUB_Q//''
+	DOUB_Q,//''
+	EXIT_STATUS
 } t_type;
 
 typedef struct s_token //| > < >> << "" '' $VAR SPACE 
@@ -61,6 +63,13 @@ typedef struct s_token //| > < >> << "" '' $VAR SPACE
 	t_type			type;
 	struct s_token	*next;
 } t__lst_token;
+
+typedef struct s_var
+{
+	int start;
+	int end;
+} t_var;
+
 
 typedef	struct s_lst_env
 {
@@ -74,7 +83,7 @@ void    ft_lst_token_add_back(t__lst_token **lst, t__lst_token *token);
 t__lst_token	*ft__lst_token_last(t__lst_token *lst);
 
 void    ft__lst_tokenize(t__lst_token **token, char *cmd);
-
+int is_sep(int c);
 void	print__lst_tokens(t__lst_token *lst);
 char	*ft_strnjoin(char const *s1, char const *s2,unsigned int n);
 
@@ -83,9 +92,14 @@ int			init_env(t_lst_env **lst, char **env);
 int			ft_lst_remove_env(t_lst_env **lst_env,char *key);
 int			ft_lst_add_back_env(t_lst_env **lst_env, t_lst_env *node_env);
 void		print_lst_env(t_lst_env *lst);
+char		*ft_get_env_val(t_lst_env **lst_env, char	*key);
 t_lst_env	*ft_get_env(t_lst_env **lst_env, char	*key);
 t_lst_env	*ft_new_env(char *key,char *value);
 t_lst_env	*ft_lst_env_last(t_lst_env *lst);
+//
+
+//expend
+int ft_expand(t__lst_token **lst_token, t_lst_env **lst_env);
 //
 
 int		index_of(char *str, char c);
@@ -132,16 +146,6 @@ void	ft_lstdelone(t_list *lst, void (*del)(void*));
 void	ft_lstclear(t_list **lst, void (*del)(void*));
 void	ft_lstiter(t_list *lst, void (*f)(void *));
 t_list	*ft_lstmap(t_list *lst, void *(*f)(void *), void (*del)(void *));
-
-
-
-
-// char	*ft_strjoin(char const *s1, char const *s2, int lens2);
-int		ft_strlen(const char *str);
-char	*ft_strdup(const char *s1);
-void	ft_bzero(void *s, size_t n);
-char	*get_next_line(int fd);
-void	free_it(char *str);
-char	*wanted_line(int fd, char *buffer, char *res, int nl_index);
+char	**split(char const *s, char c);
 
 #endif

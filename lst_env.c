@@ -6,7 +6,7 @@
 /*   By: emagueri <emagueri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/01 05:02:31 by emagueri          #+#    #+#             */
-/*   Updated: 2024/04/01 10:03:53 by emagueri         ###   ########.fr       */
+/*   Updated: 2024/04/01 12:45:02 by emagueri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,14 +35,26 @@ t_lst_env *ft_new_env(char *key,char *value)
 	return node;
 }
 
+char	*ft_get_env_val(t_lst_env **lst_env, char	*key)
+{
+	t_lst_env	*cur;
+
+	cur = ft_get_env(lst_env, key);
+	if (cur == NULL)
+		return ft_strdup("");
+	return cur->value;
+}
+
 t_lst_env *ft_get_env(t_lst_env **lst_env, char	*key)
 {
 	t_lst_env	*cur;
 
+	if (lst_env == NULL)
+		return (NULL);
 	cur = *lst_env;
 	while (cur)
 	{
-		if (ft_strncmp(key, cur->key, ft_strlen(key) + 1) == 0)
+		if (ft_strncmp(key, cur->key, ft_strlen(key)) == 0)
 			return (cur);
 		cur = cur->next;
 	}
@@ -119,9 +131,9 @@ int	index_of(char *str, char c)
 
 int	init_env(t_lst_env **lst, char **env)
 {
-	int i;
-	char *value;
-	int len;
+	char	*value;
+	int		i;
+	int		len;
 
 	i = 0;
 	while (env[i])
