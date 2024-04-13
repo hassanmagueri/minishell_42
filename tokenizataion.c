@@ -85,7 +85,7 @@ void ft__lst_tokenize(t__lst_token **token, char *cmd)
 		{
 			while (cmd[i] == ' ' || (cmd[i] >= 9 && cmd[i] <= 13))
 				i++;
-			ft_lst_token_add_back(token, ft_new_token(" ", SPACE));
+			ft_lst_token_add_back(token, ft_new_token(" ", SPC));
 		}
 		else if (cmd[i] == '$' && cmd[i + 1] == '$')
 		{

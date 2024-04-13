@@ -92,7 +92,7 @@ void	ft_execute_command(t_pipe *pip, int i, char *command)
 {
 	char	**cmd;
 
-	cmd = ft_split_space_tab(pip->args[i]);
+	cmd = ft_split_SPC_tab(pip->args[i]);
 	if (cmd == NULL)
 		ft_error("Invalid argument");
 	command = find_path_executable_b(pip, cmd[0]);
