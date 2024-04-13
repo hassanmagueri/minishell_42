@@ -45,7 +45,7 @@ typedef struct s_list
 typedef enum e_type
 {
 	WORD,
-	SPACE,
+	SPC,
 	APPEND,//>>
 	HEARDOC,//<< 
 	INPUT,// < 

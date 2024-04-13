@@ -18,7 +18,7 @@ int main(int argc, char *argv[], char **env) {
 		cmd = readline("minishell -> ");
 		ft__lst_tokenize(&t, cmd);
 		ft_expand(&t, &lst_env);
-		add_history(cmd);
+		// add_history(cmd);
 		print__lst_tokens(t);
 		free(cmd);
 		

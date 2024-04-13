@@ -1,0 +1,1 @@
+gcc  obj/ft_split_cmd.o obj/lst_token.o obj/ft_strnjoin.o obj/main.o obj/tokenizataion.o obj/lst_env.o obj/expend.o -o minishell -lreadline
