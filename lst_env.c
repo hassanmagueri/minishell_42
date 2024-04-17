@@ -6,7 +6,7 @@
 /*   By: emagueri <emagueri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/01 05:02:31 by emagueri          #+#    #+#             */
-/*   Updated: 2024/04/03 01:58:11 by emagueri         ###   ########.fr       */
+/*   Updated: 2024/04/16 18:18:21 by emagueri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,7 @@ t_lst_env *ft_get_env(t_lst_env **lst_env, char	*key)
 	cur = *lst_env;
 	while (cur)
 	{
-		if (ft_strncmp(key, cur->key, ft_strlen(key)) == 0)
+		if (ft_strncmp(key, cur->key, ft_strlen(cur->key)) == 0)
 			return (cur);
 		cur = cur->next;
 	}
@@ -108,7 +108,7 @@ void print_lst_env(t_lst_env *lst)
 	cur = lst;
 	while (cur)
 	{
-		printf("%s\n", cur->key);
+		printf("%s", cur->key);
 		printf("=%s\n", cur->value);
 		cur = cur->next;
 	}
@@ -139,8 +139,9 @@ int	init_env(t_lst_env **lst, char **env)
 	while (env[i])
 	{
 		len = index_of(env[i], '=');
+		printf("%s\n", env[i]);
 		if (len == -1)
-			return -1;
+			return (-1);
 		value = ft_strchr(env[i], '=') + 1;
 		ft_lst_add_back_env(lst, ft_new_env(ft_substr(env[i], 0, len), value));
 		i++;

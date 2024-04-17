@@ -11,11 +11,13 @@ int main(int argc, char *argv[], char **env) {
 		return (1);
 	}
 	init_env(&lst_env, env);
+	// print_lst_env(lst_env);
+	
 	while (1)
 	{
 		t__lst_token *t = NULL;
-		// cmd = readline(ANSI_COLOR_CYAN "~ " ANSI_COLOR_BLUE "minishell 😎 " ANSI_COLOR_MAGENTA "↪ " ANSI_COLOR_RESET);
-		cmd = readline("minishell -> ");
+		cmd = readline(ANSI_COLOR_CYAN "~ " ANSI_COLOR_BLUE "minishell 😎 " ANSI_COLOR_MAGENTA "↪ " ANSI_COLOR_RESET);
+		// cmd = readline("minishell -> ");
 		ft__lst_tokenize(&t, cmd);
 		ft_expand(&t, &lst_env);
 		add_history(cmd);

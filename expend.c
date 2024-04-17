@@ -6,7 +6,7 @@
 /*   By: emagueri <emagueri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/01 10:12:12 by emagueri          #+#    #+#             */
-/*   Updated: 2024/04/03 10:52:01 by emagueri         ###   ########.fr       */
+/*   Updated: 2024/04/16 17:54:27 by emagueri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,7 +78,7 @@ int ft_expand(t__lst_token **lst_token, t_lst_env **lst_env)
 				else
 				{
 					tmp = ft_handle_simple_string(res + i, tmp, &i);
-				}
+				} 
 			}
 			cur->str = tmp;
 		}
