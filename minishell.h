@@ -19,12 +19,7 @@
 # define TOKEN_LST 1
 // # define SEP " |"
 
-typedef struct s_cmd
-{
-    int type;
-}   t_cmd;
-
-typedef struct s_pipe
+typedef struct s_data
 {
     int type;
 	int tub[2];
@@ -34,13 +29,19 @@ typedef struct s_pipe
 	int	sig;
 	char **env_path;
 	char **args;
-}   t_pipe;
+}   t_data;
 
 typedef struct s_list
 {
 	void			*content;
 	struct s_list	*next;
 }	t_list;
+
+typedef struct s_cmd
+{
+	char	*cmd;
+	struct s_cmd *next;
+}	t_cmd;
 
 typedef enum e_type
 {
@@ -97,7 +98,9 @@ t_lst_env	*ft_get_env(t_lst_env **lst_env, char	*key);
 t_lst_env	*ft_new_env(char *key,char *value);
 t_lst_env	*ft_lst_env_last(t_lst_env *lst);
 //
-
+//execution
+void	ft_lst_cmd(t_cmd	**command);
+//
 //expend
 int ft_expand(t__lst_token **lst_token, t_lst_env **lst_env);
 //

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expend.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: emagueri <emagueri@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ataoufik <ataoufik@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/01 10:12:12 by emagueri          #+#    #+#             */
-/*   Updated: 2024/04/03 10:52:01 by emagueri         ###   ########.fr       */
+/*   Updated: 2024/04/17 11:00:31 by ataoufik         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,7 +64,7 @@ int ft_expand(t__lst_token **lst_token, t_lst_env **lst_env)
 			int i = 0;
 			while (i < ft_strlen(res))
 			{
-				if (res[i] == '$' && (ft_isalnum(res[i + 1]) || res[i + i] == '_'))
+				if (res[i] == '$' && (ft_isalnum(res[i + 1]) || res[i + i] == '_'))//???
 				{
 					i++;
 					var = ft_handle_var(lst_env, res + i, &i);
