@@ -6,7 +6,7 @@
 /*   By: emagueri <emagueri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/01 05:02:31 by emagueri          #+#    #+#             */
-/*   Updated: 2024/04/16 18:18:21 by emagueri         ###   ########.fr       */
+/*   Updated: 2024/04/17 10:58:53 by emagueri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,14 +80,14 @@ int	ft_lst_remove_env(t_lst_env **lst_env,char *key)
 	if (lst_env == NULL)
 		return -1;
 	cur = *lst_env;
-	if (ft_strncmp(cur->key, key, ft_strlen(key)) == 0)
+	if (ft_strncmp(cur->key, key, ft_strlen(cur->key)) == 0)
 	{
 		*lst_env = cur->next;
 		return (0);
 	}
 	while (cur)
 	{
-		if (ft_strncmp(cur->key, key, ft_strlen(key)) == 0)
+		if (ft_strncmp(cur->key, key, ft_strlen(cur->key)) == 0)
 		{
 			prev->next = cur->next;
 			free(cur->key);
@@ -139,7 +139,6 @@ int	init_env(t_lst_env **lst, char **env)
 	while (env[i])
 	{
 		len = index_of(env[i], '=');
-		printf("%s\n", env[i]);
 		if (len == -1)
 			return (-1);
 		value = ft_strchr(env[i], '=') + 1;

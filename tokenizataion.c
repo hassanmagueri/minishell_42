@@ -6,7 +6,7 @@
 /*   By: emagueri <emagueri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/01 10:12:34 by emagueri          #+#    #+#             */
-/*   Updated: 2024/04/01 11:10:17 by emagueri         ###   ########.fr       */
+/*   Updated: 2024/04/17 11:37:02 by emagueri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -112,6 +112,8 @@ void ft__lst_tokenize(t__lst_token **token, char *cmd)
 				i++;
 			while (cmd[i] && !is_sep(cmd[i]))
 				i++;
+			if (cmd[i] == '\"' || cmd[i] == '\'')
+				continue;
 			ft_lst_token_add_back(token, ft_new_token(ft_substr(cmd, start, i - start), WORD));
 		}
 	}

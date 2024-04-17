@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   minishell.h                                        :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: emagueri <emagueri@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/04/17 11:22:57 by emagueri          #+#    #+#             */
+/*   Updated: 2024/04/17 11:22:58 by emagueri         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #ifndef MINISHELL_H
 #define MINISHELL_H
 
@@ -21,7 +33,9 @@
 
 typedef struct s_cmd
 {
-    int type;
+	char *word;
+    // int type;
+	struct s_cmd *next;
 }   t_cmd;
 
 typedef struct s_pipe
