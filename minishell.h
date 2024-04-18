@@ -5,6 +5,7 @@
 # include <unistd.h>
 # include <limits.h>
 #include <stdio.h>
+#include<fts.h>
 #include <string.h>
 #include <stdlib.h>
 #include <readline/readline.h>
@@ -22,13 +23,7 @@
 typedef struct s_data
 {
     int type;
-	int tub[2];
-	pid_t pid;
-	int	infile;
-	int	outfile;
-	int	sig;
 	char **env_path;
-	char **args;
 }   t_data;
 
 typedef struct s_list
@@ -37,11 +32,24 @@ typedef struct s_list
 	struct s_list	*next;
 }	t_list;
 
+typedef struct s_redir
+{
+	char	*str;
+	char **cmd;
+	int	sig;
+	/// type redirection
+	int	infile;
+	int	outfile;
+	struct s_redir *next;
+}	t_redir;
+
 typedef struct s_cmd
 {
-	char	*cmd;
+	struct s_redir *redir;
 	struct s_cmd *next;
 }	t_cmd;
+
+
 
 typedef enum e_type
 {
@@ -99,7 +107,7 @@ t_lst_env	*ft_new_env(char *key,char *value);
 t_lst_env	*ft_lst_env_last(t_lst_env *lst);
 //
 //execution
-void	ft_lst_cmd(t_cmd	**command);
+void	ft_lst_cmd(t_cmd	*command,t_data	*pip,int i);
 //
 //expend
 int ft_expand(t__lst_token **lst_token, t_lst_env **lst_env);

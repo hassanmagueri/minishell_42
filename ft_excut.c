@@ -6,11 +6,12 @@
 /*   By: ataoufik <ataoufik@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/17 11:18:33 by ataoufik          #+#    #+#             */
-/*   Updated: 2024/04/17 11:54:58 by ataoufik         ###   ########.fr       */
+/*   Updated: 2024/04/18 10:35:47 by ataoufik         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include<minishell.h>
+#include"minishell.h"
+
 char	*find_path_executable(t_data *pip, char *cmd)
 {
 	char	*str;
@@ -35,81 +36,83 @@ char	*find_path_executable(t_data *pip, char *cmd)
 	return (NULL);
 }
 
-void	ft_execute_command(t_data *pip, char *str)
+void	ft_execute_command(t_data *pip, char **str)
 {
-	char	**cmd;
 	char *command;
 
-	cmd = ft_split_space_tab(str);
-	if (cmd == NULL)
-		printf("Invalid argument");
-	command = find_path_executable(pip, cmd[0]);
+	command = find_path_executable(pip, str[0]);
 	if (command == NULL)
 		printf("Invalid argument");
-	execve(command, cmd, NULL);
-	free_2d_arr(cmd);
+	execve(command, str, NULL);
+	free_2d_arr(str);
 	free(command);
 }
 
-void	process_child(t_data *pip, char *str)
+void	process_child(t_redir	*red,t_data *pip)//sing last pipe
 {
 	char	*command;
-
+	int tub[2];
+	pid_t pid;
 	command = NULL;
-	if (pipe(pip->tub) == -1)
-		printf("error in pipe");
-	pip->pid = fork();
-	if (pip->pid == 0)
+	if (red->sig != /*last command*/)
 	{
-		close(pip->tub[0]);
-		dup2(pip->tub[1], STDOUT_FILENO);
-		close(pip->tub[1]);
-		ft_execute_command(pip, str);
+		if (pipe(tub) == -1)
+			printf("error in pipe");	
+	}
+	pid = fork();
+	if (pid == 0)
+	{
+		close(tub[0]);
+		dup2(tub[1], STDOUT_FILENO);
+		close(tub[1]);
+		if (/*if type redriction out or herdoc_out*/)
+		{
+			dup2(red->outfile,STDOUT_FILENO);
+			close(red->outfile);
+		}
+		ft_execute_command(pip,red->cmd);
 	}
 	else
 	{
-		close(pip->tub[1]);
-		dup2(pip->tub[0], STDIN_FILENO);
-		close(pip->tub[0]);
+		close(tub[1]);
+		dup2(tub[0], STDIN_FILENO);
+		close(tub[0]);
 	}
 }
 
-void	process_child_last(t_data *pip,char *str)
+void ft_excut_cmd(t_redir	*red,t_data *pip,int i)
 {
-	char	*command;
-
-	command = NULL;
-	pip->pid = fork();
-	if (pip->pid == 0)
-	{
-		close(pip->tub[0]);
-		dup2(pip->tub[1], STDOUT_FILENO);
-		close(pip->tub[1]);
-		// ft_open_outfile(pip, i);
-		dup2(pip->outfile, STDOUT_FILENO);
-		close(pip->outfile);
-		ft_execute_command(pip, str);
-	}
-	else
-	{
-		close(pip->tub[1]);
-		dup2(pip->tub[0], STDIN_FILENO);
-		close(pip->tub[0]);
-	}
-}
-int ft_cmdpip(t_data **pip, char *str)
-{
-	  
-}
-void	ft_lst_cmd(t_cmd	**command, t_data	**pip)
-{
-	t_cmd   *cur;
-
-	cur = *command;
+	t_redir	*cur;
+	cur = red;
 	while(cur)
 	{
-		if (!(ft_cmdpip(pip,cur->cmd)))
-			return(0);
+		if (/*infile*/)
+		{
+			cur->infile = open(cur->str, O_RDONLY);
+			dup2(cur->infile,STDIN_FILENO);
+			close(cur->infile);
+		}
+		else if (/*outfile*/)
+		{
+			cur->outfile = open(cur->str,O_CREAT | O_WRONLY | O_TRUNC, 0666);
+			
+		}
+		else
+			process_child(cur,pip);
+			
 		cur = cur->next;
 	}
+	
+}
+
+void	ft_lst_cmd(t_cmd	*command,t_data *pip)
+{
+	t_cmd	*cur;
+	cur = command;
+	while(cur->next)
+	{
+		ft_excut_cmd(cur->redir,pip,0);
+		cur = cur->next;
+	}
+	ft_excut_cmd(cur->redir,pip,1);
 }
