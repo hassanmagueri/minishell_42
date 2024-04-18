@@ -53,7 +53,7 @@ typedef enum e_type
 typedef struct s_redir
 {
 	char	*str;
-	char **cmd;
+
 	int	sig;
 	int	infile;
 	int	outfile;
@@ -63,6 +63,7 @@ typedef struct s_redir
 
 typedef struct s_cmd
 {
+	char **cmd;
 	struct s_redir *redir;
 	struct s_cmd *next;
 }	t_cmd;
