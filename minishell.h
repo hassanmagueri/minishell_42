@@ -5,7 +5,7 @@
 # include <unistd.h>
 # include <limits.h>
 #include <stdio.h>
-#include<fts.h>
+#include <fcntl.h>
 #include <string.h>
 #include <stdlib.h>
 #include <readline/readline.h>
@@ -37,9 +37,9 @@ typedef struct s_redir
 	char	*str;
 	char **cmd;
 	int	sig;
-	/// type redirection
 	int	infile;
 	int	outfile;
+	t_type  redirection_type;
 	struct s_redir *next;
 }	t_redir;
 
@@ -107,7 +107,7 @@ t_lst_env	*ft_new_env(char *key,char *value);
 t_lst_env	*ft_lst_env_last(t_lst_env *lst);
 //
 //execution
-void	ft_lst_cmd(t_cmd	*command,t_data	*pip,int i);
+void	ft_lst_cmd(t_cmd	*command,t_data	*pip);
 //
 //expend
 int ft_expand(t__lst_token **lst_token, t_lst_env **lst_env);
