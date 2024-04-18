@@ -1,16 +1,16 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   ft_excut.c                                         :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: ataoufik <ataoufik@student.42.fr>          +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/04/17 11:18:33 by ataoufik          #+#    #+#             */
-/*   Updated: 2024/04/18 11:30:47 by ataoufik         ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
-
+ 
 #include "minishell.h"
+
+void	free_2d_arr(char **str)
+{
+	int i;
+	while (str[i])
+	{
+		free(str[i]);
+		i++;
+	}
+	free(str);
+}
 
 char	*find_path_executable(t_data *pip, char *cmd)
 {
@@ -80,31 +80,31 @@ void	process_child(t_redir	*red,t_data *pip, int is_last)
 	}
 }
 
-void	ft_here_doc(t_data *pip,t_redir *cur)
-{
-	int		fds[2];
-	char	*str;
+// void	ft_here_doc(t_data *pip,t_redir *cur)
+// {
+// 	int		fds[2];
+// 	char	*str;
 
-	if (pipe(fds) == -1)
-		printf("error in pipe");
-	cur->str = ft_strjoin(cur->str, "\n");
-	while (1)
-	{
-		ft_putstr_fd("> ", 1);
-		str = get_next_line(0);
-		if (str == NULL || (ft_strncmp(cur->str, str, ft_strlen(cur->str) != 1)))
-		{
-			free(str);
-			break ;
-		}
-		ft_putstr_fd(str, fds[1]);
-		free(str);
-	}
-	close (fds[1]);
-	if (dup2(fds[0], STDIN_FILENO) == -1)
-		printf("Error in dup2");
-	close (fds[0]);
-}
+// 	if (pipe(fds) == -1)
+// 		printf("error in pipe");
+// 	cur->str = ft_strjoin(cur->str, "\n");
+// 	while (1)
+// 	{
+// 		ft_putstr_fd("> ", 1);
+// 		str = get_next_line(0);
+// 		if (str == NULL || (ft_strncmp(cur->str, str, ft_strlen(cur->str) != 1)))
+// 		{
+// 			free(str);
+// 			break ;
+// 		}
+// 		ft_putstr_fd(str, fds[1]);
+// 		free(str);
+// 	}
+// 	close (fds[1]);
+// 	if (dup2(fds[0], STDIN_FILENO) == -1)
+// 		printf("Error in dup2");
+// 	close (fds[0]);
+// }
 
 void ft_excut_cmd(t_redir	*red,t_data *pip,int i)
 {
@@ -124,7 +124,7 @@ void ft_excut_cmd(t_redir	*red,t_data *pip,int i)
 		}
 		else if (cur->redirection_type == HEARDOC)
 		{
-			ft_here_doc(cur,pip);
+			// ft_here_doc(cur,pip);
 		}
 		else if (cur->redirection_type == APPEND)
 		{
@@ -147,4 +147,39 @@ void	ft_lst_cmd(t_cmd	*command, t_data *pip)
 		cur = cur->next;
 	}
 	ft_excut_cmd(cur->redir,pip,1);//if last command excut with not pipein
+}
+void	inist_pipe(t_data *pip,char *evm[])
+{
+	while (evm && *evm && ft_strncmp(*evm, "PATH=", 5) != 0)
+		evm++;
+	if (*evm == NULL)
+		printf("Path not found");
+	*evm += 5;
+	pip->env_path = ft_split (*evm, ':');
+	if (!pip->env_path)
+		printf("Invalid argument");
+}
+#include "minishell.h"
+#include <stdio.h>
+
+int main(int arc ,char **arv,char **env) {
+    t_data pip;
+    inist_pipe(&pip,env);
+    t_redir red1, red2; // Example redirections
+    red1.redirection_type = INPUT;
+    red1.str = "input.txt";
+    red1.next = &red2;
+    red2.redirection_type = OUTPUT;
+    red2.str = "output.txt";
+    red2.next = NULL;
+
+    t_cmd cmd1, cmd2; // Example commands
+    cmd1.redir = &red1;
+    cmd1.next = &cmd2;
+    cmd2.redir = &red2;
+    cmd2.next = NULL;
+
+    ft_lst_cmd(&cmd1, &pip); // Execute the commands
+
+    return 0;
 }

@@ -20,17 +20,35 @@
 # define TOKEN_LST 1
 // # define SEP " |"
 
-typedef struct s_data
-{
-    int type;
-	char **env_path;
-}   t_data;
 
 typedef struct s_list
 {
 	void			*content;
 	struct s_list	*next;
 }	t_list;
+
+
+
+typedef struct s_data
+{
+    int type;
+	char **env_path;
+}   t_data;
+
+typedef enum e_type
+{
+	WORD,
+	SPC,
+	APPEND,//>>
+	HEARDOC,//<< 
+	INPUT,// < 
+	OUTPUT,// >
+	VAR,//$
+	PIPE,//|
+	SING_Q,//""
+	DOUB_Q,//''
+	EXIT_STATUS
+} t_type;
 
 typedef struct s_redir
 {
@@ -48,23 +66,6 @@ typedef struct s_cmd
 	struct s_redir *redir;
 	struct s_cmd *next;
 }	t_cmd;
-
-
-
-typedef enum e_type
-{
-	WORD,
-	SPC,
-	APPEND,//>>
-	HEARDOC,//<< 
-	INPUT,// < 
-	OUTPUT,// >
-	VAR,//$
-	PIPE,//|
-	SING_Q,//""
-	DOUB_Q,//''
-	EXIT_STATUS
-} t_type;
 
 typedef struct s_token //| > < >> << "" '' $VAR SPACE 
 {
