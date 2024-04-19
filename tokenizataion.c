@@ -6,7 +6,7 @@
 /*   By: emagueri <emagueri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/01 10:12:34 by emagueri          #+#    #+#             */
-/*   Updated: 2024/04/17 11:37:02 by emagueri         ###   ########.fr       */
+/*   Updated: 2024/04/18 12:35:11 by emagueri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,7 @@ void ft_void(void)
 	return ;
 }
 
-void ft__lst_tokenize(t__lst_token **token, char *cmd)
+int ft__lst_tokenize(t__lst_token **token, char *cmd)
 {
 	int i;
 	i = 0;
@@ -65,7 +65,7 @@ void ft__lst_tokenize(t__lst_token **token, char *cmd)
 		{
 			int len = find_sec(cmd + i, '\"') + 1;
 			if (len == 0)
-				return (printf("syntax error\n"), ft_void());
+				return (print_error(NULL));
 			char *str = ft_substr(cmd, i, len);
 			t__lst_token *t = ft_new_token(str, DOUB_Q);
 			ft_lst_token_add_back(token, t);
@@ -75,7 +75,7 @@ void ft__lst_tokenize(t__lst_token **token, char *cmd)
 		{
 			int len = find_sec(cmd + i, '\'') + 1;
 			if (len == 0)
-				return (printf("syntax error\n"), ft_void());
+				return (print_error(NULL));
 			char *str = ft_substr(cmd, i, len);
 			t__lst_token *t = ft_new_token(str, SING_Q);
 			ft_lst_token_add_back(token, t);
@@ -108,15 +108,19 @@ void ft__lst_tokenize(t__lst_token **token, char *cmd)
 		{
 			int start = i;
 
+			if (cmd[i] == '$' && (cmd[i + 1] == '\"' || cmd[i + 1] == '\''))
+			{
+				i++;
+				continue;
+			}
 			if (cmd[start] == '$')
 				i++;
 			while (cmd[i] && !is_sep(cmd[i]))
 				i++;
-			if (cmd[i] == '\"' || cmd[i] == '\'')
-				continue;
 			ft_lst_token_add_back(token, ft_new_token(ft_substr(cmd, start, i - start), WORD));
 		}
 	}
+	return (0);
 }
 
 

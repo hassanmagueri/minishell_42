@@ -6,7 +6,7 @@
 /*   By: emagueri <emagueri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/01 05:02:31 by emagueri          #+#    #+#             */
-/*   Updated: 2024/04/17 10:58:53 by emagueri         ###   ########.fr       */
+/*   Updated: 2024/04/17 13:25:05 by emagueri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,7 @@ t_lst_env *ft_get_env(t_lst_env **lst_env, char	*key)
 	cur = *lst_env;
 	while (cur)
 	{
-		if (ft_strncmp(key, cur->key, ft_strlen(cur->key)) == 0)
+		if (ft_strncmp(key, cur->key, ft_strlen(cur->key) + 1) == 0)
 			return (cur);
 		cur = cur->next;
 	}
@@ -80,14 +80,14 @@ int	ft_lst_remove_env(t_lst_env **lst_env,char *key)
 	if (lst_env == NULL)
 		return -1;
 	cur = *lst_env;
-	if (ft_strncmp(cur->key, key, ft_strlen(cur->key)) == 0)
+	if (ft_strncmp(cur->key, key, ft_strlen(cur->key) + 1) == 0)
 	{
 		*lst_env = cur->next;
 		return (0);
 	}
 	while (cur)
 	{
-		if (ft_strncmp(cur->key, key, ft_strlen(cur->key)) == 0)
+		if (ft_strncmp(cur->key, key, ft_strlen(cur->key) + 1) == 0)
 		{
 			prev->next = cur->next;
 			free(cur->key);

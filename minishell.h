@@ -6,7 +6,7 @@
 /*   By: emagueri <emagueri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/17 11:22:57 by emagueri          #+#    #+#             */
-/*   Updated: 2024/04/17 11:22:58 by emagueri         ###   ########.fr       */
+/*   Updated: 2024/04/18 12:34:34 by emagueri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,15 +91,20 @@ typedef	struct s_lst_env
 	char				*value;
 	struct s_lst_env	*next;
 } t_lst_env;
+// token
 
 t__lst_token	*ft_new_token(char *str, t_type type);
 void    ft_lst_token_add_back(t__lst_token **lst, t__lst_token *token);
 t__lst_token	*ft__lst_token_last(t__lst_token *lst);
 
-void    ft__lst_tokenize(t__lst_token **token, char *cmd);
+int    ft__lst_tokenize(t__lst_token **token, char *cmd);
 int is_sep(int c);
 void	print__lst_tokens(t__lst_token *lst);
 char	*ft_strnjoin(char const *s1, char const *s2,unsigned int n);
+
+//errors
+int print_error(char *msg);
+int generate_errors(t__lst_token **tokens);
 
 // env
 int			init_env(t_lst_env **lst, char **env);
