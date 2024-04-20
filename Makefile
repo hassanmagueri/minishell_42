@@ -28,8 +28,8 @@
 
 # re: fclean all
 
-CC = gcc
-CFLAGS = -Wall -Wextra -Werror -g -fsanitize=address
+CC = cc -g -fsanitize=address
+CFLAGS = #-Wall -Wextra -Werror 
 SRC_DIR = .
 OBJ_DIR = obj
 
