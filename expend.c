@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expend.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ataoufik <ataoufik@student.42.fr>          +#+  +:+       +#+        */
+/*   By: emagueri <emagueri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/01 10:12:12 by emagueri          #+#    #+#             */
-/*   Updated: 2024/04/17 11:00:31 by ataoufik         ###   ########.fr       */
+/*   Updated: 2024/04/18 09:25:01 by emagueri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,7 +64,7 @@ int ft_expand(t__lst_token **lst_token, t_lst_env **lst_env)
 			int i = 0;
 			while (i < ft_strlen(res))
 			{
-				if (res[i] == '$' && (ft_isalnum(res[i + 1]) || res[i + i] == '_'))//???
+				if (res[i] == '$' && res[i + 1] != 0 && (ft_isalnum(res[i + 1]) || res[i + 1] == '_'))
 				{
 					i++;
 					var = ft_handle_var(lst_env, res + i, &i);
@@ -76,15 +76,14 @@ int ft_expand(t__lst_token **lst_token, t_lst_env **lst_env)
 					tmp = ft_strjoin(tmp, "$$");
 				}
 				else
-				{
 					tmp = ft_handle_simple_string(res + i, tmp, &i);
-				}
 			}
 			cur->str = tmp;
+			tmp = "";
 		}
 		cur = cur->next;
 	}
-	return 1;
+	return (1);
 }
 
 // int main(int argc, char const *argv[], char **env)

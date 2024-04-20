@@ -42,8 +42,8 @@ void print__lst_tokens(t__lst_token *lst)
 		printf("%s\t", lst->str);
 		if (lst->type == WORD)
 			printf("WORD\n");
-		else if (lst->type == SPC)
-			printf("SPC\n");
+		else if (lst->type == SPACE)
+			printf("SPACE\n");
 		else if (lst->type == APPEND)
 			printf("APPEND\n");
 		else if (lst->type == HEARDOC)

@@ -1,10 +1,42 @@
+# NAME = minishell
+# CC = cc
+# FLAGS = -Wall -Wextra -Werror
+# RM = rm -rf
+
+# SRC =  main.c
+# OBJ_DIR = obj
+
+
+# OBJ = $(addprefix $(OBJ_DIR)/,$(SRC:.c=.o))
+
+# all : $(NAME)
+
+# $(NAME) : $(OBJ)
+# 	$(CC) $(FLAGS) $(OBJ) -o $(NAME)
+
+# $(OBJ_DIR)/%.o : %.c minishell.h | $(OBJ_DIR)
+# 	$(CC) $(FLAGS) -c $< -o $@
+
+# $(OBJ_DIR):
+# 	mkdir -p $(OBJ_DIR)
+
+# clean:
+# 	$(RM) $(OBJ_DIR)
+
+# fclean: clean
+# 	$(RM) $(NAME)
+
+# re: fclean all
+
 CC = gcc
-CFLAGS = #-Wall -Wextra -Werror -g -fsanitize=address
+CFLAGS = -Wall -Wextra -Werror -g -fsanitize=address
 SRC_DIR = .
 OBJ_DIR = obj
 
 # SRC_FILES = $(wildcard *.c)
-SRC_FILES = ft_split_cmd.c lst_token.c ft_strnjoin.c  main.c tokenizataion.c lst_env.c expend.c
+SRC_FILES = lst_token.c ft_strnjoin.c  \
+			main.c tokenizataion.c lst_env.c expend.c \
+			error.c lst_cmd.c join.c
 OBJ_FILES = $(addprefix $(OBJ_DIR)/, $(SRC_FILES:.c=.o))
 LIBFT_FILES = $(wildcard libft/*.c)
 LIBFT_OBJ_FILES = $(addprefix $(OBJ_DIR)/, $(notdir $(LIBFT_FILES:.c=.o)))

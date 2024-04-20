@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   minishell.h                                        :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: emagueri <emagueri@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/04/17 11:22:57 by emagueri          #+#    #+#             */
+/*   Updated: 2024/04/20 12:44:38 by emagueri         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #ifndef MINISHELL_H
 #define MINISHELL_H
 
@@ -5,7 +17,6 @@
 # include <unistd.h>
 # include <limits.h>
 #include <stdio.h>
-#include <fcntl.h>
 #include <string.h>
 #include <stdlib.h>
 #include <readline/readline.h>
@@ -21,24 +32,28 @@
 // # define SEP " |"
 
 
+typedef struct s_pipe
+{
+    int type;
+	int tub[2];
+	pid_t pid;
+	int	infile;
+	int	outfile;
+	int	sig;
+	char **env_path;
+	char **args;
+}   t_pipe;
+
 typedef struct s_list
 {
 	void			*content;
 	struct s_list	*next;
 }	t_list;
 
-
-
-typedef struct s_data
-{
-    int type;
-	char **env_path;
-}   t_data;
-
 typedef enum e_type
 {
 	WORD,
-	SPC,
+	SPACE,
 	APPEND,//>>
 	HEARDOC,//<< 
 	INPUT,// < 
@@ -52,21 +67,20 @@ typedef enum e_type
 
 typedef struct s_redir
 {
-	char	*str;
-
-	int	sig;
-	int	infile;
-	int	outfile;
-	t_type  redirection_type;
-	struct s_redir *next;
-}	t_redir;
+    char    *file_name;
+    // char    *str;
+    int    infile;
+    int    outfile;
+    t_type  redirection_type;
+    struct s_redir *next;
+}    t_redir;
 
 typedef struct s_cmd
 {
-	char **cmd;
-	struct s_redir *redir;
-	struct s_cmd *next;
-}	t_cmd;
+    char **cmd;
+    struct s_redir *redir;
+    struct s_cmd *next;
+}    t_cmd;
 
 typedef struct s_token //| > < >> << "" '' $VAR SPACE 
 {
@@ -88,15 +102,23 @@ typedef	struct s_lst_env
 	char				*value;
 	struct s_lst_env	*next;
 } t_lst_env;
+// token
+
+int ft_join(t__lst_token **lst_token);
+
 
 t__lst_token	*ft_new_token(char *str, t_type type);
 void    ft_lst_token_add_back(t__lst_token **lst, t__lst_token *token);
 t__lst_token	*ft__lst_token_last(t__lst_token *lst);
 
-void    ft__lst_tokenize(t__lst_token **token, char *cmd);
+int    ft__lst_tokenize(t__lst_token **token, char *cmd);
 int is_sep(int c);
 void	print__lst_tokens(t__lst_token *lst);
 char	*ft_strnjoin(char const *s1, char const *s2,unsigned int n);
+
+//errors
+int print_error(char *msg);
+int generate_errors(t__lst_token **tokens);
 
 // env
 int			init_env(t_lst_env **lst, char **env);
@@ -108,12 +130,13 @@ t_lst_env	*ft_get_env(t_lst_env **lst_env, char	*key);
 t_lst_env	*ft_new_env(char *key,char *value);
 t_lst_env	*ft_lst_env_last(t_lst_env *lst);
 //
-//execution
-void	ft_lst_cmd(t_cmd	*command,t_data	*pip);
-//
+
 //expend
 int ft_expand(t__lst_token **lst_token, t_lst_env **lst_env);
 //
+
+//ft_cmd
+int ft_cmd(t_cmd **cmd, t__lst_token **tokens);
 
 int		index_of(char *str, char c);
 int		ft_strlen(const char *str);
