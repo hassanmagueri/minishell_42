@@ -62,6 +62,7 @@
     "HEARDOC"
   ],
   "files.associations": {
-    "minishell.h": "c"
+    "minishell.h": "c",
+    "ios": "c"
   }
 }

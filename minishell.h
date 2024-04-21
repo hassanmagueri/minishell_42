@@ -6,7 +6,7 @@
 /*   By: emagueri <emagueri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/17 11:22:57 by emagueri          #+#    #+#             */
-/*   Updated: 2024/04/18 12:34:34 by emagueri         ###   ########.fr       */
+/*   Updated: 2024/04/21 10:09:48 by emagueri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,12 +31,6 @@
 # define TOKEN_LST 1
 // # define SEP " |"
 
-typedef struct s_cmd
-{
-	char *word;
-    // int type;
-	struct s_cmd *next;
-}   t_cmd;
 
 typedef struct s_pipe
 {
@@ -58,18 +52,35 @@ typedef struct s_list
 
 typedef enum e_type
 {
-	WORD,
-	SPACE,
 	APPEND,//>>
 	HEARDOC,//<< 
 	INPUT,// < 
 	OUTPUT,// >
+	WORD,
+	SPACE,
 	VAR,//$
 	PIPE,//|
 	SING_Q,//""
 	DOUB_Q,//''
 	EXIT_STATUS
 } t_type;
+
+typedef struct s_redir
+{
+    char    *file_name;
+    // char    *str;
+    int    infile;
+    int    outfile;
+    t_type  redirection_type;
+    struct s_redir *next;
+}    t_redir;
+
+typedef struct s_cmd
+{
+    char **cmd;
+    struct s_redir *redir;
+    struct s_cmd *next;
+}    t_cmd;
 
 typedef struct s_token //| > < >> << "" '' $VAR SPACE 
 {
@@ -92,6 +103,9 @@ typedef	struct s_lst_env
 	struct s_lst_env	*next;
 } t_lst_env;
 // token
+
+int ft_join(t__lst_token **lst_token);
+
 
 t__lst_token	*ft_new_token(char *str, t_type type);
 void    ft_lst_token_add_back(t__lst_token **lst, t__lst_token *token);
@@ -120,6 +134,9 @@ t_lst_env	*ft_lst_env_last(t_lst_env *lst);
 //expend
 int ft_expand(t__lst_token **lst_token, t_lst_env **lst_env);
 //
+
+//ft_cmd
+int ft_cmd(t_cmd **cmd, t__lst_token **tokens);
 
 int		index_of(char *str, char c);
 int		ft_strlen(const char *str);

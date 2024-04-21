@@ -1,7 +1,7 @@
 #include "minishell.h"
 
 int main(int argc, char *argv[], char **env) {
-	char *cmd;
+	char *input;
 	t_lst_env *lst_env;
 
 	lst_env = NULL;
@@ -16,18 +16,18 @@ int main(int argc, char *argv[], char **env) {
 	while (1)
 	{
 		t__lst_token *t = NULL;
-		cmd = readline(ANSI_COLOR_CYAN "~ " ANSI_COLOR_BLUE "minishell 😎 " ANSI_COLOR_MAGENTA "↪ " ANSI_COLOR_RESET);
-		// cmd = readline("minishell -> ");
-		// ft__lst_tokenize(&t, cmd)
-		if (ft__lst_tokenize(&t, cmd) || generate_errors(&t) == 1)
+		t_cmd *cmd = NULL;
+		input = readline(ANSI_COLOR_CYAN "~ " ANSI_COLOR_BLUE "minishell 😎 " ANSI_COLOR_MAGENTA "↪ " ANSI_COLOR_RESET);
+		add_history(input);
+		// input = readline("minishell -> ");
+		// ft__lst_tokenize(&t, input)
+		if (ft__lst_tokenize(&t, input) || generate_errors(&t) == 1)
 			continue;
 		ft_expand(&t, &lst_env);
-		print__lst_tokens(t);
-		add_history(cmd);
-		free(cmd);
-		
-		// if (ft_strncmp(cmd, "ls ", 3) == 0)
-		//     execve("/") 
+		ft_join(&t);
+		// print__lst_tokens(t);
+		ft_cmd(&cmd, &t);
+		free(input);
 	}
 	return 0;
 }

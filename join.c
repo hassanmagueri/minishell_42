@@ -6,7 +6,7 @@
 /*   By: emagueri <emagueri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/20 12:22:27 by emagueri          #+#    #+#             */
-/*   Updated: 2024/04/20 18:24:34 by emagueri         ###   ########.fr       */
+/*   Updated: 2024/04/21 11:14:07 by emagueri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ int ft_join(t__lst_token **lst_token)
 	while (cur && cur->type != PIPE)
 	{
 		cur_cmd = cur;
-		while (cur_cmd && cur_cmd->type != SPACE && cur->type != PIPE)
+		while (cur_cmd && cur_cmd->type != SPACE && cur_cmd->type != PIPE && cur_cmd->type > OUTPUT)
 		{
 			if (cur_cmd->type == DOUB_Q)
 				cur_cmd->str = ft_strtrim(cur_cmd->str, "\"");
@@ -46,13 +46,14 @@ int ft_join(t__lst_token **lst_token)
 // {
 // 	t__lst_token *token;
 	
-// 	ft_lst_token_add_back(&token, ft_new_token("l", WORD));
-// 	ft_lst_token_add_back(&token, ft_new_token("\"s\"", DOUB_Q));
-// 	ft_lst_token_add_back(&token, ft_new_token("space", SPACE));
-// 	ft_lst_token_add_back(&token, ft_new_token("l", WORD));
-// 	ft_lst_token_add_back(&token, ft_new_token("|", PIPE));
-// 	ft_lst_token_add_back(&token, ft_new_token("\"s\"", DOUB_Q));
-// 	ft_lst_token_add_back(&token, ft_new_token("space", SPACE));
+// 	// ft_lst_token_add_back(&token, ft_new_token("\"s\"", DOUB_Q));
+// 	// ft_lst_token_add_back(&token, ft_new_token(">", OUTPUT));
+// 	ft_lst_token_add_back(&token, ft_new_token("ls", WORD));
+// 	// ft_lst_token_add_back(&token, ft_new_token("space", SPACE));
+// 	ft_lst_token_add_back(&token, ft_new_token(">>", OUTPUT));
+// 	ft_lst_token_add_back(&token, ft_new_token("a", WORD));
+// 	// ft_lst_token_add_back(&token, ft_new_token("\"s\"", DOUB_Q));
+// 	// ft_lst_token_add_back(&token, ft_new_token("space", SPACE));
 // 	// ft_lst_token_add_back(&token, ft_new_token("-a", WORD));
 // 	ft_join(&token);
 // 	print__lst_tokens(token);

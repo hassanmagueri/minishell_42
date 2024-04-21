@@ -28,13 +28,15 @@
 
 # re: fclean all
 
-CC = gcc
-CFLAGS = -Wall -Wextra -Werror -g -fsanitize=address
+CC = cc -g -fsanitize=address
+CFLAGS = #-Wall -Wextra -Werror 
 SRC_DIR = .
 OBJ_DIR = obj
 
 # SRC_FILES = $(wildcard *.c)
-SRC_FILES = ft_split_cmd.c lst_token.c ft_strnjoin.c  main.c tokenizataion.c lst_env.c expend.c error.c
+SRC_FILES = lst_token.c ft_strnjoin.c  \
+			main.c tokenizataion.c lst_env.c expend.c \
+			error.c lst_cmd.c join.c
 OBJ_FILES = $(addprefix $(OBJ_DIR)/, $(SRC_FILES:.c=.o))
 LIBFT_FILES = $(wildcard libft/*.c)
 LIBFT_OBJ_FILES = $(addprefix $(OBJ_DIR)/, $(notdir $(LIBFT_FILES:.c=.o)))
