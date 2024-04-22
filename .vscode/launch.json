@@ -6,8 +6,8 @@
       "type": "lldb",
       "request": "launch",
       "args": [],
-      "cwd": "/Users/emagueri/Desktop/minishel",
-      "program": "/Users/emagueri/Desktop/minishel/build/Debug/outDebug"
+      "cwd": "/Users/emagueri/asd",
+      "program": "/Users/emagueri/asd/build/Debug/outDebug"
     }
   ]
 }
