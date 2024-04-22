@@ -6,7 +6,7 @@
 /*   By: emagueri <emagueri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/01 10:12:34 by emagueri          #+#    #+#             */
-/*   Updated: 2024/04/20 11:00:40 by emagueri         ###   ########.fr       */
+/*   Updated: 2024/04/21 10:13:19 by emagueri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,6 +41,8 @@ int ft__lst_tokenize(t__lst_token **token, char *input)
 {
 	int i;
 	i = 0;
+	if (input == NULL)
+		return (0);
 	while (input[i])
 	{
 		if (input[i] == '|')
