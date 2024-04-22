@@ -6,7 +6,7 @@
 /*   By: emagueri <emagueri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/17 11:22:57 by emagueri          #+#    #+#             */
-/*   Updated: 2024/04/21 10:09:48 by emagueri         ###   ########.fr       */
+/*   Updated: 2024/04/22 10:06:06 by emagueri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,7 +78,7 @@ typedef struct s_redir
 typedef struct s_cmd
 {
     char **cmd;
-    struct s_redir *redir;
+    struct s_redir **redir;
     struct s_cmd *next;
 }    t_cmd;
 

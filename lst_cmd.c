@@ -6,11 +6,13 @@
 /*   By: emagueri <emagueri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/20 10:43:06 by emagueri          #+#    #+#             */
-/*   Updated: 2024/04/21 15:36:13 by emagueri         ###   ########.fr       */
+/*   Updated: 2024/04/22 10:52:43 by emagueri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+void print_lst_redir(t_redir *redir);
 
 t_redir	*ft_new_redir(char *file_name, t_type redirection_type)
 {
@@ -41,7 +43,7 @@ int ft_add_back_redir(t_redir **redirs, t_redir *cmd)
 	return (0);
 }
 
-t_cmd	*ft_new_cmd(char **cmd, t_redir *redir)
+t_cmd	*ft_new_cmd(char **cmd, t_redir **redir)
 {
 	t_cmd *cmds;
 
@@ -136,19 +138,13 @@ void print_lst_cmd(t_cmd *cmd)
 	t_cmd *cur;
 
 	cur = cmd;
+	printf("[CMD]:");
 	while (cur)
 	{
 		int i = 0;
 		while (cur->cmd[i])
 			printf("[%s]", cur->cmd[i++]);
-		t_redir *cur_rd;
-		cur_rd = cmd->redir;
-		while (cur_rd)
-		{
-			printf("%s > ", cur_rd->file_name); 
-			cur_rd = cur_rd->next;
-		}
-		
+		print_lst_redir(*cur->redir);
 		puts("");
 		cur = cur->next;
 	}
@@ -159,9 +155,10 @@ void print_lst_redir(t_redir *redir)
 	t_redir *cur;
 
 	cur = redir;
+	printf("\n[FILES]:");
 	while (cur)
 	{
-		printf("\t %s > ", cur->file_name);
+		printf("{%s}", cur->file_name);
 		cur = cur->next;
 	}
 	puts("");
@@ -170,17 +167,19 @@ void print_lst_redir(t_redir *redir)
 int ft_cmd(t_cmd **lst_cmd, t__lst_token **tokens)
 {
 	char **cmd_str;
-	int	i;
-	t_redir *lst_redir;
+	int	i = 0;
+	t_redir **lst_redir;
 	
 	while (*tokens)
 	{
-		lst_redir = NULL;
-		cmd_str = ft_prepare_cmd(tokens, &lst_redir);
-		t_cmd *cc;
+		lst_redir = malloc(sizeof(t_redir *));
+		*lst_redir = NULL;
+		cmd_str = ft_prepare_cmd(tokens, lst_redir);
+		t_cmd *cc = NULL;
 		cc = ft_new_cmd(cmd_str, lst_redir);
 		ft_add_back_cmd(lst_cmd, cc);
-		// break;
+		print_lst_redir(*cc->redir);
+		i++;
 	}
 	print_lst_cmd(*lst_cmd);
 	return 0;
