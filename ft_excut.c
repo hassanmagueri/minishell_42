@@ -6,7 +6,7 @@
 /*   By: ataoufik <ataoufik@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/17 11:18:33 by ataoufik          #+#    #+#             */
-/*   Updated: 2024/04/18 15:58:01 by ataoufik         ###   ########.fr       */
+/*   Updated: 2024/04/21 15:59:25 by ataoufik         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,7 +78,7 @@ void	process_child(t_cmd	*red,t_data *pip, int is_last)
 		close(tub[1]);
 		if (red->redir->redirection_type == APPEND || red->redir->redirection_type == OUTPUT)
 		{
-			dup2(red->redir->outfile,STDOUT_FILENO);
+			dup2(red->redir->outfile,STDOUT_FILENO);// open last file
 			close(red->redir->outfile);
 		}
 		ft_execute_command(pip,red->cmd);
@@ -91,31 +91,30 @@ void	process_child(t_cmd	*red,t_data *pip, int is_last)
 	}
 }
 
-// void	ft_here_doc(t_data *pip,t_redir *cur)
-// {
-// 	int		fds[2];
-// 	char	*str;
-
-// 	if (pipe(fds) == -1)
-// 		printf("error in pipe");
-// 	cur->str = ft_strjoin(cur->str, "\n");
-// 	while (1)
-// 	{
-// 		ft_putstr_fd("> ", 1);
-// 		str = get_next_line(0);
-// 		if (str == NULL || (ft_strncmp(cur->str, str, ft_strlen(cur->str) != 1)))
-// 		{
-// 			free(str);
-// 			break ;
-// 		}
-// 		ft_putstr_fd(str, fds[1]);
-// 		free(str);
-// 	}
-// 	close (fds[1]);
-// 	if (dup2(fds[0], STDIN_FILENO) == -1)
-// 		printf("Error in dup2");
-// 	close (fds[0]);
-// }
+void	ft_here_doc(t_data *pip,t_redir *cur)
+{
+	int		fds[2];
+	char	*str;
+	if (pipe(fds) == -1)
+		printf("error in pipe");
+	cur->str = ft_strjoin(cur->str, "\n");
+	while (1)
+	{
+		ft_putstr_fd("> ", 1);
+		str = get_next_line(0);
+		if (str == NULL || (ft_strncmp(cur->str, str, ft_strlen(cur->str) != 1)))
+		{
+			free(str);
+			break ;
+		}
+		ft_putstr_fd(str, fds[1]);
+		free(str);
+	}
+	close (fds[1]);
+	if (dup2(fds[0], STDIN_FILENO) == -1)
+		printf("Error in dup2");
+	close (fds[0]);
+}
 
 void ft_excut_cmd(t_cmd	*red,t_data *pip,int i)
 {
@@ -132,7 +131,7 @@ void ft_excut_cmd(t_cmd	*red,t_data *pip,int i)
 		}
 		else if (cur->redirection_type == OUTPUT)
 		{
-			cur->outfile = open(cur->str,O_CREAT | O_WRONLY | O_TRUNC, 0666);
+			cur->outfile = open(cur->str,O_CREAT | O_WRONLY | O_TRUNC, 0666);//
 		}
 		else if (cur->redirection_type == HEARDOC)
 		{
@@ -140,7 +139,7 @@ void ft_excut_cmd(t_cmd	*red,t_data *pip,int i)
 		}
 		else if (cur->redirection_type == APPEND)
 		{
-			cur->outfile = open(cur->str, O_CREAT | O_WRONLY | O_APPEND, 0666);
+			cur->outfile = open(cur->str, O_CREAT | O_WRONLY | O_APPEND, 0666);//
 			
 		}
 		cur = cur->next;
@@ -160,63 +159,3 @@ void	ft_lst_cmd(t_cmd	*command, t_data *pip)
 	}
 	ft_excut_cmd(cur,pip,1);//if last command excut with not pipein
 }
-
-// void	inist_pipe(t_data *pip,char *evm[])
-// {
-// 	while (evm && *evm && ft_strncmp(*evm, "PATH=", 5) != 0)
-// 		evm++;
-// 	if (*evm == NULL)
-// 		printf("Path not found");
-// 	*evm += 5;
-// 	pip->env_path = ft_split (*evm, ':');
-// 	if (!pip->env_path)
-// 		printf("Invalid argument");
-// }
-// #include "minishell.h"
-// #include <stdio.h>
-
-// int main(int arc ,char **arv,char **env) {
-//     t_data pip;
-//     inist_pipe(&pip,env);
-//     // Setting up command 1: ls > file1 -la > file2
-//     t_redir red1, red2, red3;
-//     red1.redirection_type = OUTPUT;
-//     red1.str = "file1";
-//     red2.redirection_type = APPEND;
-//     red2.str = "file1";
-//     red3.redirection_type = OUTPUT;
-//     red3.str = "file2";
-
-//     t_cmd cmd1;
-//     cmd1.redir = &red1;
-//     cmd1.next = NULL;
-
-//     // Setting up command 2: cat < makefile < minishell
-//     t_redir red4, red5;
-//     red4.redirection_type = INPUT;
-//     red4.str = "makefile";
-//     red5.redirection_type = INPUT;
-//     red5.str = "minishell";
-
-//     t_cmd cmd2;
-//     cmd2.redir = &red4;
-//     cmd2.next = NULL;
-
-//     // Setting up command 3: ls -l >file4
-//     t_redir red6;
-//     red6.redirection_type = OUTPUT;
-//     red6.str = "file4";
-
-//     t_cmd cmd3;
-//     cmd3.redir = &red6;
-//     cmd3.next = NULL;
-
-//     // Linking commands together
-//     cmd1.next = &cmd2;
-//     cmd2.next = &cmd3;
-
-//     // Execute the linked list of commands
-//     ft_lst_cmd(&cmd1, &pip);
-
-//     return 0;
-// }
