@@ -38,12 +38,12 @@ typedef struct s_data
 
 typedef enum e_type
 {
-	WORD,
-	SPC,
 	APPEND,//>>
 	HEARDOC,//<< 
 	INPUT,// < 
 	OUTPUT,// >
+	WORD,
+	SPACE,
 	VAR,//$
 	PIPE,//|
 	SING_Q,//""
