@@ -27,6 +27,7 @@ int main(int argc, char *argv[], char **env) {
 		ft_join(&t);
 		// print__lst_tokens(t);
 		ft_cmd(&cmd, &t);
+		print_lst_cmd(cmd);
 		free(input);
 	}
 	return 0;

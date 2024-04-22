@@ -6,7 +6,7 @@
 /*   By: emagueri <emagueri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/20 10:43:06 by emagueri          #+#    #+#             */
-/*   Updated: 2024/04/22 10:52:43 by emagueri         ###   ########.fr       */
+/*   Updated: 2024/04/22 19:57:27 by emagueri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,7 @@ int ft_add_back_redir(t_redir **redirs, t_redir *cmd)
 	return (0);
 }
 
-t_cmd	*ft_new_cmd(char **cmd, t_redir **redir)
+t_cmd	*ft_new_cmd(char **cmd, t_redir *redir)
 {
 	t_cmd *cmds;
 
@@ -138,13 +138,14 @@ void print_lst_cmd(t_cmd *cmd)
 	t_cmd *cur;
 
 	cur = cmd;
-	printf("[CMD]:");
+	printf("sad\n");
 	while (cur)
 	{
 		int i = 0;
+		printf("[CMD]:");
 		while (cur->cmd[i])
 			printf("[%s]", cur->cmd[i++]);
-		print_lst_redir(*cur->redir);
+		print_lst_redir(cur->redir);
 		puts("");
 		cur = cur->next;
 	}
@@ -168,19 +169,18 @@ int ft_cmd(t_cmd **lst_cmd, t__lst_token **tokens)
 {
 	char **cmd_str;
 	int	i = 0;
-	t_redir **lst_redir;
+	t_redir *lst_redir;
 	
 	while (*tokens)
 	{
 		lst_redir = malloc(sizeof(t_redir *));
-		*lst_redir = NULL;
-		cmd_str = ft_prepare_cmd(tokens, lst_redir);
+		lst_redir = NULL;
+		cmd_str = ft_prepare_cmd(tokens, &lst_redir);
 		t_cmd *cc = NULL;
 		cc = ft_new_cmd(cmd_str, lst_redir);
 		ft_add_back_cmd(lst_cmd, cc);
-		print_lst_redir(*cc->redir);
+		// print_lst_cmd(*lst_cmd);
 		i++;
 	}
-	print_lst_cmd(*lst_cmd);
 	return 0;
 }
