@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: emagueri <emagueri@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ataoufik <ataoufik@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/17 11:22:57 by emagueri          #+#    #+#             */
-/*   Updated: 2024/04/22 10:06:06 by emagueri         ###   ########.fr       */
+/*   Updated: 2024/04/22 19:43:54 by ataoufik         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,7 @@
 # include <unistd.h>
 # include <limits.h>
 #include <stdio.h>
+#include <fcntl.h>
 #include <string.h>
 #include <stdlib.h>
 #include <readline/readline.h>
@@ -32,17 +33,11 @@
 // # define SEP " |"
 
 
-typedef struct s_pipe
+typedef struct s_data
 {
     int type;
-	int tub[2];
-	pid_t pid;
-	int	infile;
-	int	outfile;
-	int	sig;
 	char **env_path;
-	char **args;
-}   t_pipe;
+}   t_data;
 
 typedef struct s_list
 {
@@ -78,7 +73,7 @@ typedef struct s_redir
 typedef struct s_cmd
 {
     char **cmd;
-    struct s_redir **redir;
+    struct s_redir *redir;
     struct s_cmd *next;
 }    t_cmd;
 

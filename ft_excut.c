@@ -6,7 +6,7 @@
 /*   By: ataoufik <ataoufik@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/17 11:18:33 by ataoufik          #+#    #+#             */
-/*   Updated: 2024/04/18 15:58:01 by ataoufik         ###   ########.fr       */
+/*   Updated: 2024/04/22 19:44:11 by ataoufik         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -126,13 +126,13 @@ void ft_excut_cmd(t_cmd	*red,t_data *pip,int i)
 	{
 		if (cur->redirection_type == INPUT)
 		{
-			cur->infile = open(cur->str, O_RDONLY);
+			cur->infile = open(cur->file_name, O_RDONLY);
 			dup2(cur->infile,STDIN_FILENO);
 			close(cur->infile);
 		}
 		else if (cur->redirection_type == OUTPUT)
 		{
-			cur->outfile = open(cur->str,O_CREAT | O_WRONLY | O_TRUNC, 0666);
+			cur->outfile = open(cur->file_name,O_CREAT | O_WRONLY | O_TRUNC, 0666);
 		}
 		else if (cur->redirection_type == HEARDOC)
 		{
@@ -140,7 +140,7 @@ void ft_excut_cmd(t_cmd	*red,t_data *pip,int i)
 		}
 		else if (cur->redirection_type == APPEND)
 		{
-			cur->outfile = open(cur->str, O_CREAT | O_WRONLY | O_APPEND, 0666);
+			cur->outfile = open(cur->file_name, O_CREAT | O_WRONLY | O_APPEND, 0666);
 			
 		}
 		cur = cur->next;
@@ -163,7 +163,7 @@ void	ft_lst_cmd(t_cmd	*command, t_data *pip)
 
 // void	inist_pipe(t_data *pip,char *evm[])
 // {
-// 	while (evm && *evm && ft_strncmp(*evm, "PATH=", 5) != 0)
+// 	while (evm && *evm && ft_file_namencmp(*evm, "PATH=", 5) != 0)
 // 		evm++;
 // 	if (*evm == NULL)
 // 		printf("Path not found");

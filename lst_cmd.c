@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   lst_cmd.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: emagueri <emagueri@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ataoufik <ataoufik@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/20 10:43:06 by emagueri          #+#    #+#             */
-/*   Updated: 2024/04/22 10:52:43 by emagueri         ###   ########.fr       */
+/*   Updated: 2024/04/23 12:01:51 by ataoufik         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,7 @@ t_cmd	*ft_new_cmd(char **cmd, t_redir **redir)
 
 	cmds = malloc(sizeof(t_cmd));
 	cmds->cmd = cmd;
-	cmds->redir = redir;
+	cmds->redir = *redir;
 	cmds->next = NULL;
 	return cmds;
 }
@@ -144,7 +144,7 @@ void print_lst_cmd(t_cmd *cmd)
 		int i = 0;
 		while (cur->cmd[i])
 			printf("[%s]", cur->cmd[i++]);
-		print_lst_redir(*cur->redir);
+		print_lst_redir(cur->redir);
 		puts("");
 		cur = cur->next;
 	}
@@ -178,7 +178,7 @@ int ft_cmd(t_cmd **lst_cmd, t__lst_token **tokens)
 		t_cmd *cc = NULL;
 		cc = ft_new_cmd(cmd_str, lst_redir);
 		ft_add_back_cmd(lst_cmd, cc);
-		print_lst_redir(*cc->redir);
+		print_lst_redir(cc->redir);
 		i++;
 	}
 	print_lst_cmd(*lst_cmd);
