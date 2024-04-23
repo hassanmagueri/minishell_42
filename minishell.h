@@ -6,7 +6,7 @@
 /*   By: ataoufik <ataoufik@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/17 11:22:57 by emagueri          #+#    #+#             */
-/*   Updated: 2024/04/22 19:43:54 by ataoufik         ###   ########.fr       */
+/*   Updated: 2024/04/23 23:13:54 by ataoufik         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,13 +31,6 @@
 # define ENV_LST 0
 # define TOKEN_LST 1
 // # define SEP " |"
-
-
-typedef struct s_data
-{
-    int type;
-	char **env_path;
-}   t_data;
 
 typedef struct s_list
 {
@@ -129,6 +122,9 @@ t_lst_env	*ft_lst_env_last(t_lst_env *lst);
 //expend
 int ft_expand(t__lst_token **lst_token, t_lst_env **lst_env);
 //
+//
+void	ft_lst_cmd(t_cmd	*command, char **env_path);
+//
 
 //ft_cmd
 int ft_cmd(t_cmd **cmd, t__lst_token **tokens);
@@ -137,7 +133,7 @@ int		index_of(char *str, char c);
 int		ft_strlen(const char *str);
 int		ft_isdigit(int c);
 int		ft_toupper(int c);
-char	**ft_split(char const *s, char c);
+char	**ft_split(char  *s, char c);
 int		ft_tolower(int c);
 char	*ft_strchr(const char *s, int c);
 char	*ft_strrchr(const char *s, int c);
@@ -177,6 +173,6 @@ void	ft_lstdelone(t_list *lst, void (*del)(void*));
 void	ft_lstclear(t_list **lst, void (*del)(void*));
 void	ft_lstiter(t_list *lst, void (*f)(void *));
 t_list	*ft_lstmap(t_list *lst, void *(*f)(void *), void (*del)(void *));
-char	**split(char const *s, char c);
+// char	**split(char *s, char c);
 
 #endif

@@ -36,7 +36,7 @@ OBJ_DIR = obj
 # SRC_FILES = $(wildcard *.c)
 SRC_FILES = lst_token.c ft_strnjoin.c  \
 			main.c tokenizataion.c lst_env.c expend.c \
-			error.c lst_cmd.c join.c
+			error.c lst_cmd.c join.c ft_excut.c
 OBJ_FILES = $(addprefix $(OBJ_DIR)/, $(SRC_FILES:.c=.o))
 LIBFT_FILES = $(wildcard libft/*.c)
 LIBFT_OBJ_FILES = $(addprefix $(OBJ_DIR)/, $(notdir $(LIBFT_FILES:.c=.o)))

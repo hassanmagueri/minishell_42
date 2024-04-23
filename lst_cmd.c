@@ -6,7 +6,7 @@
 /*   By: ataoufik <ataoufik@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/20 10:43:06 by emagueri          #+#    #+#             */
-/*   Updated: 2024/04/23 12:01:51 by ataoufik         ###   ########.fr       */
+/*   Updated: 2024/04/23 14:29:51 by ataoufik         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -178,9 +178,9 @@ int ft_cmd(t_cmd **lst_cmd, t__lst_token **tokens)
 		t_cmd *cc = NULL;
 		cc = ft_new_cmd(cmd_str, lst_redir);
 		ft_add_back_cmd(lst_cmd, cc);
-		print_lst_redir(cc->redir);
+		// print_lst_redir(cc->redir);
 		i++;
 	}
-	print_lst_cmd(*lst_cmd);
+	// print_lst_cmd(*lst_cmd);
 	return 0;
 }

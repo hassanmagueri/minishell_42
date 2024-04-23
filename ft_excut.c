@@ -6,7 +6,7 @@
 /*   By: ataoufik <ataoufik@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/17 11:18:33 by ataoufik          #+#    #+#             */
-/*   Updated: 2024/04/22 19:44:11 by ataoufik         ###   ########.fr       */
+/*   Updated: 2024/04/23 23:24:00 by ataoufik         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 void	free_2d_arr(char **str)
 {
 	int i;
+	i = 0;
 	while (str[i])
 	{
 		free(str[i]);
@@ -23,7 +24,7 @@ void	free_2d_arr(char **str)
 	free(str);
 }
 
-char	*find_path_executable(t_data *pip, char *cmd)
+char	*find_path_executable(char **env_path, char *cmd)
 {
 	char	*str;
 	char	*path;
@@ -34,9 +35,9 @@ char	*find_path_executable(t_data *pip, char *cmd)
 	path = NULL;
 	if (access(cmd, X_OK) == 0 && access(cmd, F_OK) == 0)
 		return (cmd);
-	while (pip->env_path[i])
+	while (env_path[i])
 	{
-		str = ft_strjoin(pip->env_path[i], "/");
+		str = ft_strjoin(env_path[i], "/");
 		path = ft_strjoin(str, cmd);
 		free(str);
 		if (access(path, F_OK) == 0 && access(path, X_OK) == 0)
@@ -47,176 +48,148 @@ char	*find_path_executable(t_data *pip, char *cmd)
 	return (NULL);
 }
 
-void	ft_execute_command(t_data *pip, char **str)
+void	ft_execute_command(char **env_path, char **str)
 {
 	char *command;
 
-	command = find_path_executable(pip, str[0]);
+	command = find_path_executable(env_path, str[0]);
 	if (command == NULL)
-		printf("Invalid argument");
+		printf("Invalid argument\n");
 	execve(command, str, NULL);
 	free_2d_arr(str);
 	free(command);
 }
-
-void	process_child(t_cmd	*red,t_data *pip, int is_last)
-{
-	char	*command;
-	int tub[2];
-	pid_t pid;
-	command = NULL;
-	if (!is_last)
-	{
-		if (pipe(tub) == -1)
-			printf("error in pipe");	
-	}
-	pid = fork();
-	if (pid == 0)
-	{
-		close(tub[0]);
-		dup2(tub[1], STDOUT_FILENO);
-		close(tub[1]);
-		if (red->redir->redirection_type == APPEND || red->redir->redirection_type == OUTPUT)
-		{
-			dup2(red->redir->outfile,STDOUT_FILENO);
-			close(red->redir->outfile);
-		}
-		ft_execute_command(pip,red->cmd);
-	}
-	else
-	{
-		close(tub[1]);
-		dup2(tub[0], STDIN_FILENO);
-		close(tub[0]);
-	}
-}
-
-// void	ft_here_doc(t_data *pip,t_redir *cur)
+// void process_child(char **cmd, t_redir *red, char **env_path,int *tub,int is_last)
 // {
-// 	int		fds[2];
-// 	char	*str;
+//     pid_t pid;
 
-// 	if (pipe(fds) == -1)
-// 		printf("error in pipe");
-// 	cur->str = ft_strjoin(cur->str, "\n");
-// 	while (1)
+//     pid = fork();
+//     if (pid == 0)
 // 	{
-// 		ft_putstr_fd("> ", 1);
-// 		str = get_next_line(0);
-// 		if (str == NULL || (ft_strncmp(cur->str, str, ft_strlen(cur->str) != 1)))
+//         if (is_last == 0)
 // 		{
-// 			free(str);
-// 			break ;
-// 		}
-// 		ft_putstr_fd(str, fds[1]);
-// 		free(str);
+//             close(tub[0]);
+//             dup2(tub[1], STDOUT_FILENO);
+//             close(tub[1]);
+//         }
+//         ft_execute_command(env_path, cmd); 
+//     } 
+// 	else if (pid > 0)
+// 	{
+//         if (is_last == 0)
+// 		{
+//             close(tub[1]); 
+//     	        dup2(tub[0], STDIN_FILENO);
+//             close(tub[0]);
+//         }
 // 	}
-// 	close (fds[1]);
-// 	if (dup2(fds[0], STDIN_FILENO) == -1)
-// 		printf("Error in dup2");
-// 	close (fds[0]);
 // }
+// void	process_child(char **cmd,t_redir	*red,char **env_path, int is_last)
+// {
+// 	int tub[2];
+// 	pid_t pid;
+	
+// 	if (is_last==0)
+// 	{
+// 		if (pipe(tub) == -1)
+// 			printf("error in pipe");	
+// 	}
+// 	pid = fork();
+// 	if (pid == 0)
+// 	{
+// 		close(tub[0]);
+// 		dup2(tub[1], STDOUT_FILENO);
+// 		close(tub[1]);
+// 		// if (red->redirection_type == APPEND || red->redirection_type == OUTPUT)
+// 		// {
+// 		// 	dup2(red->outfile,STDOUT_FILENO);
+// 		// 	close(red->outfile);
+// 		// }
+// 		ft_execute_command(env_path,cmd);
+// 	}
+// 	else
+// 	{
+// 		close(tub[1]);
+// 		dup2(tub[0], STDIN_FILENO);
+// 		close(tub[0]);
+// 	}
+// }
+void process_child(char **cmd,t_redir *redir,char **env_path,int *tub, int is_last)
+{
+    pid_t pid = fork();
 
-void ft_excut_cmd(t_cmd	*red,t_data *pip,int i)
+    if (pid == 0)
+	{
+		// close(0);
+        if (!is_last)
+            dup2(tub[1], STDOUT_FILENO);
+		// close(1);
+        close(tub[0]);
+		ft_execute_command(env_path,cmd);
+    }
+	else 
+	{
+        close(tub[1]);
+		// close(1);
+        if (!is_last)
+            dup2(tub[0], STDIN_FILENO);
+			// close(0);
+		// wait(NULL);
+    }
+}
+void ft_excut_cmd(char **cmd,t_redir *redir ,int *tub,char **env_path,int i)
 {
 	t_redir	*cur;
-	
-	cur = red->redir;
-	while(cur)
-	{
-		if (cur->redirection_type == INPUT)
-		{
-			cur->infile = open(cur->file_name, O_RDONLY);
-			dup2(cur->infile,STDIN_FILENO);
-			close(cur->infile);
-		}
-		else if (cur->redirection_type == OUTPUT)
-		{
-			cur->outfile = open(cur->file_name,O_CREAT | O_WRONLY | O_TRUNC, 0666);
-		}
-		else if (cur->redirection_type == HEARDOC)
-		{
-			ft_here_doc(cur,pip);
-		}
-		else if (cur->redirection_type == APPEND)
-		{
-			cur->outfile = open(cur->file_name, O_CREAT | O_WRONLY | O_APPEND, 0666);
+	cur = redir;
+	// while(cur)
+	// {
+	// 	if (cur->redirection_type == INPUT)
+	// 	{
+	// 		cur->infile = open(cur->file_name, O_RDONLY);
+	// 		dup2(cur->infile,STDIN_FILENO);
+	// 		close(cur->infile);
+	// 	}
+	// 	else if (cur->redirection_type == OUTPUT)
+	// 	{
+	// 		cur->outfile = open(cur->file_name,O_CREAT | O_WRONLY | O_TRUNC, 0666);
+	// 	}
+	// 	else if (cur->redirection_type == HEARDOC)
+	// 	{
+	// 		// ft_here_doc(cur,pip);
+	// 	}
+	// 	else if (cur->redirection_type == APPEND)
+	// 	{
+	// 		cur->outfile = open(cur->file_name, O_CREAT | O_WRONLY | O_APPEND, 0666);
 			
-		}
-		cur = cur->next;
-	}
-	if (red->cmd != NULL)
-		process_child(cur,pip,i);
+	// 	}
+	// 	cur = cur->next;
+	// }
+	if (cmd != NULL)
+		process_child(cmd,redir,env_path,tub,i);
 }
 
-void	ft_lst_cmd(t_cmd	*command, t_data *pip)
+void	ft_lst_cmd(t_cmd	*command, char **env_path)
 {
 	t_cmd	*cur;
 	cur = command;
-	while(cur->next)
+	int pipe_fd[2];
+	int is_last = 0;
+	while(cur)
 	{
-		ft_excut_cmd(cur,pip,0);
+		if (cur->next)
+		{
+			if (pipe(pipe_fd) == -1)
+			{
+                perror("pipe");
+                return;
+            }
+		}
+		else
+			is_last = 1;
+		ft_excut_cmd(cur->cmd,cur->redir ,pipe_fd,env_path,is_last);
 		cur = cur->next;
 	}
-	ft_excut_cmd(cur,pip,1);//if last command excut with not pipein
+	// ft_excut_cmd(cur->cmd,cur->redir ,env_path,1);
+	while (wait(NULL) != -1)
+		;
 }
-
-// void	inist_pipe(t_data *pip,char *evm[])
-// {
-// 	while (evm && *evm && ft_file_namencmp(*evm, "PATH=", 5) != 0)
-// 		evm++;
-// 	if (*evm == NULL)
-// 		printf("Path not found");
-// 	*evm += 5;
-// 	pip->env_path = ft_split (*evm, ':');
-// 	if (!pip->env_path)
-// 		printf("Invalid argument");
-// }
-// #include "minishell.h"
-// #include <stdio.h>
-
-// int main(int arc ,char **arv,char **env) {
-//     t_data pip;
-//     inist_pipe(&pip,env);
-//     // Setting up command 1: ls > file1 -la > file2
-//     t_redir red1, red2, red3;
-//     red1.redirection_type = OUTPUT;
-//     red1.str = "file1";
-//     red2.redirection_type = APPEND;
-//     red2.str = "file1";
-//     red3.redirection_type = OUTPUT;
-//     red3.str = "file2";
-
-//     t_cmd cmd1;
-//     cmd1.redir = &red1;
-//     cmd1.next = NULL;
-
-//     // Setting up command 2: cat < makefile < minishell
-//     t_redir red4, red5;
-//     red4.redirection_type = INPUT;
-//     red4.str = "makefile";
-//     red5.redirection_type = INPUT;
-//     red5.str = "minishell";
-
-//     t_cmd cmd2;
-//     cmd2.redir = &red4;
-//     cmd2.next = NULL;
-
-//     // Setting up command 3: ls -l >file4
-//     t_redir red6;
-//     red6.redirection_type = OUTPUT;
-//     red6.str = "file4";
-
-//     t_cmd cmd3;
-//     cmd3.redir = &red6;
-//     cmd3.next = NULL;
-
-//     // Linking commands together
-//     cmd1.next = &cmd2;
-//     cmd2.next = &cmd3;
-
-//     // Execute the linked list of commands
-//     ft_lst_cmd(&cmd1, &pip);
-
-//     return 0;
-// }
