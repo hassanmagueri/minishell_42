@@ -6,8 +6,8 @@
       "type": "lldb",
       "request": "launch",
       "args": [],
-      "cwd": "/Users/emagueri/Desktop/minishell_42",
-      "program": "/Users/emagueri/Desktop/minishell_42/build/Debug/outDebug"
+      "cwd": "/Users/emagueri/minishell_42",
+      "program": "/Users/emagueri/minishell_42/build/Debug/outDebug"
     }
   ]
 }

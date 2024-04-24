@@ -4,6 +4,7 @@
 #include <stdlib.h>
 #include <string.h>
 
+<<<<<<< HEAD
 // // Define a structure to hold command information
 // typedef struct s_redir {
 //     int redirection_type;
@@ -102,6 +103,8 @@
 //     return 0; // Indicate successful execution
 // }
 
+=======
+>>>>>>> 51605ab2f362ed4ee3bf96e934eebfd8fa9bedf1
 #include "minishell.h"
 
 void	free_2d_arr(char **str)
@@ -183,36 +186,6 @@ void process_child(char **cmd, t_redir *red, char **env_path, int is_last)
         }
 	}
 }
-// void	process_child(char **cmd,t_redir	*red,char **env_path, int is_last)
-// {
-// 	int tub[2];
-// 	pid_t pid;
-	
-// 	if (is_last==0)
-// 	{
-// 		if (pipe(tub) == -1)
-// 			printf("error in pipe");	
-// 	}
-// 	pid = fork();
-// 	if (pid == 0)
-// 	{
-// 		close(tub[0]);
-// 		dup2(tub[1], STDOUT_FILENO);
-// 		close(tub[1]);
-// 		// if (red->redirection_type == APPEND || red->redirection_type == OUTPUT)
-// 		// {
-// 		// 	dup2(red->outfile,STDOUT_FILENO);
-// 		// 	close(red->outfile);
-// 		// }
-// 		ft_execute_command(env_path,cmd);
-// 	}
-// 	else
-// 	{
-// 		close(tub[1]);
-// 		dup2(tub[0], STDIN_FILENO);
-// 		close(tub[0]);
-// 	}
-// }
 
 void ft_excut_cmd(char **cmd,t_redir *redir ,char **env_path,int i)
 {
@@ -282,7 +255,22 @@ void	ft_lst_cmd(t_cmd	*command, char **env_path)
 
 int main()
 {
+<<<<<<< HEAD
     char *env_path[] = {"/bin", "/usr/bin", NULL};
+=======
+    char **env_path = (char*[]){"/bin", "/usr/bin", NULL};
+
+    while (1)
+    {
+        char *input = readline("minishell> ");
+        
+        if (input == NULL) // Handle Ctrl+D or empty input
+        {
+            printf("Exiting shell.\n");
+            free(input);
+            break;
+        }
+>>>>>>> 51605ab2f362ed4ee3bf96e934eebfd8fa9bedf1
 
     char *cmd1[] = {"/bin/ls", "-l", NULL};
     char *cmd2[] = {"/usr/bin/grep", "c", NULL};
