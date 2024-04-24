@@ -6,7 +6,7 @@
 /*   By: ataoufik <ataoufik@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/17 11:22:57 by emagueri          #+#    #+#             */
-/*   Updated: 2024/04/23 23:13:54 by ataoufik         ###   ########.fr       */
+/*   Updated: 2024/04/24 12:45:54 by ataoufik         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,11 +93,14 @@ typedef	struct s_lst_env
 // token
 
 int ft_join(t__lst_token **lst_token);
+// heredoc
+int ft_heredoc(t__lst_token **lst_token);
 
-
+// lst token
 t__lst_token	*ft_new_token(char *str, t_type type);
 void    ft_lst_token_add_back(t__lst_token **lst, t__lst_token *token);
 t__lst_token	*ft__lst_token_last(t__lst_token *lst);
+t__lst_token *ft_get_token_by_type(t__lst_token **lst_token, t_type type);
 
 int    ft__lst_tokenize(t__lst_token **token, char *cmd);
 int is_sep(int c);
@@ -128,6 +131,7 @@ void	ft_lst_cmd(t_cmd	*command, char **env_path);
 
 //ft_cmd
 int ft_cmd(t_cmd **cmd, t__lst_token **tokens);
+void print_lst_cmd(t_cmd *cmd);
 
 int		index_of(char *str, char c);
 int		ft_strlen(const char *str);
