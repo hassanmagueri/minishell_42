@@ -6,7 +6,7 @@
 /*   By: ataoufik <ataoufik@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/17 11:18:33 by ataoufik          #+#    #+#             */
-/*   Updated: 2024/04/24 12:35:33 by ataoufik         ###   ########.fr       */
+/*   Updated: 2024/04/24 18:36:01 by ataoufik         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,7 +62,6 @@ void	ft_execute_command(char **env_path, char **str)
 // void process_child(char **cmd, t_redir *red, char **env_path,int *tub,int is_last)
 // {
 //     pid_t pid;
-
 //     pid = fork();
 //     if (pid == 0)
 // 	{
@@ -88,7 +87,6 @@ void	ft_execute_command(char **env_path, char **str)
 // {
 // 	int tub[2];
 // 	pid_t pid;
-	
 // 	if (is_last==0)
 // 	{
 // 		if (pipe(tub) == -1)
@@ -114,29 +112,40 @@ void	ft_execute_command(char **env_path, char **str)
 // 		close(tub[0]);
 // 	}
 // }
+
+
 void process_child(char **cmd,t_redir *redir,char **env_path,int *tub, int is_last)
 {
+	int fd = -1;
+	fd = dup(STDIN_FILENO);
     pid_t pid = fork();
-
+	
     if (pid == 0)
 	{
-		// close(0);
+		// close(fd);
+		// printf("%s process %d\n",cmd[0]);
         if (!is_last)
+		{
+			close(tub[0]);
             dup2(tub[1], STDOUT_FILENO);
-		// close(1);
-        close(tub[0]);
-		ft_execute_command(env_path,cmd);
+			close(tub[1]);
+		}
+		ft_execute_command(env_path, cmd);
     }
-	else 
+	else
 	{
-        close(tub[1]);
-		// close(1);
+		printf("%s process\n", cmd[0]);
+		
         if (!is_last)
+		{
+			close(tub[1]);
             dup2(tub[0], STDIN_FILENO);
-			// close(0);
-		// wait(NULL);
+			close(tub[0]);
+		}
+
     }
 }
+
 void ft_excut_cmd(char **cmd,t_redir *redir ,int *tub,char **env_path,int i)
 {
 	t_redir	*cur;
@@ -189,7 +198,6 @@ void	ft_lst_cmd(t_cmd	*command, char **env_path)
 		ft_excut_cmd(cur->cmd,cur->redir ,pipe_fd,env_path,is_last);
 		cur = cur->next;
 	}
-	// ft_excut_cmd(cur->cmd,cur->redir ,env_path,1);
 	while (wait(NULL) != -1)
 		;
 }
