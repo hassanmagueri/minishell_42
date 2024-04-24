@@ -20,9 +20,9 @@ int main(int argc, char *argv[], char **env) {
 		input = readline(ANSI_COLOR_CYAN "~ " ANSI_COLOR_BLUE "minishell 😎 " ANSI_COLOR_MAGENTA "↪ " ANSI_COLOR_RESET);
 		add_history(input);
 		// input = readline("minishell -> ");
-		// ft__lst_tokenize(&t, input)
 		if (ft__lst_tokenize(&t, input) || generate_errors(&t) == 1)
 			continue;
+		ft_heredoc(&t);
 		ft_expand(&t, &lst_env);
 		ft_join(&t);
 		// print__lst_tokens(t);
@@ -30,5 +30,5 @@ int main(int argc, char *argv[], char **env) {
 		print_lst_cmd(cmd);
 		free(input);
 	}
-	return 0;
+	return (0);
 }
