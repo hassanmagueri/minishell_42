@@ -37,9 +37,14 @@ int main(int argc, char *argv[], char **env)
 	{
 		t__lst_token *t = NULL;
 		t_cmd *cmd = NULL;
-		input = readline(ANSI_COLOR_CYAN "~ " ANSI_COLOR_BLUE "minishell 😎 " ANSI_COLOR_MAGENTA "↪ " ANSI_COLOR_RESET);
+		// input = readline(ANSI_COLOR_CYAN "~ " ANSI_COLOR_BLUE "minishell 😎 " ANSI_COLOR_MAGENTA "↪ " ANSI_COLOR_RESET);
+		input = readline("minishell -> ");
+		if (input == NULL)
+		{
+			printf("asd");
+			exit(1);
+		}
 		add_history(input);
-		// input = readline("minishell -> ");
 		// ft__lst_tokenize(&t, input);
 		if (ft__lst_tokenize(&t, input) || generate_errors(&t) == 1)
 			continue;
@@ -47,8 +52,9 @@ int main(int argc, char *argv[], char **env)
 		ft_join(&t);
 		// print__lst_tokens(t);
 		ft_cmd(&cmd, &t);
-		ft_lst_cmd(cmd,env_path);
-		sleep(2);
+		printf("ggggggg\n");
+		// ft_lst_cmd(cmd,env_path);
+		// sleep(2);
 		free(input);
 	}
 	return 0;
