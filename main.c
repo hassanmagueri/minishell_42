@@ -1,19 +1,3 @@
-<<<<<<< HEAD
-=======
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: emagueri <emagueri@student.42.fr>          +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/04/24 12:47:51 by ataoufik          #+#    #+#             */
-/*   Updated: 2024/04/24 13:30:51 by emagueri         ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
-
-
->>>>>>> 51605ab2f362ed4ee3bf96e934eebfd8fa9bedf1
 #include "minishell.h"
 
 char	**init_path_env(char *env[])
@@ -53,12 +37,7 @@ int main(int argc, char *argv[], char **env)
 	{
 		t__lst_token *t = NULL;
 		t_cmd *cmd = NULL;
-<<<<<<< HEAD
 		input = readline(ANSI_COLOR_CYAN "~ " ANSI_COLOR_BLUE "minishell 😎 " ANSI_COLOR_MAGENTA "↪ " ANSI_COLOR_RESET);
-=======
-		// input = readline(ANSI_COLOR_CYAN "~ " ANSI_COLOR_BLUE "minishell 😎 " ANSI_COLOR_MAGENTA "↪ " ANSI_COLOR_RESET);
-		input = readline("minishell -> ");
->>>>>>> 51605ab2f362ed4ee3bf96e934eebfd8fa9bedf1
 		if (input == NULL)
 			return (1);
 		add_history(input);
@@ -71,11 +50,6 @@ int main(int argc, char *argv[], char **env)
 		ft_join(&t);
 		// print__lst_tokens(t);
 		ft_cmd(&cmd, &t);
-<<<<<<< HEAD
-=======
-		printf("ggggggg\n");
-		free(input);
->>>>>>> 51605ab2f362ed4ee3bf96e934eebfd8fa9bedf1
 		ft_lst_cmd(cmd,env_path);
 		// sleep(2);
 		input = "";

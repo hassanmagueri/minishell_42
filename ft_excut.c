@@ -6,7 +6,7 @@
 /*   By: ataoufik <ataoufik@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/17 11:18:33 by ataoufik          #+#    #+#             */
-/*   Updated: 2024/04/24 18:36:01 by ataoufik         ###   ########.fr       */
+/*   Updated: 2024/04/24 18:43:38 by ataoufik         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,30 +59,30 @@ void	ft_execute_command(char **env_path, char **str)
 	free_2d_arr(str);
 	free(command);
 }
-// void process_child(char **cmd, t_redir *red, char **env_path,int *tub,int is_last)
-// {
-//     pid_t pid;
-//     pid = fork();
-//     if (pid == 0)
-// 	{
-//         if (is_last == 0)
-// 		{
-//             close(tub[0]);
-//             dup2(tub[1], STDOUT_FILENO);
-//             close(tub[1]);
-//         }
-//         ft_execute_command(env_path, cmd); 
-//     } 
-// 	else if (pid > 0)
-// 	{
-//         if (is_last == 0)
-// 		{
-//             close(tub[1]); 
-//     	        dup2(tub[0], STDIN_FILENO);
-//             close(tub[0]);
-//         }
-// 	}
-// }
+void process_child(char **cmd, t_redir *red, char **env_path,int *tub,int is_last)
+{
+    pid_t pid;
+    pid = fork();
+    if (pid == 0)
+	{
+        if (is_last == 0)
+		{
+            close(tub[0]);
+            dup2(tub[1], STDOUT_FILENO);
+            close(tub[1]);
+        }
+        ft_execute_command(env_path, cmd); 
+    } 
+	else if (pid > 0)
+	{
+        if (is_last == 0)
+		{
+            close(tub[1]); 
+    	        dup2(tub[0], STDIN_FILENO);
+            close(tub[0]);
+        }
+	}
+}
 // void	process_child(char **cmd,t_redir	*red,char **env_path, int is_last)
 // {
 // 	int tub[2];
@@ -114,37 +114,36 @@ void	ft_execute_command(char **env_path, char **str)
 // }
 
 
-void process_child(char **cmd,t_redir *redir,char **env_path,int *tub, int is_last)
-{
-	int fd = -1;
-	fd = dup(STDIN_FILENO);
-    pid_t pid = fork();
+// void process_child(char **cmd,t_redir *redir,char **env_path,int *tub, int is_last)
+// {
+// 	int fd = -1;
+// 	fd = dup(STDIN_FILENO);
+//     pid_t pid = fork();
 	
-    if (pid == 0)
-	{
-		// close(fd);
-		// printf("%s process %d\n",cmd[0]);
-        if (!is_last)
-		{
-			close(tub[0]);
-            dup2(tub[1], STDOUT_FILENO);
-			close(tub[1]);
-		}
-		ft_execute_command(env_path, cmd);
-    }
-	else
-	{
-		printf("%s process\n", cmd[0]);
+//     if (pid == 0)
+// 	{
+// 		// close(fd);
+// 		// printf("%s process %d\n",cmd[0]);
+//         if (!is_last)
+// 		{
+// 			close(tub[0]);
+//             dup2(tub[1], STDOUT_FILENO);
+// 			close(tub[1]);
+// 		}
+// 		ft_execute_command(env_path, cmd);
+//     }
+// 	else
+// 	{
+// 		printf("%s process\n", cmd[0]);
 		
-        if (!is_last)
-		{
-			close(tub[1]);
-            dup2(tub[0], STDIN_FILENO);
-			close(tub[0]);
-		}
-
-    }
-}
+//         if (!is_last)
+// 		{
+// 			close(tub[1]);
+//             dup2(tub[0], fd);
+// 			close(tub[0]);
+// 		}
+//     }
+// }
 
 void ft_excut_cmd(char **cmd,t_redir *redir ,int *tub,char **env_path,int i)
 {
