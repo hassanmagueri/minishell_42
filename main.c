@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ataoufik <ataoufik@student.42.fr>          +#+  +:+       +#+        */
+/*   By: emagueri <emagueri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/24 12:47:51 by ataoufik          #+#    #+#             */
-/*   Updated: 2024/04/24 12:49:18 by ataoufik         ###   ########.fr       */
+/*   Updated: 2024/04/24 13:30:51 by emagueri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,8 +50,8 @@ int main(int argc, char *argv[], char **env)
 	{
 		t__lst_token *t = NULL;
 		t_cmd *cmd = NULL;
-		input = readline(ANSI_COLOR_CYAN "~ " ANSI_COLOR_BLUE "minishell 😎 " ANSI_COLOR_MAGENTA "↪ " ANSI_COLOR_RESET);
-		// input = readline("minishell -> ");
+		// input = readline(ANSI_COLOR_CYAN "~ " ANSI_COLOR_BLUE "minishell 😎 " ANSI_COLOR_MAGENTA "↪ " ANSI_COLOR_RESET);
+		input = readline("minishell -> ");
 		if (input == NULL)
 		{
 			printf("asd");
@@ -68,9 +68,10 @@ int main(int argc, char *argv[], char **env)
 		// print__lst_tokens(t);
 		ft_cmd(&cmd, &t);
 		printf("ggggggg\n");
+		free(input);
 		ft_lst_cmd(cmd,env_path);
 		// sleep(2);
-		free(input);
+		input = "";
 	}
 	return (0);
 }

@@ -4,117 +4,6 @@
 #include <stdlib.h>
 #include <string.h>
 
-// // Define a structure to hold command information
-// typedef struct s_redir {
-//     int redirection_type;
-//     int outfile;
-// } t_redir;
-
-// typedef struct s_cmd {
-//     char **cmd;
-//     t_redir *redir;
-//     struct s_cmd *next;
-// } t_cmd;
-
-// // Function prototype for command execution
-// void ft_execute_command(char **env_path, char **cmd) {
-//     execve(cmd[0], cmd, env_path);
-//     perror("execve");
-//     exit(EXIT_FAILURE); // Exit on failure
-// }
-
-// // Function for child process handling with pipes and redirection
-// void process_child(char **cmd, t_redir *red, char **env_path, int is_last) {
-//     int tub[2];
-//     pid_t pid;
-    
-//     if (is_last == 0) { // Create pipe only if not last command
-//         if (pipe(tub) == -1) {
-//             perror("pipe");
-//             return; // Exit on pipe creation failure
-//         }
-//     }
-    
-//     pid = fork();
-    
-//     if (pid == 0) { // Child process
-//         if (is_last == 0) {
-//             close(tub[0]); // Close read end
-//             dup2(tub[1], STDOUT_FILENO); // Redirect output to pipe
-//             close(tub[1]); // Close write end to prevent resource leaks
-//         }
-//         ft_execute_command(env_path, cmd); // Execute the command
-//     } else if (pid > 0) { // Parent process
-//         if (is_last == 0) {
-//             close(tub[1]); // Close write end
-//             dup2(tub[0], STDIN_FILENO); // Redirect input from pipe
-//             close(tub[0]); // Close read end to avoid resource leaks
-//         }
-//     } else { // Forking error
-//         perror("fork");
-//     }
-// }
-
-// // Function for processing a list of commands
-// void ft_lst_cmd(t_cmd *command, char **env_path) {
-//     t_cmd *cur = command;
-
-//     if (!cur) return; // No command to process
-    
-//     while (cur->next) { // Process all commands except the last
-//         process_child(cur->cmd, cur->redir, env_path, 0);
-//         cur = cur->next;
-//     }
-    
-//     // Process the last command without creating a new pipe
-//     process_child(cur->cmd, cur->redir, env_path, 1);
-    
-//     while (wait(NULL) != -1) { // Wait for all child processes to finish
-//         ;
-//     }
-// }
-
-// int main() {
-//     // Example environment path and command data
-//     char *env_path[] = {"/bin", "/usr/bin", NULL};
-
-//     // Define some simple commands to demonstrate a multi-pipe scenario
-//     char *cmd1[] = {"/bin/ls", "-l", NULL}; // List directory contents
-//     char *cmd2[] = {"/usr/bin/grep", "c", NULL}; // Search for lines containing "c"
-//     char *cmd3[] = {"/usr/bin/sort", "-r", NULL}; // Sort in reverse order
-//     char *cmd4[] = {"/usr/bin/head", "-n", "5", NULL}; // Get the first 5 lines
-
-//     // Create command structures with no redirections (as example)
-//     t_redir redir = {0, -1}; // No specific redirection
-//     t_cmd command1 = {cmd1, &redir, NULL}; // First command node
-//     t_cmd command2 = {cmd2, &redir, NULL}; // Second command node
-//     t_cmd command3 = {cmd3, &redir, NULL}; // Third command node
-//     t_cmd command4 = {cmd4, &redir, NULL}; // Fourth command node
-
-//     // Link the commands to form a pipeline
-//     command1.next = &command2;
-//     command2.next = &command3;
-//     command3.next = &command4;
-
-//     // Execute the list of commands
-//     ft_lst_cmd(&command1, env_path);
-
-//     return 0; // Indicate successful execution
-// }
-// typedef struct s_redir
-// {
-//     int redirection_type;
-//     int infile;
-//     int outfile;
-// } t_redir;
-
-// typedef struct s_cmd
-// {
-//     char **cmd;
-//     t_redir *redir;
-//     struct s_cmd *next;
-// } t_cmd;
-
 #include "minishell.h"
 
 void	free_2d_arr(char **str)
@@ -197,36 +86,6 @@ void process_child(char **cmd, t_redir *red, char **env_path, int is_last)
         }
 	}
 }
-// void	process_child(char **cmd,t_redir	*red,char **env_path, int is_last)
-// {
-// 	int tub[2];
-// 	pid_t pid;
-	
-// 	if (is_last==0)
-// 	{
-// 		if (pipe(tub) == -1)
-// 			printf("error in pipe");	
-// 	}
-// 	pid = fork();
-// 	if (pid == 0)
-// 	{
-// 		close(tub[0]);
-// 		dup2(tub[1], STDOUT_FILENO);
-// 		close(tub[1]);
-// 		// if (red->redirection_type == APPEND || red->redirection_type == OUTPUT)
-// 		// {
-// 		// 	dup2(red->outfile,STDOUT_FILENO);
-// 		// 	close(red->outfile);
-// 		// }
-// 		ft_execute_command(env_path,cmd);
-// 	}
-// 	else
-// 	{
-// 		close(tub[1]);
-// 		dup2(tub[0], STDIN_FILENO);
-// 		close(tub[0]);
-// 	}
-// }
 
 void ft_excut_cmd(char **cmd,t_redir *redir ,char **env_path,int i)
 {
@@ -302,7 +161,7 @@ int main(int argc, char **argv)
     {
         char *input = readline("minishell> ");
         
-        if (input == NULL || *input == '\0') // Handle Ctrl+D or empty input
+        if (input == NULL) // Handle Ctrl+D or empty input
         {
             printf("Exiting shell.\n");
             free(input);
