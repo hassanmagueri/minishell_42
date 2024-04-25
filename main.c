@@ -1,6 +1,6 @@
 #include "minishell.h"
 
-char	**init_path_env(char *env[])
+void	init_path_env(t_data *pip,char *env[])
 {
 	char **str;
 	while (env && *env && ft_strncmp(*env, "PATH=", 5) != 0)
@@ -8,11 +8,9 @@ char	**init_path_env(char *env[])
 	if (*env == NULL)
 		printf("Path not found");
 	*env += 5;
-	// printf("hhhhhhhhh\n");
-	str = ft_split(*env, ':');
-	if (!str)
+	pip->env_path = ft_split (*env, ':');
+	if (!pip->env_path)
 		printf("Invalid argument");
-	return (str);
 }
 
 
@@ -20,6 +18,7 @@ int main(int argc, char *argv[], char **env)
 {
 	char *input;
 	t_lst_env *lst_env;
+	t_data	pip;
 	char **env_path;
 	lst_env = NULL;
 
@@ -29,10 +28,8 @@ int main(int argc, char *argv[], char **env)
 		return (1);
 	}
 	init_env(&lst_env, env);
-	env_path = init_path_env(env);
+	init_path_env(&pip, env);
 
-	// print_lst_env(lst_env);
-	
 	while (1)
 	{
 		t__lst_token *t = NULL;
@@ -48,11 +45,9 @@ int main(int argc, char *argv[], char **env)
 			continue;
 		ft_expand(&t, &lst_env);
 		ft_join(&t);
-		// print__lst_tokens(t);
 		ft_cmd(&cmd, &t);
-		ft_lst_cmd(cmd,env_path);
-		// sleep(2);
-		input = "";
+		ft_lst_cmd(lst_env,cmd,&pip);
 	}
+
 	return 0;
 }

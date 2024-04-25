@@ -6,7 +6,7 @@
 /*   By: ataoufik <ataoufik@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/01 05:02:31 by emagueri          #+#    #+#             */
-/*   Updated: 2024/04/22 09:19:15 by ataoufik         ###   ########.fr       */
+/*   Updated: 2024/04/25 11:43:58 by ataoufik         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,19 +98,6 @@ int ft_lst_add_back_env(t_lst_env **lst_env, t_lst_env *node_env)
 // 	return -1;
 // }
 
-void print_lst_env(t_lst_env *lst)
-{
-	t_lst_env *cur;
-
-	cur = lst;
-	while (cur)
-	{
-		printf("%s ", cur->key);
-		printf("=%s\n", cur->value);
-		cur = cur->next;
-	}
-	
-}
 
 int	index_of(char *str, char c)
 {
@@ -145,14 +132,16 @@ int	init_env(t_lst_env **lst, char **env)
 	return 1;
 }
 
-// int main(int argc, char const *argv[], char **env)
-// {
-// 	t_lst_env *lst;
+void print_lst_env(t_lst_env *lst)
+{
+	t_lst_env *cur;
 
-// 	init_env(&lst, env);
-// 	// ft_get_env(&lst, "SHLVL")->value = ft_strdup("8");
-	
-// 	ft_lst_add_back_env(&lst, ft_new_env("pp", "TEST"));
-// 	print_lst_env(lst);
-// 	return 0;
-// }
+	cur = lst;
+	while (cur)
+	{
+		printf("%s ", cur->key);
+		printf("=%s\n", cur->value);
+		cur = cur->next;
+	}
+}
+
