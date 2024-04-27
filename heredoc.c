@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   heredoc.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ataoufik <ataoufik@student.42.fr>          +#+  +:+       +#+        */
+/*   By: emagueri <emagueri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/22 22:34:15 by emagueri          #+#    #+#             */
-/*   Updated: 2024/04/24 16:05:35 by ataoufik         ###   ########.fr       */
+/*   Updated: 2024/04/23 16:27:00 by emagueri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,14 +47,12 @@ int ft_heredoc(t__lst_token **lst_token)
 				input = readline(">");
 				if (ft_strncmp(input, limiter, ft_strlen(limiter) + 1) == 0)
 					break;
-				// write(fd, input, ft_strlen(input));
-				// write(fd, "\n", 1);
+				write(fd, input, ft_strlen(input));
+				write(fd, "\n", 1);
 				free(input);
 			}
-			
 			close(fd);
-			
-			unlink(file_name);
+			unlink(file_name);	
 			// token->str = file_name;
 			// token->type = INPUT;
 			token = token->next;

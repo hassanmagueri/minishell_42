@@ -4,7 +4,6 @@
 #include <stdlib.h>
 #include <string.h>
 
-<<<<<<< HEAD
 // // Define a structure to hold command information
 // typedef struct s_redir {
 //     int redirection_type;
@@ -102,9 +101,20 @@
 
 //     return 0; // Indicate successful execution
 // }
+// typedef struct s_redir
+// {
+//     int redirection_type;
+//     int infile;
+//     int outfile;
+// } t_redir;
 
-=======
->>>>>>> 51605ab2f362ed4ee3bf96e934eebfd8fa9bedf1
+// typedef struct s_cmd
+// {
+//     char **cmd;
+//     t_redir *redir;
+//     struct s_cmd *next;
+// } t_cmd;
+
 #include "minishell.h"
 
 void	free_2d_arr(char **str)
@@ -175,7 +185,8 @@ void process_child(char **cmd, t_redir *red, char **env_path, int is_last)
             dup2(tub[1], STDOUT_FILENO);
             close(tub[1]);
         }
-        ft_execute_command(env_path, cmd); 
+        ft_execute_command(env_path, cmd);
+		// ft_execute_command(env_path,cmd,command);
     } 
 	else if (pid > 0)
 	{
@@ -186,6 +197,36 @@ void process_child(char **cmd, t_redir *red, char **env_path, int is_last)
         }
 	}
 }
+// void	process_child(char **cmd,t_redir	*red,char **env_path, int is_last)
+// {
+// 	int tub[2];
+// 	pid_t pid;
+	
+// 	if (is_last==0)
+// 	{
+// 		if (pipe(tub) == -1)
+// 			printf("error in pipe");	
+// 	}
+// 	pid = fork();
+// 	if (pid == 0)
+// 	{
+// 		close(tub[0]);
+// 		dup2(tub[1], STDOUT_FILENO);
+// 		close(tub[1]);
+// 		// if (red->redirection_type == APPEND || red->redirection_type == OUTPUT)
+// 		// {
+// 		// 	dup2(red->outfile,STDOUT_FILENO);
+// 		// 	close(red->outfile);
+// 		// }
+// 		ft_execute_command(env_path,cmd);
+// 	}
+// 	else
+// 	{
+// 		close(tub[1]);
+// 		dup2(tub[0], STDIN_FILENO);
+// 		close(tub[0]);
+// 	}
+// }
 
 void ft_excut_cmd(char **cmd,t_redir *redir ,char **env_path,int i)
 {
@@ -241,56 +282,56 @@ void	ft_lst_cmd(t_cmd	*command, char **env_path)
 	ft_excut_cmd(cur->cmd,cur->redir ,env_path,1);//if last command excut with not pipein
 	while (wait(NULL) != -1)
 		;
+		return;
 }
 #include <stdio.h>
 #include <stdlib.h>
 #include <unistd.h>
 #include <fcntl.h> // For open() flags
+#include <readline/readline.h>
+#include <readline/history.h>
 
-// Define constants for redirection types
-#define INPUT 1
-#define OUTPUT 2
-#define APPEND 3
-#define HEARDOC 4
 
-int main()
+// (Your code for 'free_2d_arr', 'find_path_executable', 'ft_execute_command', 'process_child', 'ft_excut_cmd', 'ft_lst_cmd' goes here)
+
+int main(int argc, char **argv)
 {
-<<<<<<< HEAD
-    char *env_path[] = {"/bin", "/usr/bin", NULL};
-=======
     char **env_path = (char*[]){"/bin", "/usr/bin", NULL};
 
     while (1)
     {
         char *input = readline("minishell> ");
         
-        if (input == NULL) // Handle Ctrl+D or empty input
+        if (input == NULL || *input == '\0') // Handle Ctrl+D or empty input
         {
             printf("Exiting shell.\n");
             free(input);
             break;
         }
->>>>>>> 51605ab2f362ed4ee3bf96e934eebfd8fa9bedf1
 
-    char *cmd1[] = {"/bin/ls", "-l", NULL};
-    char *cmd2[] = {"/usr/bin/grep", "c", NULL};
-    char *cmd3[] = {"/usr/bin/sort", "-r", NULL};
-    char *cmd4[] = {"/usr/bin/head", "-n", "5", NULL};
+        add_history(input); // Add to command history
+        
+        // Example: Parsing input and constructing pipeline
+        char *cmd1[] = {"/bin/ls", "-l", NULL};
+        char *cmd2[] = {"/usr/bin/grep", input, NULL};
+        char *cmd3[] = {"/usr/bin/sort", "-r", NULL};
+        char *cmd4[] = {"/usr/bin/head", "-n", "5", NULL};
 
-    t_redir no_redir = {0, -1};
-    
-    t_cmd command1 = {cmd1, &no_redir, NULL};
-    t_cmd command2 = {cmd2, &no_redir, NULL};
-    t_cmd command3 = {cmd3, &no_redir, NULL};
-    t_cmd command4 = {cmd4, &no_redir, NULL};
+        t_redir no_redir = {0, -1};
+        
+        t_cmd command1 = {cmd1, &no_redir, NULL};
+        t_cmd command2 = {cmd2, &no_redir, NULL};
+        t_cmd command3 = {cmd3, &no_redir, NULL};
+        t_cmd command4 = {cmd4, &no_redir, NULL};
 
-    // Link the commands to form a pipeline
-    command1.next = &command2;
-    command2.next = &command3;
-    command3.next = &command4;
+        command1.next = &command2;
+        command2.next = &command3;
+        command3.next = &command4;
 
-    // Execute the list of commands with pipes
-    ft_lst_cmd(&command1, env_path);
+        ft_lst_cmd(&command1, env_path); // Execute pipeline
+        
+        free(input); // Clean up allocated memory
+    }
 
     return 0; // Successful execution
 }

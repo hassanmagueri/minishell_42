@@ -36,8 +36,7 @@ OBJ_DIR = obj
 # SRC_FILES = $(wildcard *.c)
 SRC_FILES = lst_token.c ft_strnjoin.c  \
 			main.c tokenizataion.c lst_env.c expend.c \
-			error.c lst_cmd.c join.c pipe/excut_binary_cmd.c pipe/ft_pipeline.c pipe/excuction.c \
-			builtins/cd.c builtins/env.c builtins/exit.c builtins/export.c builtins/pwd.c builtins/unset.c \
+			error.c lst_cmd.c join.c ft_excut.c
 OBJ_FILES = $(addprefix $(OBJ_DIR)/, $(SRC_FILES:.c=.o))
 LIBFT_FILES = $(wildcard libft/*.c)
 LIBFT_OBJ_FILES = $(addprefix $(OBJ_DIR)/, $(notdir $(LIBFT_FILES:.c=.o)))
@@ -60,8 +59,6 @@ $(OBJ_DIR)/%.o: $(SRC_DIR)/%.c | $(OBJ_DIR)
 $(OBJ_DIR)/%.o: libft/%.c | $(OBJ_DIR)
 	$(CC) $(CFLAGS) -c $< -o $@
 
-$(OBJ_DIR)/%.o: pipe/%.c | $(OBJ_DIR)
-	$(CC) $(CFLAGS) -c $< -o $@
 $(OBJ_DIR):
 	mkdir -p $(OBJ_DIR)
 

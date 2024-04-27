@@ -6,11 +6,25 @@
 /*   By: emagueri <emagueri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/01 22:43:35 by emagueri          #+#    #+#             */
-/*   Updated: 2024/04/20 22:43:57 by emagueri         ###   ########.fr       */
+/*   Updated: 2024/04/23 11:00:47 by emagueri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+t__lst_token *ft_get_token_by_type(t__lst_token **lst_token, t_type type)
+{
+	t__lst_token *cur;
+
+	cur = *lst_token;
+	while (cur)
+	{
+		if (cur->type == type)
+			return cur;
+		cur = cur->next;
+	}
+	return (NULL);
+}
 
 t__lst_token *ft_new_token(char *str, t_type type)
 {
@@ -72,7 +86,6 @@ void print__lst_tokens(t__lst_token *lst)
 			printf("SING_Q\n");
 		else if (lst->type == DOUB_Q)
 			printf("DOUB_Q\n");
-
 		lst = lst->next;
 	}
 }

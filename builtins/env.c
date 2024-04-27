@@ -6,7 +6,7 @@
 /*   By: ataoufik <ataoufik@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/01 05:02:31 by emagueri          #+#    #+#             */
-/*   Updated: 2024/04/25 11:43:58 by ataoufik         ###   ########.fr       */
+/*   Updated: 2024/04/27 18:04:30 by ataoufik         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,6 +98,18 @@ int ft_lst_add_back_env(t_lst_env **lst_env, t_lst_env *node_env)
 // 	return -1;
 // }
 
+void print_lst_env(t_lst_env *lst)
+{
+	t_lst_env *cur;
+
+	cur = lst;
+	while (cur)
+	{
+		printf("%s ", cur->key);
+		printf("=%s\n", cur->value);
+		cur = cur->next;
+	}
+}
 
 int	index_of(char *str, char c)
 {
@@ -131,17 +143,3 @@ int	init_env(t_lst_env **lst, char **env)
 	}
 	return 1;
 }
-
-void print_lst_env(t_lst_env *lst)
-{
-	t_lst_env *cur;
-
-	cur = lst;
-	while (cur)
-	{
-		printf("%s ", cur->key);
-		printf("=%s\n", cur->value);
-		cur = cur->next;
-	}
-}
-
