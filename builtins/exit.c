@@ -6,7 +6,7 @@
 /*   By: ataoufik <ataoufik@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/18 17:18:39 by ataoufik          #+#    #+#             */
-/*   Updated: 2024/04/22 22:37:23 by ataoufik         ###   ########.fr       */
+/*   Updated: 2024/04/27 21:20:13 by ataoufik         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,9 +51,3 @@ int    ft_exit(t_cmd   *args)
     return(1);
 }
 
-int main(int argc, char *argv[])
-{
-    t_cmd args;
-    args.cmd = argv;
-    return ft_exit(&args);
-}

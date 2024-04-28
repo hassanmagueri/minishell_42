@@ -6,7 +6,7 @@
 /*   By: ataoufik <ataoufik@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/21 14:42:31 by ataoufik          #+#    #+#             */
-/*   Updated: 2024/04/22 08:17:09 by ataoufik         ###   ########.fr       */
+/*   Updated: 2024/04/27 21:19:30 by ataoufik         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,7 @@ void    ft_free_node(t_lst_env *node)
         free(node);
     }
 }
+
 
 int ft_unset(t_lst_env **lst, t_cmd *args)
 {

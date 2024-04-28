@@ -6,14 +6,14 @@
 /*   By: ataoufik <ataoufik@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/24 12:47:51 by ataoufik          #+#    #+#             */
-/*   Updated: 2024/04/27 18:10:19 by ataoufik         ###   ########.fr       */
+/*   Updated: 2024/04/27 19:40:09 by ataoufik         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 
 #include "minishell.h"
 
-char	**init_path_env(char *env[])
+void	init_path_env(t_data *pip,char *env[])
 {
 	char **str;
 	while (env && *env && ft_strncmp(*env, "PATH=", 5) != 0)
@@ -22,10 +22,11 @@ char	**init_path_env(char *env[])
 		printf("Path not found");
 	*env += 5;
 	// printf("hhhhhhhhh\n");
-	str = ft_split(*env, ':');
-	if (!str)
+	pip->env_path = ft_split(*env, ':');
+	if (!pip->env_path)
 		printf("Invalid argument");
-	return (str);
+	pip->infile = -1;
+	pip->outfile = -1;
 }
 
 
@@ -33,7 +34,7 @@ int main(int argc, char *argv[], char **env)
 {
 	char *input;
 	t_lst_env *lst_env;
-	char **env_path;
+	t_data pip;
 	lst_env = NULL;
 
 	if (argc > 1)
@@ -42,7 +43,10 @@ int main(int argc, char *argv[], char **env)
 		return (1);
 	}
 	init_env(&lst_env, env);
-	env_path = init_path_env(env);
+	init_path_env(&pip,env);
+	// int i = 0;
+	// while(pip.env_path[i])
+	// 	printf("%s\n",pip.env_path[i++]);
 
 	// print_lst_env(lst_env);
 	
@@ -65,8 +69,8 @@ int main(int argc, char *argv[], char **env)
 		// print__lst_tokens(t);
 		ft_cmd(&cmd, &t);
 		// printf("ggggggg\n");
-		ft_lst_cmd(cmd,env_path);
-		// sleep(2);
+		ft_lst_cmd(cmd,lst_env,&pip);
+		// sleep(2);  
 		free(input);
 	}
 	return (0);

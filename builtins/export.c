@@ -1,83 +1,8 @@
 #include "../minishell.h"
 
-t_lst_env	*ft_lst_env_last(t_lst_env *lst)
-{
-	t_lst_env	*cur;
 
-	cur = lst;
-	if (!lst)
-		return (NULL);
-	while (cur->next)
-		cur = cur->next;
-	return (cur);
-}
 
-t_lst_env *ft_new_env(char *key,char *value)
-{
-	t_lst_env	*node;
 
-	node = malloc(sizeof(t_lst_env));
-	node->key = ft_strdup(key);
-	node->value = ft_strdup(value);
-	node->next = NULL;
-	return node;
-}
-
-int ft_lst_add_back_env(t_lst_env **lst_env, t_lst_env *node_env)
-{
-    if (lst_env == NULL)
-		return (-1);
-	if (*lst_env == NULL)
-		*lst_env = node_env;
-	else
-		ft_lst_env_last(*lst_env)->next = node_env;
-	return (0);
-}
-int	index_of(char *str, char c)
-{
-	int i;
-
-	i = 0;
-	while (str[i])
-	{
-		if (str[i] == c)
-			return i;
-		i++;
-	}
-	return -1;
-}
-
-int	init_env(t_lst_env **lst, char **env)
-{
-	char	*value;
-	int		i;
-	int		len;
-
-	i = 0;
-	while (env[i])
-	{
-		len = index_of(env[i], '=');
-		if (len == -1)
-			i++;
-		value = ft_strchr(env[i], '=') + 1;
-		ft_lst_add_back_env(lst, ft_new_env(ft_substr(env[i], 0, len), value));
-		i++;
-	}
-	return 1;
-}
-
-void print_lst_env(t_lst_env *lst)
-{
-	t_lst_env *cur;
-	cur = lst;
-	while (cur)
-	{
-		printf("declare -x ");
-		printf("%s", cur->key);
-		printf("=\"%s\"\n", cur->value);
-		cur = cur->next;
-	}
-}
 
 int	ft_strcmp(char *s1,char *s2)
 {

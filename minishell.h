@@ -6,7 +6,7 @@
 /*   By: ataoufik <ataoufik@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/17 11:22:57 by emagueri          #+#    #+#             */
-/*   Updated: 2024/04/24 12:45:54 by ataoufik         ###   ########.fr       */
+/*   Updated: 2024/04/27 21:27:16 by ataoufik         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,17 @@ typedef struct s_list
 	void			*content;
 	struct s_list	*next;
 }	t_list;
+
+typedef struct s_data
+{
+	int		first;
+	int		last;
+	int		tub[2];
+	int		infile;
+	int		outfile;
+	pid_t	pid;
+	char	**env_path;
+}	t_data;
 
 typedef enum e_type
 {
@@ -125,10 +136,21 @@ t_lst_env	*ft_lst_env_last(t_lst_env *lst);
 //expend
 int ft_expand(t__lst_token **lst_token, t_lst_env **lst_env);
 //
+
 //
-void	ft_lst_cmd(t_cmd	*command, char **env_path);
+int	ft_excut_cmd_line(t_lst_env *lst, t_cmd *args, t_data *pip);
+void	ft_lst_cmd(t_cmd	*command,t_lst_env *lst,t_data *pip);
+void	ft_execute_command(t_data *pip,char **cmd);
+//
+// builtin
+int    ft_cd(t_lst_env *lst,t_cmd  *args);
+int	ft_export(t_lst_env *lst_env, t_cmd *str);
+int	ft_pwd(void);
+int ft_unset(t_lst_env **lst, t_cmd *args);
+int    ft_exit(t_cmd   *args);
 //
 
+char	*ft_handle_var(t_lst_env **lst_env, char *old_output, int *index);
 //ft_cmd
 int ft_cmd(t_cmd **cmd, t__lst_token **tokens);
 void print_lst_cmd(t_cmd *cmd);

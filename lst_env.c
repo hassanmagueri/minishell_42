@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   lst_env.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: emagueri <emagueri@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ataoufik <ataoufik@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/01 05:02:31 by emagueri          #+#    #+#             */
-/*   Updated: 2024/04/17 13:25:05 by emagueri         ###   ########.fr       */
+/*   Updated: 2024/04/27 21:35:22 by ataoufik         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,19 +101,7 @@ int	ft_lst_remove_env(t_lst_env **lst_env,char *key)
 	return -1;
 }
 
-void print_lst_env(t_lst_env *lst)
-{
-	t_lst_env *cur;
 
-	cur = lst;
-	while (cur)
-	{
-		printf("%s", cur->key);
-		printf("=%s\n", cur->value);
-		cur = cur->next;
-	}
-	
-}
 
 int	index_of(char *str, char c)
 {
