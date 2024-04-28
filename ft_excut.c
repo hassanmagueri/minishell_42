@@ -6,7 +6,7 @@
 /*   By: ataoufik <ataoufik@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/17 11:18:33 by ataoufik          #+#    #+#             */
-/*   Updated: 2024/04/27 21:12:46 by ataoufik         ###   ########.fr       */
+/*   Updated: 2024/04/28 12:45:36 by ataoufik         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,25 +71,25 @@ void	ft_redirection(t_cmd	*cmd, t_data *pip)
 	cur = cmd->redir;
 	while(cur)
 	{
-		if (cur->redirection_type == OUTPUT)
+		if (cur->redirection_type == 4)
 		{
-			outfile = open(cur->file_name,O_CREAT | O_WRONLY | O_TRUNC, 0666);
+			pip->outfile = open(cur->file_name, O_CREAT | O_WRONLY | O_TRUNC, 0666);
 			dup2(outfile,pip->outfile);
 			close(outfile);
 		}
-		else if (cur->redirection_type == APPEND)
+		else if (cur->redirection_type == 0)
 		{
 			outfile = open(cur->file_name,O_CREAT | O_WRONLY | O_APPEND, 0666);
 			dup2(outfile,pip->outfile);
 			close(outfile);
 		}
-		else if (cur->redirection_type == INPUT)
+		else if (cur->redirection_type == 2)
 		{
-			infile = open(cur->file_name,O_CREAT | O_WRONLY | O_APPEND, 0666);
+			infile = open(cur->file_name,O_RDONLY, 0666);
 			dup2(infile,pip->infile);
 			close(infile);
 		}
-		else if (cur->redirection_type == HEARDOC)
+		else if (cur->redirection_type == 1)
 		{
 			infile = open(cur->file_name,O_CREAT | O_WRONLY | O_APPEND, 0666);
 			dup2(infile,pip->infile);
@@ -102,13 +102,14 @@ void	ft_redirection(t_cmd	*cmd, t_data *pip)
 // ft_excut_child(cur,pip,lst,&input_fd);
 void	ft_excut_child(t_cmd *args,t_data *pip,t_lst_env *lst,int *input_fd)
 {
-	int tub[2];
 	if (pip->last!= 1)
-		pipe(tub);
+		pipe(pip->tub);
 	pid_t pid = fork();
 	if (pid == 0)
 	{
-		// ft_redirection(cmd,pip);
+		ft_redirection(args,pip);
+		printf("pip->outfile  %d\n",pip->outfile);
+		printf("pip->infile   %d\n",pip->infile);
 		if (pip->infile)
 		{
 			dup2(pip->infile,0);
@@ -119,21 +120,22 @@ void	ft_excut_child(t_cmd *args,t_data *pip,t_lst_env *lst,int *input_fd)
 		{
 			dup2(pip->outfile,1);
 			close(pip->outfile);
+			printf("pip->outfile  %d\n",pip->outfile);
 		}
 			
         if (pip->first == 1)
 		{
-            dup2(tub[1], STDOUT_FILENO);
-            close(tub[0]);
-            close(tub[1]);
+            dup2(pip->tub[1], STDOUT_FILENO);
+            close(pip->tub[0]);
+            close(pip->tub[1]);
         }
 		else if (pip->first == 0 && pip->last == 0)
 		{
            dup2(*input_fd, STDIN_FILENO);
-            dup2(tub[1], STDOUT_FILENO);
+            dup2(pip->tub[1], STDOUT_FILENO);
             close(*input_fd);
-            close(tub[0]);
-            close(tub[1]);
+            close(pip->tub[0]);
+            close(pip->tub[1]);
         }
 		else if (pip->last == 1)
 		{
@@ -147,14 +149,14 @@ void	ft_excut_child(t_cmd *args,t_data *pip,t_lst_env *lst,int *input_fd)
 	{
 		if (pip->first==1)
 		{
-			close(tub[1]);
-			*input_fd = tub[0];
+			close(pip->tub[1]);
+			*input_fd = pip->tub[0];
 		}
 		else if (pip->first==0 && pip->last==0)
 		{
 			close(*input_fd);
-			close(tub[1]);
-			*input_fd = tub[0];			
+			close(pip->tub[1]);
+			*input_fd = pip->tub[0];			
 		}
 		else if (pip->last == 1)
 			close(*input_fd);
