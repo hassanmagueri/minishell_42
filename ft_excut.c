@@ -6,7 +6,7 @@
 /*   By: ataoufik <ataoufik@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/17 11:18:33 by ataoufik          #+#    #+#             */
-/*   Updated: 2024/04/29 07:20:43 by ataoufik         ###   ########.fr       */
+/*   Updated: 2024/04/29 10:00:21 by ataoufik         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -122,7 +122,7 @@ void	ft_excut_child(t_cmd *args,t_data *pip,t_lst_env *lst,int *input_fd)
 		if (pip->outfile)
 		{
 			dup2(pip->outfile,1);
-			// close(pip->outfile);
+			close(pip->outfile);
 			// printf("pip->outfile  %d\n",pip->outfile);
 		}
 			

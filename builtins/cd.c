@@ -6,7 +6,7 @@
 /*   By: ataoufik <ataoufik@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/21 19:18:53 by ataoufik          #+#    #+#             */
-/*   Updated: 2024/04/29 09:05:34 by ataoufik         ###   ########.fr       */
+/*   Updated: 2024/04/29 10:41:47 by ataoufik         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,7 +61,6 @@ char *ft_get_newpwd_path(char *pwd)
 	return (str);
 }
 
-
 int    ft_cd(t_lst_env *lst,t_cmd  *args)
 {
 	char	*pwd;
@@ -71,6 +70,8 @@ int    ft_cd(t_lst_env *lst,t_cmd  *args)
 	int i = 0;
 	pwd =getcwd(cmd, sizeof(cmd));
 	oldpwd = pwd;
+	if (args->cmd[1][0]=='\0')
+		return (0);
 	str = ft_split(args->cmd[1], '/');
 	if (str[i]== NULL)
 	{
@@ -82,80 +83,37 @@ int    ft_cd(t_lst_env *lst,t_cmd  *args)
 	while(str[i])
 	{
 		if(ft_strncmp(str[i],"..",2) == 0)
+		{
 			pwd = ft_get_newpwd_path(pwd);
+			i++;
+		}
+		else if(ft_strncmp(str[i],".",1) == 0)
+			i++;
 		else
 		{
-			pwd = ft_strjoin(pwd, "/");
+			str[i] = ft_strjoin(str[i], "/");
 			pwd = ft_strjoin(pwd,str[i]);
-		}	
-		i++;
+			i++;
+		}
 	}
 	if(access(pwd,F_OK) == 0)
 	{
 		if (chdir(pwd)!= 0)
 				perror("Failed to change directory");
+		ft_change_value_lst(&lst, "PWD", pwd);
+	}
+	else if(access(args->cmd[1],F_OK) == 0)
+	{
+		if (chdir(args->cmd[1])!=0)
+			perror("Failed to change directory");
+		ft_change_value_lst(&lst, "PWD", args->cmd[1]);
 	}
 	else
 		perror("cd");
-	ft_change_value_lst(&lst, "PWD", pwd);
 	if (ft_find_node(&lst,"OLDPWD")== 0)
 		ft_change_value_lst(&lst, "OLDPWD", oldpwd);
 	else
 		ft_lst_add_back_env(&lst, ft_new_env("OLDPWD", oldpwd));
 	return (0);
 }
-// int    ft_cd(t_lst_env *lst,t_cmd  *args)
-// {
-// 	char	*pwd;
-// 	char	*oldpwd;
-// 	char cmd[1024];
-// 	char *str;
-// 	str = args->cmd[1];
-// 	oldpwd = getcwd(cmd, sizeof(cmd));
-// 	if (ft_find_node(&lst,"OLDPWD")== 0)
-// 		ft_change_value_lst(&lst, "OLDPWD", oldpwd);
-// 	else
-// 		ft_lst_add_back_env(&lst, ft_new_env("OLDPWD", oldpwd));
-// 	if (ft_strncmp(args->cmd[1],"..",2) == 0)
-// 	{
-// 		int len = ft_strlen(oldpwd);
-// 		len--;
-// 		while(oldpwd[len])
-// 		{
-// 			if (oldpwd[len] != '/')
-// 				len--;
-// 			else
-// 				break;
-// 				args->cmd[1] = ft_substr(oldpwd, 0, len);
-// 		}
-// 		if (chdir(args->cmd[1])!=0)
-// 			perror("No such file or directory");
-// 		ft_change_value_lst(&lst, "PWD", args->cmd[1]);
-// 		return (0);
-// 	}
-// 	else if (ft_strncmp(args->cmd[1],".",1) == 0)
-// 	{
-// 		ft_change_value_lst(&lst, "PWD", oldpwd);
-// 		return (0);
-// 	}
-// 	else
-// 	{
-// 		oldpwd = ft_strjoin(oldpwd, "/");
-// 		args->cmd[1] = ft_strjoin(oldpwd,args->cmd[1]);
-// 		if (access(args->cmd[1], F_OK) == 0)
-// 		{
-// 			if (chdir(args->cmd[1])!=0)
-// 				perror("Failed to change directory");
-// 			ft_change_value_lst(&lst, "PWD", args->cmd[1]);
-// 			return (0);
-// 		}
-// 		if(access(str,F_OK) == 0)
-// 		{
-// 			if (chdir(str)!=0)
-// 				perror("Failed to change directory");
-// 			ft_change_value_lst(&lst, "PWD", str);
-// 			return (0);
-// 		}
-// 	}
-// 	return (1);
-// }
+// case cd -
