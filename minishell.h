@@ -6,7 +6,7 @@
 /*   By: ataoufik <ataoufik@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/17 11:22:57 by emagueri          #+#    #+#             */
-/*   Updated: 2024/04/27 21:27:16 by ataoufik         ###   ########.fr       */
+/*   Updated: 2024/04/29 07:04:05 by ataoufik         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,6 +41,7 @@ typedef struct s_list
 typedef struct s_data
 {
 	int		first;
+	char	**env;
 	int		last;
 	int		tub[2];
 	int		infile;

@@ -6,7 +6,7 @@
 /*   By: ataoufik <ataoufik@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/17 11:18:33 by ataoufik          #+#    #+#             */
-/*   Updated: 2024/04/28 12:45:36 by ataoufik         ###   ########.fr       */
+/*   Updated: 2024/04/29 07:20:43 by ataoufik         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,6 +53,9 @@ void	ft_execute_command(t_data *pip,char **cmd)
 	char *command;
 
 	command = find_path_executable(pip->env_path, cmd[0]);
+	// int i = 0;
+	// while(pip->env_path[i])
+	//  	printf("%s\n",pip->env_path[i++]);
 	if (command == NULL)
 		printf("Invalid argument\n");
 	execve(command, cmd, NULL);
@@ -108,8 +111,8 @@ void	ft_excut_child(t_cmd *args,t_data *pip,t_lst_env *lst,int *input_fd)
 	if (pid == 0)
 	{
 		ft_redirection(args,pip);
-		printf("pip->outfile  %d\n",pip->outfile);
-		printf("pip->infile   %d\n",pip->infile);
+		// printf("pip->outfile  %d\n",pip->outfile);
+		// printf("pip->infile   %d\n",pip->infile);
 		if (pip->infile)
 		{
 			dup2(pip->infile,0);
@@ -119,8 +122,8 @@ void	ft_excut_child(t_cmd *args,t_data *pip,t_lst_env *lst,int *input_fd)
 		if (pip->outfile)
 		{
 			dup2(pip->outfile,1);
-			close(pip->outfile);
-			printf("pip->outfile  %d\n",pip->outfile);
+			// close(pip->outfile);
+			// printf("pip->outfile  %d\n",pip->outfile);
 		}
 			
         if (pip->first == 1)

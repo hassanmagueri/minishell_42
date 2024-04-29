@@ -6,7 +6,7 @@
 /*   By: ataoufik <ataoufik@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/01 05:02:31 by emagueri          #+#    #+#             */
-/*   Updated: 2024/04/27 21:35:22 by ataoufik         ###   ########.fr       */
+/*   Updated: 2024/04/28 14:48:52 by ataoufik         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -135,15 +135,3 @@ int	init_env(t_lst_env **lst, char **env)
 	}
 	return 1;
 }
-
-// int main(int argc, char const *argv[], char **env)
-// {
-// 	t_lst_env *lst;
-
-// 	init_env(&lst, env);
-// 	ft_get_env(&lst, "SHLVL")->value = ft_strdup("8");
-	
-// 	ft_lst_add_back_env(&lst, ft_new_env("pp", "TEST"));
-// 	print_lst_env(lst);
-// 	return 0;
-// }
