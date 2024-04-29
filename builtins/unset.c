@@ -6,7 +6,7 @@
 /*   By: ataoufik <ataoufik@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/21 14:42:31 by ataoufik          #+#    #+#             */
-/*   Updated: 2024/04/29 12:20:04 by ataoufik         ###   ########.fr       */
+/*   Updated: 2024/04/29 12:48:32 by ataoufik         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,11 @@ int ft_parsing_unset(char *str)
         i++;
     while(str[i])
     {
-        if (ft_isalnum(str[i]) != 1)
+        if (str[0] == '-')
+            return (2);
+        if (str[i] == '!')
+            return (i);
+        else if (ft_isalnum(str[i]) != 1)
             return (1);
         i++;
     }
@@ -58,8 +62,18 @@ int ft_unset(t_lst_env *lst, t_cmd *args)
     {
         cur = lst;
         prev = NULL;
-        if (ft_parsing_unset(args->cmd[i])!=0)
+        if (ft_parsing_unset(args->cmd[i]) != 0)
         {
+            if (ft_parsing_unset(args->cmd[i]) == 2)
+            {
+                printf("unset: -%c: invalid option\n",args->cmd[i][1]);
+                break;
+            }
+            else if (ft_parsing_unset(args->cmd[i]) != 2)
+            {
+                printf("!%c: event not found\n",args->cmd[i][ft_parsing_unset(args->cmd[i]) + 1]);
+                break;
+            }
             printf("unset: `%s': not a valid identifier\n",args->cmd[i]);
             i++;
             continue;
@@ -100,52 +114,3 @@ int ft_unset(t_lst_env *lst, t_cmd *args)
     // }
     return (0);
 }
-
-
-// t_lst_env *create_node(const char *key, const char *value)
-// {
-//     t_lst_env *node = (t_lst_env *)malloc(sizeof(t_lst_env));
-//     node->key = strdup(key);
-//     node->value = strdup(value);
-//     node->next = NULL;
-//     return node;
-// }
-
-// void print_list(t_lst_env *lst)
-// {
-//     while (lst)
-//     {
-//         printf("Key: %s, Value: %s\n", lst->key, lst->value);
-//         lst = lst->next;
-//     }
-// }
-// int main(int argc, char **argv)
-// {
-//     t_lst_env *head = create_node("HOME", "/home/user");
-//     head->next = create_node("USER", "username");
-//     head->next->next = create_node("PATH", "/usr/bin:/bin");
-//     head->next->next->next = create_node("PWD", "/usr/bin:/bin");
-//     head->next->next->next->next = create_node("AA", "111111111111111");
-
-//     // printf("Before unset:\n");
-//     // print_list(head);
-
-//     t_cmd args;
-//     args.cmd = (char **)malloc(5 * sizeof(char *));
-//     args.cmd[0] = strdup("unset");
-//     args.cmd[1] = strdup("USER");
-//     args.cmd[2] = NULL;
-//     args.cmd[3] = NULL;
-//     args.cmd[4] = NULL;
-
-//     ft_unset(head, &args); 
-
-//     // printf("\nAfter unset:\n");
-//     // print_list(head);
-
-//     for (int i = 0; i < 4; i++)
-//         free(args.cmd[i]);
-//     free(args.cmd);
-
-//     return 0;
-// }
