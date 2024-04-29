@@ -6,7 +6,7 @@
 /*   By: ataoufik <ataoufik@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/21 19:18:53 by ataoufik          #+#    #+#             */
-/*   Updated: 2024/04/29 10:45:33 by ataoufik         ###   ########.fr       */
+/*   Updated: 2024/04/29 19:15:38 by ataoufik         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,7 +70,7 @@ int    ft_cd(t_lst_env *lst,t_cmd  *args)
 	int i = 0;
 	pwd =getcwd(cmd, sizeof(cmd));
 	oldpwd = pwd;
-	if (args->cmd[1][0]=='\0')
+	if (args->cmd[1]==NULL)
 		return (0);
 	str = ft_split(args->cmd[1], '/');
 	if (str[i]== NULL)
