@@ -6,7 +6,7 @@
 /*   By: ataoufik <ataoufik@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/01 05:02:31 by emagueri          #+#    #+#             */
-/*   Updated: 2024/04/27 21:34:58 by ataoufik         ###   ########.fr       */
+/*   Updated: 2024/04/29 12:55:03 by ataoufik         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ void print_lst_env(t_lst_env *lst)
 	cur = lst;
 	while (cur)
 	{
-		printf("%s ", cur->key);
+		printf("%s", cur->key);
 		printf("=%s\n", cur->value);
 		cur = cur->next;
 	}

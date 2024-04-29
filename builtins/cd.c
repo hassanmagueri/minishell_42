@@ -6,7 +6,7 @@
 /*   By: ataoufik <ataoufik@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/21 19:18:53 by ataoufik          #+#    #+#             */
-/*   Updated: 2024/04/29 10:41:47 by ataoufik         ###   ########.fr       */
+/*   Updated: 2024/04/29 10:45:33 by ataoufik         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -105,7 +105,7 @@ int    ft_cd(t_lst_env *lst,t_cmd  *args)
 	else if(access(args->cmd[1],F_OK) == 0)
 	{
 		if (chdir(args->cmd[1])!=0)
-			perror("Failed to change directory");
+			perror("Failed");
 		ft_change_value_lst(&lst, "PWD", args->cmd[1]);
 	}
 	else

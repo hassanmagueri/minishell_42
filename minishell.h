@@ -6,7 +6,7 @@
 /*   By: ataoufik <ataoufik@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/17 11:22:57 by emagueri          #+#    #+#             */
-/*   Updated: 2024/04/29 07:04:05 by ataoufik         ###   ########.fr       */
+/*   Updated: 2024/04/29 11:22:13 by ataoufik         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -147,7 +147,7 @@ void	ft_execute_command(t_data *pip,char **cmd);
 int    ft_cd(t_lst_env *lst,t_cmd  *args);
 int	ft_export(t_lst_env *lst_env, t_cmd *str);
 int	ft_pwd(void);
-int ft_unset(t_lst_env **lst, t_cmd *args);
+int ft_unset(t_lst_env *lst, t_cmd *args);
 int    ft_exit(t_cmd   *args);
 //
 
