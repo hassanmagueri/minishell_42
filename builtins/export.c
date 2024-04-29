@@ -7,8 +7,13 @@ void print_lst_export(t_lst_env *lst)
 	while (cur)
 	{
 		printf("declare -x ");
-		printf("%s", cur->key);
-		printf("=\"%s\"\n", cur->value);
+		if (cur->value)
+		{
+			printf("%s", cur->key);
+			printf("=\"%s\"\n", cur->value);
+		}
+		else
+			printf("%s\n", cur->key);
 		cur = cur->next;
 	}
 }
@@ -104,6 +109,28 @@ void	ft_add_val(t_lst_env	*lst,char *key ,char *val)
 		cur = cur->next;
 	}
 }
+int	ft_prasing_export(char *str)
+{
+	int i;
+
+	i = 0;
+	if (ft_isdigit(str[0])==1 || str[0]=='\0' || str[0]=='=')
+		return (1);
+	while(str[i]=='_')
+		i++;
+	while(str[i])
+    {
+		if (str[i]=='_')
+			i++;
+		else if (str[i]=='$' && str[i + 1]=='?')
+			return (i);
+		else if (ft_isalnum(str[i])!=1)
+			return (1);
+        else
+			i++;
+    }
+	return (0);
+}
 int	ft_export(t_lst_env *lst_env, t_cmd *str)
 {
 	int		len;
@@ -119,11 +146,18 @@ int	ft_export(t_lst_env *lst_env, t_cmd *str)
 		while (str->cmd[i])
 		{
 			len = index_key(str->cmd[i], '=');
-			if (len == -1)
-				return -1;
-			value = ft_strchr(str->cmd[i], '=') + 1;
-			key = ft_substr(str->cmd[i], 0, len);
-			if (str->cmd[i][len - 1]=='-')
+			if (len != -1)
+			{
+				key = ft_substr(str->cmd[i], 0, len);
+				value = ft_strchr(str->cmd[i], '=') + 1;
+
+			}
+			else
+			{
+				key = ft_strdup(str->cmd[i]);
+				value = ft_strdup(NULL);
+			}
+			if (ft_prasing_export(key) == 1)
 			{
 				printf("export: `%s': not a valid identifier\n",str->cmd[i]);
 				i++;
