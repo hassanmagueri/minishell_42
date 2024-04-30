@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ataoufik <ataoufik@student.42.fr>          +#+  +:+       +#+        */
+/*   By: emagueri <emagueri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/17 11:22:57 by emagueri          #+#    #+#             */
-/*   Updated: 2024/04/29 11:22:13 by ataoufik         ###   ########.fr       */
+/*   Updated: 2024/04/30 12:46:27 by emagueri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -111,7 +111,7 @@ int ft_heredoc(t__lst_token **lst_token);
 // lst token
 t__lst_token	*ft_new_token(char *str, t_type type);
 void    ft_lst_token_add_back(t__lst_token **lst, t__lst_token *token);
-t__lst_token	*ft__lst_token_last(t__lst_token *lst);
+t__lst_token	*ft__lst_token_last(t__lst_token **lst);
 t__lst_token *ft_get_token_by_type(t__lst_token **lst_token, t_type type);
 
 int    ft__lst_tokenize(t__lst_token **token, char *cmd);
@@ -150,7 +150,7 @@ int	ft_pwd(void);
 int ft_unset(t_lst_env *lst, t_cmd *args);
 int    ft_exit(t_cmd   *args);
 //
-
+int	is_with_spaces(int c);
 char	*ft_handle_var(t_lst_env **lst_env, char *old_output, int *index);
 //ft_cmd
 int ft_cmd(t_cmd **cmd, t__lst_token **tokens);
@@ -200,6 +200,7 @@ void	ft_lstdelone(t_list *lst, void (*del)(void*));
 void	ft_lstclear(t_list **lst, void (*del)(void*));
 void	ft_lstiter(t_list *lst, void (*f)(void *));
 t_list	*ft_lstmap(t_list *lst, void *(*f)(void *), void (*del)(void *));
+char **ft_split_ws(char *str);
 // char	**split(char *s, char c);
 
 #endif

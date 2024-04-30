@@ -6,7 +6,7 @@
 /*   By: emagueri <emagueri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/01 10:12:12 by emagueri          #+#    #+#             */
-/*   Updated: 2024/04/29 15:04:38 by emagueri         ###   ########.fr       */
+/*   Updated: 2024/04/30 12:45:59 by emagueri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,7 +76,7 @@ int ft_expand(t__lst_token **lst_token, t_lst_env **lst_env)
 				cur = cur->next;
 			}
 			// if (cu)
-			value_twod_array = ft_split_wc(cur->str);
+			value_twod_array = ft_split_ws(cur->str);
 			// if (value_twod_array == NULL)
 			// {
 			// 	printf("sad\n");
