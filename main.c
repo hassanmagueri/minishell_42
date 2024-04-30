@@ -6,7 +6,7 @@
 /*   By: ataoufik <ataoufik@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/24 12:47:51 by ataoufik          #+#    #+#             */
-/*   Updated: 2024/04/27 19:40:09 by ataoufik         ###   ########.fr       */
+/*   Updated: 2024/04/29 07:20:49 by ataoufik         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,13 +15,13 @@
 
 void	init_path_env(t_data *pip,char *env[])
 {
-	char **str;
+	char *str;
 	while (env && *env && ft_strncmp(*env, "PATH=", 5) != 0)
         env++;
 	if (*env == NULL)
 		printf("Path not found");
 	*env += 5;
-	// printf("hhhhhhhhh\n");
+	// printf("%s\n",*pip->env);
 	pip->env_path = ft_split(*env, ':');
 	if (!pip->env_path)
 		printf("Invalid argument");
@@ -36,14 +36,14 @@ int main(int argc, char *argv[], char **env)
 	t_lst_env *lst_env;
 	t_data pip;
 	lst_env = NULL;
-
+	pip.env = env;
 	if (argc > 1)
 	{
 		printf("%s", argv[0]);
 		return (1);
 	}
 	init_env(&lst_env, env);
-	init_path_env(&pip,env);
+	init_path_env(&pip,pip.env);
 	// int i = 0;
 	// while(pip.env_path[i])
 	// 	printf("%s\n",pip.env_path[i++]);

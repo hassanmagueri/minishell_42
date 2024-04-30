@@ -6,7 +6,7 @@
 /*   By: ataoufik <ataoufik@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/21 19:18:53 by ataoufik          #+#    #+#             */
-/*   Updated: 2024/04/22 10:44:13 by ataoufik         ###   ########.fr       */
+/*   Updated: 2024/04/29 19:15:38 by ataoufik         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,90 +41,79 @@ int	ft_find_node(t_lst_env **lst_env, char *key)
 	}
 	return (1);
 }
+char *ft_get_newpwd_path(char *pwd)
+{
+	int len;
+	char *str;
+	len = ft_strlen(pwd);
+	len--;
+	while(pwd[len])
+	{
+		if (pwd[len] != '/')
+			len--;
+		else
+			break;
+	}
+	if (len == 0)
+		str = ft_strdup("/");
+	else
+		str = ft_substr(pwd, 0, len);
+	return (str);
+}
 
 int    ft_cd(t_lst_env *lst,t_cmd  *args)
 {
 	char	*pwd;
 	char	*oldpwd;
 	char cmd[1024];
-	char *str;
-	str = args->cmd[1];
-	oldpwd = getcwd(cmd, sizeof(cmd));
+	char **str;
+	int i = 0;
+	pwd =getcwd(cmd, sizeof(cmd));
+	oldpwd = pwd;
+	if (args->cmd[1]==NULL)
+		return (0);
+	str = ft_split(args->cmd[1], '/');
+	if (str[i]== NULL)
+	{
+		pwd = ft_strdup("/");
+		if (chdir(pwd)!= 0)
+			perror("Failed to change directory");
+		return (0);
+	}
+	while(str[i])
+	{
+		if(ft_strncmp(str[i],"..",2) == 0)
+		{
+			pwd = ft_get_newpwd_path(pwd);
+			i++;
+		}
+		else if(ft_strncmp(str[i],".",1) == 0)
+			i++;
+		else
+		{
+			str[i] = ft_strjoin(str[i], "/");
+			pwd = ft_strjoin(pwd,str[i]);
+			i++;
+		}
+	}
+	if(access(pwd,F_OK) == 0)
+	{
+		if (chdir(pwd)!= 0)
+				perror("Failed to change directory");
+		ft_change_value_lst(&lst, "PWD", pwd);
+	}
+	else if(access(args->cmd[1],F_OK) == 0)
+	{
+		if (chdir(args->cmd[1])!=0)
+			perror("Failed");
+		ft_change_value_lst(&lst, "PWD", args->cmd[1]);
+	}
+	else
+		perror("cd");
 	if (ft_find_node(&lst,"OLDPWD")== 0)
 		ft_change_value_lst(&lst, "OLDPWD", oldpwd);
 	else
 		ft_lst_add_back_env(&lst, ft_new_env("OLDPWD", oldpwd));
-	if (ft_strncmp(args->cmd[1],"..",2) == 0)
-	{
-		int len = ft_strlen(oldpwd);
-		len--;
-		while(oldpwd[len])
-		{
-			if (oldpwd[len] != '/')
-				len--;
-			else
-				break;
-				args->cmd[1] = ft_substr(oldpwd, 0, len);
-		}
-		ft_change_value_lst(&lst, "PWD", args->cmd[1]);
-		return (0);
-	}
-	else if (ft_strncmp(args->cmd[1],".",1) == 0)
-	{
-		ft_change_value_lst(&lst, "PWD", oldpwd);
-		return (0);
-	}
-	else
-	{
-		oldpwd = ft_strjoin(oldpwd, "/");
-		args->cmd[1] = ft_strjoin(oldpwd,args->cmd[1]);
-		if (access(args->cmd[1], F_OK) == 0)
-		{
-			ft_change_value_lst(&lst, "PWD", args->cmd[1]);
-			return (0);
-		}
-		if(access(str,F_OK) == 0)
-		{
-			ft_change_value_lst(&lst, "PWD", str);
-			return (0);
-		}
-	}
-	return (1);
+	return (0);
 }
-// int main()
-// {
-//     t_lst_env *env_lst = ft_new_env("PWD", "/home/user");
-//     env_lst->next = ft_new_env("LESS", "-R");
-//     t_cmd cmd;
-//     cmd.cmd = (char **)malloc(2 * sizeof(char *));
-//     cmd.cmd[0] = "cd";
-//     cmd.cmd[1] = ".";
-
-//     int result = ft_cd(env_lst, &cmd);
-
-//     if (result == 0)
-//         printf("Changed directory successfully.\n");
-//     else
-//         printf("Failed to change directory.\n");
-
-//     t_lst_env *current = env_lst;
-//     while (current)
-// 	{
-//         printf("Key: %s, Value: %s\n", current->key, current->value);
-//         current = current->next;
-//     }
-
-//     current = env_lst;
-//     while (current)
-// 	{
-//         t_lst_env *temp = current;
-//         current = current->next;
-//         free(temp->key);
-//         free(temp->value);
-//         free(temp);
-//     }
-
-//     free(cmd.cmd);
-
-//     return 0;
-// }
+// case cd -

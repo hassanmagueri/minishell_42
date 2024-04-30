@@ -6,35 +6,78 @@
 /*   By: ataoufik <ataoufik@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/21 14:42:31 by ataoufik          #+#    #+#             */
-/*   Updated: 2024/04/27 21:19:30 by ataoufik         ###   ########.fr       */
+/*   Updated: 2024/04/29 12:48:32 by ataoufik         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-void    ft_free_node(t_lst_env *node)
+// void    ft_free_node(t_lst_env *node)
+// {
+//     // if (node)
+//     // {
+//         free(node->key);
+//         free(node->value);
+//         free(node);
+//     // }
+//     // return ;
+// }
+
+int ft_parsing_unset(char *str)
 {
-    if (node)
+    int i;
+    i = 0;
+    if (str[0] == '$'|| ft_isdigit(str[0])==1)
+        i++;
+    while(str[i])
     {
-        free(node->key);
-        free(node->value);
-        free(node);
+        if (str[0] == '-')
+            return (2);
+        if (str[i] == '!')
+            return (i);
+        else if (ft_isalnum(str[i]) != 1)
+            return (1);
+        i++;
     }
+    return(0);     
 }
-
-
-int ft_unset(t_lst_env **lst, t_cmd *args)
+int ft_unset(t_lst_env *lst, t_cmd *args)
 {
     t_lst_env   *cur;
+    // t_lst_env   *cur1;
     t_lst_env   *prev;
     t_lst_env   *to_free;
     int i;
 
     i = 1;
+    // int j = 0;
+    // cur1 = lst; 
+	// while(cur1)
+    // {
+	//  	printf(" %d  %s\n",j++,cur1->key);
+    //     cur1 = cur1->next;
+    // }
+    // printf("---------------\n\n\n");
     while (args->cmd[i] != NULL)
     {
-        cur = *lst;
+        cur = lst;
         prev = NULL;
+        if (ft_parsing_unset(args->cmd[i]) != 0)
+        {
+            if (ft_parsing_unset(args->cmd[i]) == 2)
+            {
+                printf("unset: -%c: invalid option\n",args->cmd[i][1]);
+                break;
+            }
+            else if (ft_parsing_unset(args->cmd[i]) != 2)
+            {
+                printf("!%c: event not found\n",args->cmd[i][ft_parsing_unset(args->cmd[i]) + 1]);
+                break;
+            }
+            printf("unset: `%s': not a valid identifier\n",args->cmd[i]);
+            i++;
+            continue;
+        }
         while (cur != NULL)
         {
             if (ft_strncmp(cur->key,args->cmd[i],ft_strlen(args->cmd[i])) == 0)
@@ -43,66 +86,31 @@ int ft_unset(t_lst_env **lst, t_cmd *args)
                 if (prev)
                     prev->next= cur->next;
                 else
-                    *lst = cur->next;
-                ft_free_node(to_free);
+                    lst = cur->next;
+                // printf("to_free ------>    %s\n",to_free->key);
+                // ft_free_node(to_free);//leaks
+                // printf("to_free ------>    %s\n",to_free->key);
+
                 cur = cur->next;
             }
             else
             {
                 prev = cur;
+                // printf("prev ------>    %s\n",prev->key);
                 cur=cur->next;
             }
         }
+        // printf("------%s------\n",args->cmd[i]);
         i++;
     }
+    // t_lst_env   *cur1;
+    // cur1 = lst;
+    // j = 0;
+	// while(cur1)
+    // {
+	//  	printf(" %d  %s\n",j++,cur1->key);
+    //     cur1 = cur1->next;
+        
+    // }
     return (0);
 }
-
-
-// t_lst_env *create_node(const char *key, const char *value)
-// {
-//     t_lst_env *node = (t_lst_env *)malloc(sizeof(t_lst_env));
-//     node->key = strdup(key);
-//     node->value = strdup(value);
-//     node->next = NULL;
-//     return node;
-// }
-
-// void print_list(t_lst_env *lst)
-// {
-//     while (lst)
-//     {
-//         printf("Key: %s, Value: %s\n", lst->key, lst->value);
-//         lst = lst->next;
-//     }
-// }
-// int main(int argc, char **argv)
-// {
-//     t_lst_env *head = create_node("HOME", "/home/user");
-//     head->next = create_node("USER", "username");
-//     head->next->next = create_node("PATH", "/usr/bin:/bin");
-//     head->next->next->next = create_node("PWD", "/usr/bin:/bin");
-//     head->next->next->next->next = create_node("AA", "111111111111111");
-
-//     printf("Before unset:\n");
-//     print_list(head);
-
-//     t_cmd args;
-//     args.cmd = (char **)malloc(5 * sizeof(char *));
-//     args.cmd[0] = strdup("unset");
-//     args.cmd[1] = strdup("AA");
-//     args.cmd[2] = NULL;
-//     args.cmd[3] = NULL;
-//     args.cmd[4] = NULL;
-
-//     ft_unset(&head, &args); 
-
-//     printf("\nAfter unset:\n");
-//     print_list(head);
-
-//     for (int i = 0; i < 4; i++)
-//         free(args.cmd[i]);
-//     free(args.cmd);
-
-//     return 0;
-// }
