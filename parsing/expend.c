@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expend.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: emagueri <emagueri@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ataoufik <ataoufik@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/01 10:12:12 by emagueri          #+#    #+#             */
-/*   Updated: 2024/04/30 12:45:59 by emagueri         ###   ########.fr       */
+/*   Updated: 2024/04/30 15:00:03 by ataoufik         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,7 +85,7 @@ int ft_expand(t__lst_token **lst_token, t_lst_env **lst_env)
 			// 	continue;
 			// }
 			cur->str = value_twod_array[i++];
-			printf("var = %s\n", cur->str);
+			// printf("var = %s\n", cur->str);
 			cur->next = ft_new_token(" ", SPACE);
 			cur = cur->next;
 			

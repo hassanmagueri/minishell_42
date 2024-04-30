@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: emagueri <emagueri@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ataoufik <ataoufik@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/17 11:22:57 by emagueri          #+#    #+#             */
-/*   Updated: 2024/04/30 12:46:27 by emagueri         ###   ########.fr       */
+/*   Updated: 2024/04/30 16:00:09 by ataoufik         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -142,10 +142,13 @@ int ft_expand(t__lst_token **lst_token, t_lst_env **lst_env);
 int	ft_excut_cmd_line(t_lst_env *lst, t_cmd *args, t_data *pip);
 void	ft_lst_cmd(t_cmd	*command,t_lst_env *lst,t_data *pip);
 void	ft_execute_command(t_data *pip,char **cmd);
+int	ft_check_buitin_cmd(t_cmd	*args);
+void	ft_chech_excut_cmd(t_cmd	*command,t_lst_env *lst,t_data *pip);
 //
 // builtin
 int    ft_cd(t_lst_env *lst,t_cmd  *args);
 int	ft_export(t_lst_env *lst_env, t_cmd *str);
+int ft_echo(t_cmd *cmd);
 int	ft_pwd(void);
 int ft_unset(t_lst_env *lst, t_cmd *args);
 int    ft_exit(t_cmd   *args);

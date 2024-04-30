@@ -6,7 +6,7 @@
 /*   By: ataoufik <ataoufik@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/17 11:18:33 by ataoufik          #+#    #+#             */
-/*   Updated: 2024/04/29 11:11:33 by ataoufik         ###   ########.fr       */
+/*   Updated: 2024/04/30 16:04:27 by ataoufik         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,10 @@ void	ft_execute_command(t_data *pip,char **cmd)
 	// while(pip->env_path[i])
 	//  	printf("%s\n",pip->env_path[i++]);
 	if (command == NULL)
-		printf("Invalid argument\n");
+	{
+		printf("%s :command not found\n",cmd[0]);
+		exit(0);
+	}
 	execve(command, cmd, NULL);
 	free_2d_arr(cmd);
 	free(command);
@@ -102,7 +105,6 @@ void	ft_redirection(t_cmd	*cmd, t_data *pip)
 	}
 }
 
-// ft_excut_child(cur,pip,lst,&input_fd);
 void	ft_excut_child(t_cmd *args,t_data *pip,t_lst_env *lst,int *input_fd)
 {
 	if (pip->last!= 1)
@@ -111,59 +113,57 @@ void	ft_excut_child(t_cmd *args,t_data *pip,t_lst_env *lst,int *input_fd)
 	if (pid == 0)
 	{
 		ft_redirection(args,pip);
-		// printf("pip->outfile  %d\n",pip->outfile);
-		// printf("pip->infile   %d\n",pip->infile);
-		if (pip->infile)
-		{
-			dup2(pip->infile,0);
-			close(pip->infile);
-			
-		}
-		if (pip->outfile)
+		if (pip->outfile>0)
 		{
 			dup2(pip->outfile,1);
 			close(pip->outfile);
-			// printf("pip->outfile  %d\n",pip->outfile);
 		}
-			
-        if (pip->first == 1)
-		{
-            dup2(pip->tub[1], STDOUT_FILENO);
-            close(pip->tub[0]);
-            close(pip->tub[1]);
-        }
-		else if (pip->first == 0 && pip->last == 0)
-		{
-           dup2(*input_fd, STDIN_FILENO);
-            dup2(pip->tub[1], STDOUT_FILENO);
-            close(*input_fd);
-            close(pip->tub[0]);
-            close(pip->tub[1]);
-        }
-		else if (pip->last == 1)
+		if (pip->first!=1)
 		{
   			dup2(*input_fd, STDIN_FILENO);
             close(*input_fd);
         }
-		ft_excut_cmd_line(lst,args,pip);
-		// ft_execute_command(env_path,cmd->cmd);
+		if (pip->last!=1)
+		{
+            dup2(pip->tub[1], STDOUT_FILENO);
+            close(pip->tub[0]);
+            close(pip->tub[1]);
+        }
+		if (ft_check_buitin_cmd(args) == 1)
+		{
+			ft_excut_cmd_line(lst,args,pip);
+			exit(0);
+		}
+		else
+			ft_execute_command(pip, args->cmd);
 	}
 	else
 	{
-		if (pip->first==1)
+		if (pip->first != 1)
+			close(*input_fd);
+		if (pip->last != 1)
 		{
 			close(pip->tub[1]);
 			*input_fd = pip->tub[0];
 		}
-		else if (pip->first==0 && pip->last==0)
-		{
-			close(*input_fd);
-			close(pip->tub[1]);
-			*input_fd = pip->tub[0];			
-		}
-		else if (pip->last == 1)
-			close(*input_fd);
 	}	
+}
+void	ft_chech_excut_cmd(t_cmd	*command,t_lst_env *lst,t_data *pip)
+{
+	int i;
+	i = 0;
+	t_cmd	*cur;
+	cur = command;
+	while (cur)
+	{
+		i++;
+		cur = cur->next;
+	}
+	if (i == 1)
+		ft_excut_cmd_line(lst,command,pip);
+	else
+		ft_lst_cmd(command,lst,pip);
+	
 }
 void	ft_lst_cmd(t_cmd	*command,t_lst_env *lst,t_data *pip)
 {
@@ -172,18 +172,13 @@ void	ft_lst_cmd(t_cmd	*command,t_lst_env *lst,t_data *pip)
 	int input_fd = -1;
 
 	int	i = 0;
+	pip->last = 0;
 	while(cur->next)
 	{
 		if (i==0)
-		{
 			pip->first = 1;
-			pip->last = 0;
-		}
 		else
-		{
 			pip->first = 0;
-			pip->last = 0;
-		}
 		ft_excut_child(cur,pip,lst,&input_fd);
 		cur = cur->next;
 		i++;

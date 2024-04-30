@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_split_cmd.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: emagueri <emagueri@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ataoufik <ataoufik@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/07 17:36:19 by emagueri          #+#    #+#             */
-/*   Updated: 2024/04/19 10:13:52 by emagueri         ###   ########.fr       */
+/*   Updated: 2024/04/30 14:51:24 by ataoufik         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,7 +96,6 @@ char	**ft_split_cmd(char const *s, char *splitter)
 		// while (s[index] == c)
 		while (is_splitter(s[i], splitter))
 			index++;
-		printf("%d", index);
 		res[i] = ft_strsdup(s + index, &index, splitter);
 		if (!res[i])
 			return (freetab(res, i));

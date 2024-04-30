@@ -6,7 +6,7 @@
 /*   By: ataoufik <ataoufik@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/24 12:47:51 by ataoufik          #+#    #+#             */
-/*   Updated: 2024/04/29 07:20:49 by ataoufik         ###   ########.fr       */
+/*   Updated: 2024/04/30 15:59:30 by ataoufik         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,7 +69,7 @@ int main(int argc, char *argv[], char **env)
 		// print__lst_tokens(t);
 		ft_cmd(&cmd, &t);
 		// printf("ggggggg\n");
-		ft_lst_cmd(cmd,lst_env,&pip);
+		ft_chech_excut_cmd(cmd,lst_env,&pip);
 		// sleep(2);  
 		free(input);
 	}
