@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expend.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ataoufik <ataoufik@student.42.fr>          +#+  +:+       +#+        */
+/*   By: emagueri <emagueri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/01 10:12:12 by emagueri          #+#    #+#             */
-/*   Updated: 2024/04/30 15:00:03 by ataoufik         ###   ########.fr       */
+/*   Updated: 2024/04/30 16:38:02 by emagueri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,29 +75,31 @@ int ft_expand(t__lst_token **lst_token, t_lst_env **lst_env)
 				cur->next = tmp;
 				cur = cur->next;
 			}
-			// if (cu)
-			value_twod_array = ft_split_ws(cur->str);
-			// if (value_twod_array == NULL)
-			// {
-			// 	printf("sad\n");
-			// 	cur->str = "";
-			// 	cur->next = next;
-			// 	continue;
-			// }
-			cur->str = value_twod_array[i++];
-			// printf("var = %s\n", cur->str);
-			cur->next = ft_new_token(" ", SPACE);
-			cur = cur->next;
-			
-			while (value_twod_array[0] && value_twod_array[i])
+			if (cur->str != NULL)
 			{
-				cur->next = ft_new_token(value_twod_array[i], WORD);
-				i++;
-				if (value_twod_array[i] == 0)
-					continue;
-				cur->next->next = ft_new_token(" ", SPACE);
+				value_twod_array = ft_split_ws(cur->str);
+				// if (value_twod_array == NULL)
+				// {
+				// 	printf("sad\n");
+				// 	cur->str = "";
+				// 	cur->next = next;
+				// 	continue;
+				// }
+				cur->str = value_twod_array[i++];
+				// printf("var = %s\n", cur->str);
+				cur->next = ft_new_token(" ", SPACE);
+				cur = cur->next;
+				
+				while (value_twod_array[0] && value_twod_array[i])
+				{
+					cur->next = ft_new_token(value_twod_array[i], WORD);
+					i++;
+					if (value_twod_array[i] == 0)
+						continue;
+					cur->next->next = ft_new_token(" ", SPACE);
+				}
+				cur->next = next;
 			}
-			cur->next = next;
 		}
 		else if(cur->type == DOUB_Q)
 		{
