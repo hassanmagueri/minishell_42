@@ -6,7 +6,7 @@
 /*   By: ataoufik <ataoufik@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/17 11:22:57 by emagueri          #+#    #+#             */
-/*   Updated: 2024/04/30 16:00:09 by ataoufik         ###   ########.fr       */
+/*   Updated: 2024/05/01 16:55:27 by ataoufik         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -138,27 +138,31 @@ t_lst_env	*ft_lst_env_last(t_lst_env *lst);
 int ft_expand(t__lst_token **lst_token, t_lst_env **lst_env);
 //
 
-//
-int	ft_excut_cmd_line(t_lst_env *lst, t_cmd *args, t_data *pip);
-void	ft_lst_cmd(t_cmd	*command,t_lst_env *lst,t_data *pip);
+//execution
+char	*find_path_executable(char **env_path, char *cmd);
 void	ft_execute_command(t_data *pip,char **cmd);
-int	ft_check_buitin_cmd(t_cmd	*args);
+int		ft_excut_cmd_line(t_lst_env *lst, t_cmd *args, t_data *pip);
+int		ft_check_buitin_cmd(t_cmd	*args);
+void	ft_lst_cmd(t_cmd	*command,t_lst_env *lst,t_data *pip);
 void	ft_chech_excut_cmd(t_cmd	*command,t_lst_env *lst,t_data *pip);
+void	ft_excut_child(t_cmd *args,t_data *pip,t_lst_env *lst,int *input_fd);
+void	ft_redirection(t_cmd	*cmd, t_data *pip);
 //
 // builtin
-int    ft_cd(t_lst_env *lst,t_cmd  *args);
-int	ft_export(t_lst_env *lst_env, t_cmd *str);
-int ft_echo(t_cmd *cmd);
-int	ft_pwd(void);
-int ft_unset(t_lst_env *lst, t_cmd *args);
-int    ft_exit(t_cmd   *args);
+int		ft_cd(t_lst_env *lst,t_cmd  *args);
+int		ft_export(t_lst_env *lst_env, t_cmd *str);
+int		ft_echo(t_cmd *cmd);
+int		ft_pwd(void);
+int		ft_unset(t_lst_env *lst, t_cmd *args);
+int		ft_exit(t_cmd   *args);
 //
-int	is_with_spaces(int c);
+int		is_with_spaces(int c);
 char	*ft_handle_var(t_lst_env **lst_env, char *old_output, int *index);
 //ft_cmd
-int ft_cmd(t_cmd **cmd, t__lst_token **tokens);
-void print_lst_cmd(t_cmd *cmd);
-
+int		ft_cmd(t_cmd **cmd, t__lst_token **tokens);
+void	print_lst_cmd(t_cmd *cmd);
+//
+//libft
 int		index_of(char *str, char c);
 int		ft_strlen(const char *str);
 int		ft_isdigit(int c);
@@ -203,7 +207,6 @@ void	ft_lstdelone(t_list *lst, void (*del)(void*));
 void	ft_lstclear(t_list **lst, void (*del)(void*));
 void	ft_lstiter(t_list *lst, void (*f)(void *));
 t_list	*ft_lstmap(t_list *lst, void *(*f)(void *), void (*del)(void *));
-char **ft_split_ws(char *str);
-// char	**split(char *s, char c);
+char	**ft_split_ws(char *str);
 
 #endif
