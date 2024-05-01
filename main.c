@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ataoufik <ataoufik@student.42.fr>          +#+  +:+       +#+        */
+/*   By: emagueri <emagueri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/24 12:47:51 by ataoufik          #+#    #+#             */
-/*   Updated: 2024/04/30 15:59:30 by ataoufik         ###   ########.fr       */
+/*   Updated: 2024/05/01 15:01:35 by emagueri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,8 +54,8 @@ int main(int argc, char *argv[], char **env)
 	{
 		t__lst_token *t = NULL;
 		t_cmd *cmd = NULL;
-		input = readline(ANSI_COLOR_CYAN "~ " ANSI_COLOR_BLUE "minishell 😎 " ANSI_COLOR_MAGENTA "↪ " ANSI_COLOR_RESET);
-		// input = readline("minishell -> ");
+		// input = readline(ANSI_COLOR_CYAN "~ " ANSI_COLOR_BLUE "minishell 😎 " ANSI_COLOR_MAGENTA "↪ " ANSI_COLOR_RESET);
+		input = readline("minishell -> 😎 ");
 		if (input == NULL || input[0] == '\0')
 			continue;
 		add_history(input);
@@ -63,7 +63,7 @@ int main(int argc, char *argv[], char **env)
 		// input = readline("minishell -> ");
 		if (ft__lst_tokenize(&t, input) || generate_errors(&t) == 1)
 			continue;
-		// ft_heredoc(&t);
+		ft_heredoc(&t);
 		ft_expand(&t, &lst_env);
 		ft_join(&t);
 		// print__lst_tokens(t);
