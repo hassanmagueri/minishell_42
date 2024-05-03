@@ -62,7 +62,7 @@ int	index_key(char *str, char c)
 	i = 0;
 	while (str[i])
 	{
-		if ((str[i] == '+' && str[i + 1] == c) || str[i] == '=')
+		if ((str[i] == '+' && str[i + 1] == c) || str[i] == c)
 			return i;
 		i++;
 	}
@@ -75,7 +75,7 @@ int ft_check_lst_key(t_lst_env *lst,char *key)
 	cur = lst;
 	while (cur)
 	{
-		if (ft_strncmp(cur->key,key,ft_strlen(cur->key))==0)
+		if (ft_strncmp(cur->key,key,ft_strlen(key))==0)
 			return(1);
 		cur = cur->next;
 	}
@@ -87,7 +87,7 @@ void	ft_change_val(t_lst_env *lst ,char *key,char *value)
 	cur = lst;
 	while (cur)
 	{
-		if (ft_strncmp(cur->key,key,ft_strlen(cur->key))==0)
+		if (ft_strncmp(cur->key,key,ft_strlen(key))==0)
 		{
 			cur->value = value;
 			break;
@@ -101,7 +101,7 @@ void	ft_add_val(t_lst_env	*lst,char *key ,char *val)
 	cur = lst;
 	while (cur)
 	{
-		if (ft_strncmp(cur->key,key,ft_strlen(cur->key))==0)
+		if (ft_strncmp(cur->key,key,ft_strlen(key))==0)
 		{
 			cur->value = ft_strjoin(cur->value, val);
 			break;
@@ -146,10 +146,12 @@ int	ft_export(t_lst_env *lst_env, t_cmd *str)
 		while (str->cmd[i])
 		{
 			len = index_key(str->cmd[i], '=');
+// printf("%d\n",len);
 			if (len != -1)
 			{
 				key = ft_substr(str->cmd[i], 0, len);
 				value = ft_strchr(str->cmd[i], '=') + 1;
+// printf("%s\n",key);
 
 			}
 			else
