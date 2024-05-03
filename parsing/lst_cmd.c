@@ -6,7 +6,7 @@
 /*   By: emagueri <emagueri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/20 10:43:06 by emagueri          #+#    #+#             */
-/*   Updated: 2024/04/29 15:04:49 by emagueri         ###   ########.fr       */
+/*   Updated: 2024/05/03 17:20:24 by emagueri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,7 @@ t_redir	*ft_new_redir(char *file_name, t_type redirection_type)
 
 	cmds = malloc(sizeof(t_redir));
 	cmds->file_name = file_name;
+	printf("new redir type %d\n", redirection_type);
 	cmds->redirection_type = redirection_type;
 	cmds->next = NULL;
 	return cmds;
@@ -112,10 +113,10 @@ char	**ft_prepare_cmd(t__lst_token **tokens, t_redir **redirs)
 		}
 		else if (cur->type <= OUTPUT)
 		{
+			ft_add_back_redir(redirs, ft_new_redir(cur->str, cur->type));
 			cur = cur->next;
 			if (cur && cur->type == SPACE)
 				cur = cur->next;
-			ft_add_back_redir(redirs, ft_new_redir(cur->str, cur->type));
 			if (cur)
 				cur = cur->next;
 			continue;

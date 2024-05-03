@@ -6,7 +6,7 @@
 /*   By: emagueri <emagueri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/20 12:22:27 by emagueri          #+#    #+#             */
-/*   Updated: 2024/04/29 15:04:45 by emagueri         ###   ########.fr       */
+/*   Updated: 2024/05/01 16:36:58 by emagueri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,7 @@ int ft_join(t__lst_token **lst_token)
 				cur_cmd->str = ft_strtrim(cur_cmd->str, "\'");
 			if (cur == cur_cmd)
 			{
+				cur->type = WORD;
 				cur_cmd = cur_cmd->next;
 				continue;
 			}

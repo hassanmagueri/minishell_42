@@ -6,7 +6,7 @@
 /*   By: emagueri <emagueri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/22 22:34:15 by emagueri          #+#    #+#             */
-/*   Updated: 2024/05/01 15:00:07 by emagueri         ###   ########.fr       */
+/*   Updated: 2024/05/02 14:50:24 by emagueri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,7 +92,7 @@ int ft_heredoc(t__lst_token **lst_token)
 		printf("limiter %s\n", limiter);
 		while(1)
 		{
-			input = readline(">");
+			input = readline("> ");
 			if (ft_strncmp(input, limiter, ft_strlen(limiter) + 1) == 0)
 				break;
 			buffer = ft_strjoin(ft_strjoin(buffer, input), "\n");
@@ -101,7 +101,8 @@ int ft_heredoc(t__lst_token **lst_token)
 		acs = 0;
 		while (acs == 0)
 		{
-			file_name = ft_strjoin(ft_strjoin(".heredoc", ft_itoa(n++)), ".txt");
+			void *v = malloc(1);
+			file_name = ft_strjoin(ft_strjoin("/tmp/.", ft_itoa((int)&v)), ".txt");
 			acs = access(file_name, F_OK);
 		}
 		printf("file name: %s\n", file_name);
@@ -114,15 +115,11 @@ int ft_heredoc(t__lst_token **lst_token)
 		token->str = file_name;
 		token->type = WORD;
 		token->next = token->next->next;
-		if (token->next && token->next->type == SPACE)
-			token->next = token->next->next->next;
+		if (token->next &&( token->next->type == SPACE || token->next->type == WORD))
+			token->next = token->next->next;
 		// if (token->next && token->next->type == WORD || token->next->type == DOUB_Q || token->next->type == SING_Q)
 		// 	token->next = token->next->next->next;
 		// unlink(file_name);
 	}
 	return 1;
 }
-
-//<< -> f1 -> NULL
-
-

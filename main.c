@@ -6,7 +6,7 @@
 /*   By: emagueri <emagueri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/24 12:47:51 by ataoufik          #+#    #+#             */
-/*   Updated: 2024/05/01 15:01:35 by emagueri         ###   ########.fr       */
+/*   Updated: 2024/05/02 23:13:29 by emagueri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,16 +59,14 @@ int main(int argc, char *argv[], char **env)
 		if (input == NULL || input[0] == '\0')
 			continue;
 		add_history(input);
-		// ft__lst_tokenize(&t, input);
-		// input = readline("minishell -> ");
 		if (ft__lst_tokenize(&t, input) || generate_errors(&t) == 1)
 			continue;
-		ft_heredoc(&t);
 		ft_expand(&t, &lst_env);
 		ft_join(&t);
-		// print__lst_tokens(t);
+		print__lst_tokens(t);
+		ft_heredoc(&t);
 		ft_cmd(&cmd, &t);
-		// printf("ggggggg\n");
+		print_lst_cmd(cmd);
 		ft_chech_excut_cmd(cmd,lst_env,&pip);
 		// sleep(2);  
 		free(input);

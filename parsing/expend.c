@@ -6,7 +6,7 @@
 /*   By: emagueri <emagueri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/01 10:12:12 by emagueri          #+#    #+#             */
-/*   Updated: 2024/04/30 16:38:02 by emagueri         ###   ########.fr       */
+/*   Updated: 2024/05/03 17:54:12 by emagueri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,11 +34,9 @@ char *ft_handle_simple_string(char *old_output, char *new_output,int *index)
 {
 	int		len;
 	int		i;
-	// char	*tmp;
 
 	i = *index + 1;
 	len = 1;
-	// i++;
 	while (old_output[len] && old_output[len] != '$')
 		len++;
 	new_output = ft_strnjoin(new_output, old_output, len);
@@ -61,10 +59,12 @@ int ft_expand(t__lst_token **lst_token, t_lst_env **lst_env)
 			
 			t__lst_token	*next;
 			t__lst_token	*tmp;
+			t__lst_token	*parent;
 			char **value_twod_array;
 			int i = 0;
 			char *value;
 			
+			parent = cur;
 			next = cur->next;
 			cur->str = ft_get_env_val(lst_env, cur->str + 1);
 			if (cur->str && is_with_spaces(cur->str[0]))
@@ -78,6 +78,7 @@ int ft_expand(t__lst_token **lst_token, t_lst_env **lst_env)
 			if (cur->str != NULL)
 			{
 				value_twod_array = ft_split_ws(cur->str);
+				// printf("------------ %s \t %s \n", value_twod_array[0], value_twod_array[1]);
 				// if (value_twod_array == NULL)
 				// {
 				// 	printf("sad\n");
@@ -93,11 +94,19 @@ int ft_expand(t__lst_token **lst_token, t_lst_env **lst_env)
 				while (value_twod_array[0] && value_twod_array[i])
 				{
 					cur->next = ft_new_token(value_twod_array[i], WORD);
+					// printf("-----%s\n", cur->next->str);
 					i++;
 					if (value_twod_array[i] == 0)
+					{
+						cur = cur->next;
 						continue;
+					}
 					cur->next->next = ft_new_token(" ", SPACE);
+					cur = cur->next->next;
 				}
+				printf("-----%s\n", parent->str);
+				printf("-----%s\n", parent->next->next->str);
+				// printf("-----%d\n", parent->next->type);
 				cur->next = next;
 			}
 		}
