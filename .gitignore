@@ -1,4 +1,0 @@
-.vscode
-trash
-
-int ft_echo(t_cmd *cmd);

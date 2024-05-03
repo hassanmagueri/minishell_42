@@ -6,7 +6,7 @@
 /*   By: ataoufik <ataoufik@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/18 17:18:39 by ataoufik          #+#    #+#             */
-/*   Updated: 2024/04/30 18:44:48 by ataoufik         ###   ########.fr       */
+/*   Updated: 2024/05/01 17:07:41 by ataoufik         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ int ft_parsing_exit(char *str)
         if (ft_isdigit(str[i]) != 1)
             return (1);
         num = num * 10 + str[i] - 48;
-        if (num == LLONG_MAX+1 && sig == -1)
+        if (num == LLONG_MAX + 1 && sig == -1)
             i++;
         else if (num > LLONG_MAX)
             return (1);

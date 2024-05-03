@@ -6,7 +6,7 @@
 /*   By: emagueri <emagueri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/24 12:47:51 by ataoufik          #+#    #+#             */
-/*   Updated: 2024/05/02 23:13:29 by emagueri         ###   ########.fr       */
+/*   Updated: 2024/05/03 18:01:16 by emagueri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,8 +54,8 @@ int main(int argc, char *argv[], char **env)
 	{
 		t__lst_token *t = NULL;
 		t_cmd *cmd = NULL;
-		// input = readline(ANSI_COLOR_CYAN "~ " ANSI_COLOR_BLUE "minishell 😎 " ANSI_COLOR_MAGENTA "↪ " ANSI_COLOR_RESET);
-		input = readline("minishell -> 😎 ");
+		input = readline(ANSI_COLOR_CYAN "~ " ANSI_COLOR_BLUE "minishell 😎 " ANSI_COLOR_MAGENTA "↪ " ANSI_COLOR_RESET);
+		// input = readline("minishell -> 😎 ");
 		if (input == NULL || input[0] == '\0')
 			continue;
 		add_history(input);
@@ -63,10 +63,10 @@ int main(int argc, char *argv[], char **env)
 			continue;
 		ft_expand(&t, &lst_env);
 		ft_join(&t);
-		print__lst_tokens(t);
+		// print__lst_tokens(t);
 		ft_heredoc(&t);
 		ft_cmd(&cmd, &t);
-		print_lst_cmd(cmd);
+		// print_lst_cmd(cmd);
 		ft_chech_excut_cmd(cmd,lst_env,&pip);
 		// sleep(2);  
 		free(input);
