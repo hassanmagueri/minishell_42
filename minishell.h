@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ataoufik <ataoufik@student.42.fr>          +#+  +:+       +#+        */
+/*   By: emagueri <emagueri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/17 11:22:57 by emagueri          #+#    #+#             */
-/*   Updated: 2024/05/01 16:55:27 by ataoufik         ###   ########.fr       */
+/*   Updated: 2024/05/04 12:38:29 by emagueri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -106,7 +106,7 @@ typedef	struct s_lst_env
 
 int ft_join(t__lst_token **lst_token);
 // heredoc
-int ft_heredoc(t__lst_token **lst_token);
+int ft_heredoc(t__lst_token **lst_token, t_lst_env **lst_env);
 
 // lst token
 t__lst_token	*ft_new_token(char *str, t_type type);

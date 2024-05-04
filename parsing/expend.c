@@ -6,27 +6,27 @@
 /*   By: emagueri <emagueri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/01 10:12:12 by emagueri          #+#    #+#             */
-/*   Updated: 2024/05/03 17:54:12 by emagueri         ###   ########.fr       */
+/*   Updated: 2024/05/04 15:14:10 by emagueri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-char	*ft_handle_var(t_lst_env **lst_env, char *old_output, int *index)
+char	*ft_handle_var(t_lst_env **lst_env, char *key, int *index)
 {
 	// int i;
 	int len;
 	char *s;
 
 	len = 0;
-	if (ft_isdigit(old_output[len]))
+	if (ft_isdigit(key[len]))
 		len++;
 	else
-		while (old_output[len] &&
-				(ft_isalnum(old_output[len]) || old_output[len] == '_'))
+		while (key[len] && (ft_isalnum(key[len]) || key[len] == '_'))
 			len++;
-	s = ft_get_env_val(lst_env, ft_strnjoin("", old_output, len));
-	(*index) += len;
+	s = ft_get_env_val(lst_env, ft_strnjoin("", key, len));
+	if (index != NULL)
+		(*index) += len;
 	return (s);
 }
 
@@ -104,9 +104,6 @@ int ft_expand(t__lst_token **lst_token, t_lst_env **lst_env)
 					cur->next->next = ft_new_token(" ", SPACE);
 					cur = cur->next->next;
 				}
-				printf("-----%s\n", parent->str);
-				printf("-----%s\n", parent->next->next->str);
-				// printf("-----%d\n", parent->next->type);
 				cur->next = next;
 			}
 		}

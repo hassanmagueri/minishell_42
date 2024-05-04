@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ataoufik <ataoufik@student.42.fr>          +#+  +:+       +#+        */
+/*   By: emagueri <emagueri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/24 12:47:51 by ataoufik          #+#    #+#             */
-/*   Updated: 2024/05/03 18:31:57 by ataoufik         ###   ########.fr       */
+/*   Updated: 2024/05/04 16:12:53 by emagueri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,17 +64,12 @@ int main(int argc, char *argv[], char **env)
 		ft_expand(&t, &lst_env);
 		ft_join(&t);
 		// print__lst_tokens(t);
-		ft_heredoc(&t);
+		ft_heredoc(&t, &lst_env);
 		ft_cmd(&cmd, &t);
-		print_lst_cmd(cmd);
-		ft_chech_excut_cmd(cmd,lst_env,&pip);
-		// sleep(2);  
-		free(input);
+		// print_lst_cmd(cmd);
+		ft_chech_excut_cmd(cmd,lst_env,&pip); 
+		if (input)
+			free(input);
 	}
 	return (0);
 }
-
-
-// path = "bui/";
-// path += cmd;
-// path += .c;

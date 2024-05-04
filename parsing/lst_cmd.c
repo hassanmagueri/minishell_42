@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   lst_cmd.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ataoufik <ataoufik@student.42.fr>          +#+  +:+       +#+        */
+/*   By: emagueri <emagueri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/20 10:43:06 by emagueri          #+#    #+#             */
-/*   Updated: 2024/05/03 18:23:56 by ataoufik         ###   ########.fr       */
+/*   Updated: 2024/05/03 20:01:50 by emagueri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -114,12 +114,12 @@ char	**ft_prepare_cmd(t__lst_token **tokens, t_redir **redirs)
 		}
 		else if (cur->type <= OUTPUT)
 		{
-			t__lst_token *prev;
-			prev = cur;
+			t_type type;
+			type = cur->type;
 			cur = cur->next;
 			if (cur && cur->type == SPACE)
 				cur = cur->next;
-			ft_add_back_redir(redirs, ft_new_redir(cur->str, prev->type));
+			ft_add_back_redir(redirs, ft_new_redir(cur->str, type));
 			if (cur)
 				cur = cur->next;
 			continue;

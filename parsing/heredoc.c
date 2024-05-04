@@ -6,7 +6,7 @@
 /*   By: emagueri <emagueri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/22 22:34:15 by emagueri          #+#    #+#             */
-/*   Updated: 2024/05/02 14:50:24 by emagueri         ###   ########.fr       */
+/*   Updated: 2024/05/04 15:24:58 by emagueri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,7 +67,54 @@
 // 	}
 // 	return 1;
 // }
-int ft_heredoc(t__lst_token **lst_token)
+
+t__lst_token *ft_next_token(t__lst_token **token)
+{
+	t__lst_token *cur;
+
+	cur = (*token)->next;
+	while (cur && cur->type == SPACE)
+		cur = cur->next;
+	return cur;
+}
+
+char	*ft_expend_input(char *input, t_lst_env **lst_env)
+{
+	int		i;
+	char	*new_input;
+	int		start;
+
+	i = 0;
+	new_input = "";
+	while (input[i])
+	{
+		if (input[i] == '$' && input[i + 1] == '$')
+		{
+			start = i;
+			i += 2;
+			new_input = ft_substr(input, start, i);
+		}
+		else if (input[i] == '$' && (ft_isalnum(input[i + 1]) || input[i + 1] == '_'))
+		{
+			start = ++i;
+			char *var = ft_handle_var(lst_env, input + i, &i);
+			if (var == NULL)
+				var = "";
+			printf("var: %s\n", var);
+			new_input = ft_strjoin(new_input ,var);
+		}
+		else
+		{
+			start = i;
+			while (input[i] && input[i] != '$')
+				i++;
+			new_input = ft_strjoin(new_input ,ft_substr(input, start, i - start));
+		}
+	}
+	return (new_input);
+}
+
+int ft_heredoc(t__lst_token **lst_token, t_lst_env **lst_env)
 {
 	t__lst_token	*token;
 	char			*limiter;
@@ -86,40 +133,35 @@ int ft_heredoc(t__lst_token **lst_token)
 		if (token->next->type == SPACE && token->next->next)
 			limiter = token->next->next->str;
 		fd = -1;
-		n = 0;
 		buffer = "";
 		char *input;
-		printf("limiter %s\n", limiter);
+		n = 0;
 		while(1)
 		{
 			input = readline("> ");
 			if (ft_strncmp(input, limiter, ft_strlen(limiter) + 1) == 0)
 				break;
+			if (ft_next_token(&token)->type == WORD)
+				input = ft_expend_input(input, lst_env);
 			buffer = ft_strjoin(ft_strjoin(buffer, input), "\n");
-			free(input);
+			if (input)
+				free(input);
 		}
 		acs = 0;
 		while (acs == 0)
 		{
 			void *v = malloc(1);
-			file_name = ft_strjoin(ft_strjoin("/tmp/.", ft_itoa((int)&v)), ".txt");
+			file_name = ft_strjoin(ft_strjoin("/tmp/.", ft_itoa((int)&v + n++)), ".txt");
+			free(v);
 			acs = access(file_name, F_OK);
 		}
-		printf("file name: %s\n", file_name);
 		fd = open(file_name, O_CREAT | O_TRUNC | O_WRONLY, 0600);
 		write(fd, buffer, ft_strlen(buffer));
-		// token->str = file_name;
-		// token->type = INPUT;
-		// if (token->next)
-		// 	token->next->next->type = SPACE;
 		token->str = file_name;
 		token->type = WORD;
 		token->next = token->next->next;
-		if (token->next &&( token->next->type == SPACE || token->next->type == WORD))
+		if (token->next && (token->next->type == WORD || token->next->type == SING_Q || token->next->type == DOUB_Q))
 			token->next = token->next->next;
-		// if (token->next && token->next->type == WORD || token->next->type == DOUB_Q || token->next->type == SING_Q)
-		// 	token->next = token->next->next->next;
-		// unlink(file_name);
 	}
 	return 1;
 }
