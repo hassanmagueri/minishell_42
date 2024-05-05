@@ -6,7 +6,7 @@
 /*   By: emagueri <emagueri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/01 10:12:12 by emagueri          #+#    #+#             */
-/*   Updated: 2024/05/04 15:14:10 by emagueri         ###   ########.fr       */
+/*   Updated: 2024/05/05 16:08:13 by emagueri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,9 +47,11 @@ char *ft_handle_simple_string(char *old_output, char *new_output,int *index)
 int ft_expand(t__lst_token **lst_token, t_lst_env **lst_env)
 {
 	t__lst_token	*cur;
+	t__lst_token	*prev;
 	char			*tmp;
 	char			*var;
 
+	prev = NULL;
 	cur = *lst_token;
 	tmp = "";
 	while (cur)
@@ -59,19 +61,20 @@ int ft_expand(t__lst_token **lst_token, t_lst_env **lst_env)
 			
 			t__lst_token	*next;
 			t__lst_token	*tmp;
-			t__lst_token	*parent;
 			char **value_twod_array;
 			int i = 0;
 			char *value;
-			
-			parent = cur;
+
 			next = cur->next;
 			cur->str = ft_get_env_val(lst_env, cur->str + 1);
+			if (prev)
+				printf("[%d]\n", prev->type);
+			// if (cur->str && is_with_spaces(cur->str[0]) && prev && prev->type != DOUB_Q)
 			if (cur->str && is_with_spaces(cur->str[0]))
 			{
 				tmp = ft_new_token(cur->str, cur->type);
 				cur->str = " ";
-				cur->type = SPACE;
+				cur->type = WORD;
 				cur->next = tmp;
 				cur = cur->next;
 			}
@@ -113,16 +116,21 @@ int ft_expand(t__lst_token **lst_token, t_lst_env **lst_env)
 			int i = 0;
 			while (i < ft_strlen(res))
 			{
-				if (res[i] == '$' && res[i + 1] != 0 && (ft_isalnum(res[i + 1]) || res[i + 1] == '_'))
+				if(res[i] == '$' && res[i + 1] == '$')
+				{
+					i += 2;
+					tmp = ft_strjoin(tmp, "$$");
+				}
+				if(res[i] == '$' && res[i + 1] == '?')
+				{
+					i += 2;
+					tmp = ft_strjoin(tmp, "$?");
+				}
+				else if (res[i] == '$' && res[i + 1] != 0 && (ft_isalnum(res[i + 1]) || res[i + 1] == '_'))
 				{
 					i++;
 					var = ft_handle_var(lst_env, res + i, &i);
 					tmp = ft_strjoin(tmp, var);
-				}
-				else if(res[i] == '$' && res[i + 1] == '$')
-				{
-					i += 2;
-					tmp = ft_strjoin(tmp, "$$");
 				}
 				else
 					tmp = ft_handle_simple_string(res + i, tmp, &i);
@@ -130,6 +138,7 @@ int ft_expand(t__lst_token **lst_token, t_lst_env **lst_env)
 			cur->str = tmp;
 			tmp = "";
 		}
+		prev = cur;
 		cur = cur->next;
 	}
 	return (1);

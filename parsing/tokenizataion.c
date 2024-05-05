@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   tokenizataion.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ataoufik <ataoufik@student.42.fr>          +#+  +:+       +#+        */
+/*   By: emagueri <emagueri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/01 10:12:34 by emagueri          #+#    #+#             */
-/*   Updated: 2024/04/30 14:53:33 by ataoufik         ###   ########.fr       */
+/*   Updated: 2024/05/04 18:58:27 by emagueri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,6 +97,11 @@ int ft__lst_tokenize(t__lst_token **token, char *input)
 		else if (input[i] == '$' && input[i + 1] == '$')
 		{
 			ft_lst_token_add_back(token, ft_new_token(ft_substr(input, i, 2), WORD));
+			i += 2;
+		}
+		else if (input[i] == '$' && input[i + 1] == '?')
+		{
+			ft_lst_token_add_back(token, ft_new_token(ft_substr(input, i, 2), EXIT_STATUS));
 			i += 2;
 		}
 		else if (input[i] == '$' && (ft_isalnum(input[i + 1]) || input[i + 1] == '_'))

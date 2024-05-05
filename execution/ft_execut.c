@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_execut.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ataoufik <ataoufik@student.42.fr>          +#+  +:+       +#+        */
+/*   By: emagueri <emagueri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/17 11:18:33 by ataoufik          #+#    #+#             */
-/*   Updated: 2024/05/01 16:58:50 by ataoufik         ###   ########.fr       */
+/*   Updated: 2024/05/05 12:44:33 by emagueri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,7 @@ void	ft_lst_cmd(t_cmd	*command,t_lst_env *lst,t_data *pip)
 		;
 }
 
-void	ft_chech_excut_cmd(t_cmd	*command,t_lst_env *lst,t_data *pip)
+void	ft_chech_excut_cmd(t_cmd *command,t_lst_env *lst,t_data *pip)
 {
 	int i;
 	i = 0;

@@ -6,7 +6,7 @@
 /*   By: emagueri <emagueri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/20 10:43:06 by emagueri          #+#    #+#             */
-/*   Updated: 2024/05/03 20:01:50 by emagueri         ###   ########.fr       */
+/*   Updated: 2024/05/05 19:37:12 by emagueri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -137,11 +137,11 @@ char	**ft_prepare_cmd(t__lst_token **tokens, t_redir **redirs)
 	return cmd;
 }
 
-void print_lst_cmd(t_cmd *cmd)
+void print_lst_cmd(t_cmd **cmd)
 {
 	t_cmd *cur;
 
-	cur = cmd;
+	cur = *cmd;
 	while (cur)
 	{
 		int i = 0;
@@ -149,7 +149,7 @@ void print_lst_cmd(t_cmd *cmd)
 		while (cur->cmd[i])
 			printf("[%s]", cur->cmd[i++]);
 		print_lst_redir(cur->redir);
-		puts("");
+		printf("\n");
 		cur = cur->next;
 	}
 }
@@ -165,7 +165,106 @@ void print_lst_redir(t_redir *redir)
 		printf("{%s}", cur->file_name);
 		cur = cur->next;
 	}
-	puts("");
+	printf("\n");
+}
+
+int	*ft_add_int(int **ref_arr, int *len, int n)
+{
+	int *res;
+	int *arr;
+	int i;
+
+	arr = *ref_arr;
+	i = 0;
+	res = malloc(((*len) + 1) * sizeof(int));
+	while (i < *len)
+	{
+		res[i] = arr[i];
+		i++;
+	}
+	res[i] = n;
+	(*len) += 1;
+	free(arr);
+	*ref_arr = res;
+	return (res);
+}
+
+int ft_is_this_arr(int *indexes, int len, int index)
+{
+	int i;
+	i = 0;
+
+	while (i < len)
+	{
+		if (indexes[i] == index)
+			return (1);
+		i++;
+	}
+	
+	return (0);
+}
+
+int reset_cmd_arr(t_cmd *cmd_node, int *indexes, int len_indexes, int len_arr_str)
+{
+	char **new_str_arr;
+	char **str_arr;
+	int i;
+	int i_count;
+
+	i_count = 0;
+	str_arr = cmd_node->cmd;
+	i = 0;
+	new_str_arr = malloc(sizeof(char *) * (len_indexes + len_arr_str + 1));
+	while (str_arr[i])
+	{
+		// if (i_count)
+		if (ft_is_this_arr(indexes, len_indexes, i))
+		{
+			i_count++;
+			printf(" in reset arr : [%s]\n", str_arr[i]);
+			printf("i_count : [%d]\n", i_count);
+			char **res = ft_split(str_arr[i], ' ');
+			new_str_arr[i + i_count - 1] = res[0];
+			new_str_arr[i + i_count] = res[1];
+			// printf("res1 %s\n", res[0]);
+			// printf("res2 %s\n", res[1]);
+		}
+		else
+			new_str_arr[i + i_count] = str_arr[i];
+		i++;
+	}
+	// printf("last index {%d}\n", i + i_count);
+	new_str_arr[i + i_count] = NULL;
+	cmd_node->cmd = new_str_arr;
+	return 0;
+}
+
+int ft_split_array(t_cmd **lst_cmd)
+{
+	t_cmd *cur;
+	int i;
+	char **str_arr;
+	int *indexes;
+	int len_indexes;
+
+	cur = *lst_cmd;
+	while (cur)
+	{
+		i = 0;
+		len_indexes = 0;
+		indexes = NULL;
+		str_arr = cur->cmd;
+		while (str_arr[i])
+		{
+			if (ft_strchr(str_arr[i], ' '))
+				ft_add_int(&indexes, &len_indexes, i);
+			i++;
+		}
+		if (len_indexes > 0)
+			reset_cmd_arr(cur, indexes, len_indexes, i);
+		cur = cur->next;
+	}
+	return 0;
 }
 
 int ft_cmd(t_cmd **lst_cmd, t__lst_token **tokens)
@@ -185,6 +284,7 @@ int ft_cmd(t_cmd **lst_cmd, t__lst_token **tokens)
 		// print_lst_redir(cc->redir);
 		i++;
 	}
-	// print_lst_cmd(*lst_cmd);
+	print_lst_cmd(lst_cmd);
+	ft_split_array(lst_cmd);
 	return 0;
 }

@@ -6,7 +6,7 @@
 /*   By: emagueri <emagueri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/17 11:22:57 by emagueri          #+#    #+#             */
-/*   Updated: 2024/05/04 12:38:29 by emagueri         ###   ########.fr       */
+/*   Updated: 2024/05/05 12:33:47 by emagueri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,18 +68,18 @@ typedef enum e_type
 typedef struct s_redir
 {
     char    *file_name;
-    // char    *str;
-    int    infile;
-    int    outfile;
+    int		infile;
+    int		outfile;
     t_type  redirection_type;
     struct s_redir *next;
 }    t_redir;
 
 typedef struct s_cmd
 {
-    char **cmd;
-    struct s_redir *redir;
-    struct s_cmd *next;
+	int				exit_status;
+    char			**cmd;
+    struct s_cmd	*next;
+    struct s_redir	*redir;
 }    t_cmd;
 
 typedef struct s_token //| > < >> << "" '' $VAR SPACE 
@@ -160,7 +160,7 @@ int		is_with_spaces(int c);
 char	*ft_handle_var(t_lst_env **lst_env, char *old_output, int *index);
 //ft_cmd
 int		ft_cmd(t_cmd **cmd, t__lst_token **tokens);
-void	print_lst_cmd(t_cmd *cmd);
+void	print_lst_cmd(t_cmd **cmd);
 //
 //libft
 int		index_of(char *str, char c);

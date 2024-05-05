@@ -16,11 +16,12 @@ int	ft_is_arg(char *str)
 {
 	int i = 1;
 
-	if (str == NULL || str[0] != '-')
+	if (str == NULL || str[0] != '-' || str[1] != 'n')
 		return 0;
 	while (str[i])
 		if (str[i++] != 'n')
 			return (0);
+
 	return (1);
 }
 
@@ -30,9 +31,10 @@ void print_echo(char **str)
 
 	while (str[i])
 	{
-		printf("%s", str[i++]);
-		if (str[i])
+		printf("%s", str[i]);
+		if (str[i + 1])
 			printf(" ");
+		i++;
 	}
 	
 }
