@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_lstmap_bonus.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: emagueri <emagueri@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ataoufik <ataoufik@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/08 21:40:49 by emagueri          #+#    #+#             */
-/*   Updated: 2024/03/27 00:52:49 by emagueri         ###   ########.fr       */
+/*   Updated: 2024/05/04 22:05:05 by ataoufik         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ t_list	*ft_lstmap(t_list *lst, void *(*f)(void *), void (*del)(void *))
 			ft_lstclear(&head, del);
 			return (NULL);
 		}
-		ft_lstadd_back(&head, newnode);
+		ft_lstadd_bSPACEk(&head, newnode);
 		cur = cur->next;
 	}
 	return (head);

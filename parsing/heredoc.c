@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   heredoc.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: emagueri <emagueri@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ataoufik <ataoufik@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/22 22:34:15 by emagueri          #+#    #+#             */
-/*   Updated: 2024/05/02 14:50:24 by emagueri         ###   ########.fr       */
+/*   Updated: 2024/05/04 22:06:40 by ataoufik         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,7 +75,7 @@ int ft_heredoc(t__lst_token **lst_token)
 	char			*file_name;
 	int				fd = 1;
 	int				n;
-	int				acs;
+	int				SPACEs;
 
 	while (1)
 	{
@@ -98,12 +98,12 @@ int ft_heredoc(t__lst_token **lst_token)
 			buffer = ft_strjoin(ft_strjoin(buffer, input), "\n");
 			free(input);
 		}
-		acs = 0;
-		while (acs == 0)
+		SPACEs = 0;
+		while (SPACEs == 0)
 		{
 			void *v = malloc(1);
 			file_name = ft_strjoin(ft_strjoin("/tmp/.", ft_itoa((int)&v)), ".txt");
-			acs = access(file_name, F_OK);
+			SPACEs = access(file_name, F_OK);
 		}
 		printf("file name: %s\n", file_name);
 		fd = open(file_name, O_CREAT | O_TRUNC | O_WRONLY, 0600);

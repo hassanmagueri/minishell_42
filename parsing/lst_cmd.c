@@ -6,7 +6,7 @@
 /*   By: ataoufik <ataoufik@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/20 10:43:06 by emagueri          #+#    #+#             */
-/*   Updated: 2024/05/03 18:23:56 by ataoufik         ###   ########.fr       */
+/*   Updated: 2024/05/04 22:05:05 by ataoufik         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ t_redir	*ft_new_redir(char *file_name, t_type redirection_type)
 	return cmds;
 }
 
-int ft_add_back_redir(t_redir **redirs, t_redir *cmd)
+int ft_add_bSPACEk_redir(t_redir **redirs, t_redir *cmd)
 {
 	t_redir *cur;
 
@@ -56,7 +56,7 @@ t_cmd	*ft_new_cmd(char **cmd, t_redir *redir)
 	return cmds;
 }
 
-int ft_add_back_cmd(t_cmd **cmds, t_cmd *cmd)
+int ft_add_bSPACEk_cmd(t_cmd **cmds, t_cmd *cmd)
 {
 	t_cmd *cur;
 
@@ -119,7 +119,7 @@ char	**ft_prepare_cmd(t__lst_token **tokens, t_redir **redirs)
 			cur = cur->next;
 			if (cur && cur->type == SPACE)
 				cur = cur->next;
-			ft_add_back_redir(redirs, ft_new_redir(cur->str, prev->type));
+			ft_add_bSPACEk_redir(redirs, ft_new_redir(cur->str, prev->type));
 			if (cur)
 				cur = cur->next;
 			continue;
@@ -181,7 +181,7 @@ int ft_cmd(t_cmd **lst_cmd, t__lst_token **tokens)
 		cmd_str = ft_prepare_cmd(tokens, &lst_redir);
 		t_cmd *cc = NULL;
 		cc = ft_new_cmd(cmd_str, lst_redir);
-		ft_add_back_cmd(lst_cmd, cc);
+		ft_add_bSPACEk_cmd(lst_cmd, cc);
 		// print_lst_redir(cc->redir);
 		i++;
 	}

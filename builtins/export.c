@@ -75,7 +75,7 @@ int ft_check_lst_key(t_lst_env *lst,char *key)
 	cur = lst;
 	while (cur)
 	{
-		if (ft_strncmp(cur->key,key,ft_strlen(key))==0)
+		if (ft_strncmp(cur->key,key,ft_strlen(key)) == 0)
 			return(1);
 		cur = cur->next;
 	}
@@ -87,7 +87,7 @@ void	ft_change_val(t_lst_env *lst ,char *key,char *value)
 	cur = lst;
 	while (cur)
 	{
-		if (ft_strncmp(cur->key,key,ft_strlen(key))==0)
+		if (ft_strncmp(cur->key,key,ft_strlen(key)) == 0)
 		{
 			cur->value = value;
 			break;
@@ -146,13 +146,10 @@ int	ft_export(t_lst_env *lst_env, t_cmd *str)
 		while (str->cmd[i])
 		{
 			len = index_key(str->cmd[i], '=');
-// printf("%d\n",len);
 			if (len != -1)
 			{
 				key = ft_substr(str->cmd[i], 0, len);
 				value = ft_strchr(str->cmd[i], '=') + 1;
-// printf("%s\n",key);
-
 			}
 			else
 			{
@@ -173,7 +170,7 @@ int	ft_export(t_lst_env *lst_env, t_cmd *str)
 					ft_change_val(lst_env,key,value);
 			}
 			else
-				ft_lst_add_back_env(&lst_env, ft_new_env(key, value));
+				 ft_lst_add_back_env(&lst_env, ft_new_env(key, value));
 			i++;
 		}
 	}

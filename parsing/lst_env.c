@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   lst_env.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: emagueri <emagueri@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ataoufik <ataoufik@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/01 05:02:31 by emagueri          #+#    #+#             */
-/*   Updated: 2024/04/29 15:04:52 by emagueri         ###   ########.fr       */
+/*   Updated: 2024/05/06 19:37:15 by ataoufik         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,7 +62,7 @@ t_lst_env *ft_get_env(t_lst_env **lst_env, char	*key)
 	return (NULL);
 }
 
-int ft_lst_add_back_env(t_lst_env **lst_env, t_lst_env *node_env)
+int  ft_lst_add_back_env(t_lst_env **lst_env, t_lst_env *node_env)
 {
     if (lst_env == NULL || ft_get_env(lst_env, node_env->key) != NULL)
 		return (-1);
@@ -128,10 +128,15 @@ int	init_env(t_lst_env **lst, char **env)
 	while (env[i])
 	{
 		len = index_of(env[i], '=');
+		if (ft_strncmp(ft_substr(env[i], 0, len),"OLDPWD",len + 1) == 0)
+		{
+			i++;
+			continue;
+		}
 		if (len == -1)
 			return (-1);
 		value = ft_strchr(env[i], '=') + 1;
-		ft_lst_add_back_env(lst, ft_new_env(ft_substr(env[i], 0, len), value));
+		 ft_lst_add_back_env(lst, ft_new_env(ft_substr(env[i], 0, len), value));
 		i++;
 	}
 	return 1;
@@ -144,7 +149,7 @@ int	init_env(t_lst_env **lst, char **env)
 // 	init_env(&lst, env);
 // 	ft_get_env(&lst, "SHLVL")->value = ft_strdup("8");
 	
-// 	ft_lst_add_back_env(&lst, ft_new_env("pp", "TEST"));
+// 	 ft_lst_add_back_env(&lst, ft_new_env("pp", "TEST"));
 // 	print_lst_env(lst);
 // 	return 0;
 // }

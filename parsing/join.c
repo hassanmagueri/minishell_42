@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   join.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: emagueri <emagueri@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ataoufik <ataoufik@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/20 12:22:27 by emagueri          #+#    #+#             */
-/*   Updated: 2024/05/01 16:36:58 by emagueri         ###   ########.fr       */
+/*   Updated: 2024/05/04 22:05:05 by ataoufik         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,15 +47,15 @@ int ft_join(t__lst_token **lst_token)
 // {
 // 	t__lst_token *token;
 	
-// 	// ft_lst_token_add_back(&token, ft_new_token("\"s\"", DOUB_Q));
-// 	// ft_lst_token_add_back(&token, ft_new_token(">", OUTPUT));
-// 	ft_lst_token_add_back(&token, ft_new_token("ls", WORD));
-// 	// ft_lst_token_add_back(&token, ft_new_token("space", SPACE));
-// 	ft_lst_token_add_back(&token, ft_new_token(">>", OUTPUT));
-// 	ft_lst_token_add_back(&token, ft_new_token("a", WORD));
-// 	// ft_lst_token_add_back(&token, ft_new_token("\"s\"", DOUB_Q));
-// 	// ft_lst_token_add_back(&token, ft_new_token("space", SPACE));
-// 	// ft_lst_token_add_back(&token, ft_new_token("-a", WORD));
+// 	// ft_lst_token_add_bSPACEk(&token, ft_new_token("\"s\"", DOUB_Q));
+// 	// ft_lst_token_add_bSPACEk(&token, ft_new_token(">", OUTPUT));
+// 	ft_lst_token_add_bSPACEk(&token, ft_new_token("ls", WORD));
+// 	// ft_lst_token_add_bSPACEk(&token, ft_new_token("SPACE", SPACE));
+// 	ft_lst_token_add_bSPACEk(&token, ft_new_token(">>", OUTPUT));
+// 	ft_lst_token_add_bSPACEk(&token, ft_new_token("a", WORD));
+// 	// ft_lst_token_add_bSPACEk(&token, ft_new_token("\"s\"", DOUB_Q));
+// 	// ft_lst_token_add_bSPACEk(&token, ft_new_token("SPACE", SPACE));
+// 	// ft_lst_token_add_bSPACEk(&token, ft_new_token("-a", WORD));
 // 	ft_join(&token);
 // 	print__lst_tokens(token);
 // 	return 0;

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   lst_token.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: emagueri <emagueri@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ataoufik <ataoufik@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/01 22:43:35 by emagueri          #+#    #+#             */
-/*   Updated: 2024/04/29 15:25:12 by emagueri         ###   ########.fr       */
+/*   Updated: 2024/05/04 22:05:05 by ataoufik         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,7 @@ t__lst_token	*ft__lst_token_last(t__lst_token **lst)
 	return (cur);
 }
 
-void    ft_lst_token_add_back(t__lst_token **lst, t__lst_token *token)
+void    ft_lst_token_add_bSPACEk(t__lst_token **lst, t__lst_token *token)
 {
 	if (lst == NULL || token == NULL)
 		return ;

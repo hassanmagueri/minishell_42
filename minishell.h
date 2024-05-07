@@ -6,7 +6,7 @@
 /*   By: ataoufik <ataoufik@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/17 11:22:57 by emagueri          #+#    #+#             */
-/*   Updated: 2024/05/01 16:55:27 by ataoufik         ###   ########.fr       */
+/*   Updated: 2024/05/06 19:07:58 by ataoufik         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,12 +15,14 @@
 
 #include "minishell.h"
 # include <unistd.h>
+// #include <signal.h>
 # include <limits.h>
 #include <stdio.h>
 #include <fcntl.h>
 #include <string.h>
 #include <stdlib.h>
 #include <readline/readline.h>
+#include <readline/history.h>
 #define ANSI_COLOR_RED     "\x1b[31m"
 #define ANSI_COLOR_GREEN   "\x1b[32m"
 #define ANSI_COLOR_YELLOW  "\x1b[33m"
@@ -110,7 +112,7 @@ int ft_heredoc(t__lst_token **lst_token);
 
 // lst token
 t__lst_token	*ft_new_token(char *str, t_type type);
-void    ft_lst_token_add_back(t__lst_token **lst, t__lst_token *token);
+void    ft_lst_token_add_bSPACEk(t__lst_token **lst, t__lst_token *token);
 t__lst_token	*ft__lst_token_last(t__lst_token **lst);
 t__lst_token *ft_get_token_by_type(t__lst_token **lst_token, t_type type);
 
@@ -126,7 +128,7 @@ int generate_errors(t__lst_token **tokens);
 // env
 int			init_env(t_lst_env **lst, char **env);
 int			ft_lst_remove_env(t_lst_env **lst_env,char *key);
-int			ft_lst_add_back_env(t_lst_env **lst_env, t_lst_env *node_env);
+int			 ft_lst_add_back_env(t_lst_env **lst_env, t_lst_env *node_env);
 void		print_lst_env(t_lst_env *lst);
 char		*ft_get_env_val(t_lst_env **lst_env, char	*key);
 t_lst_env	*ft_get_env(t_lst_env **lst_env, char	*key);
@@ -154,14 +156,17 @@ int		ft_export(t_lst_env *lst_env, t_cmd *str);
 int		ft_echo(t_cmd *cmd);
 int		ft_pwd(void);
 int		ft_unset(t_lst_env *lst, t_cmd *args);
+void	ft_env(t_lst_env *lst,t_cmd *args);
 int		ft_exit(t_cmd   *args);
 //
-int		is_with_spaces(int c);
+int		is_with_SPACEs(int c);
 char	*ft_handle_var(t_lst_env **lst_env, char *old_output, int *index);
 //ft_cmd
 int		ft_cmd(t_cmd **cmd, t__lst_token **tokens);
 void	print_lst_cmd(t_cmd *cmd);
 //
+
+int ft_signal_handeler(void);
 //libft
 int		index_of(char *str, char c);
 int		ft_strlen(const char *str);
@@ -179,7 +184,7 @@ void	*ft_memchr(const void *s, int c, size_t n);
 int		ft_strncmp(const char *s1, const char *s2, size_t n);
 int		ft_memcmp(const void *s1, const void *s2, size_t n);
 char	*ft_strdup(const char *s1);
-char	*ft_strnstr(const char *haystack, const char *needle, size_t len);
+char	*ft_strnstr(const char *haystSPACEk, const char *needle, size_t len);
 int		ft_atoi(const char *str);
 void	*ft_calloc(size_t count, size_t size);
 char	*ft_substr(char const *s, unsigned int start, size_t len);
@@ -202,7 +207,7 @@ t_list	*ft_lstnew(void *content);
 void	ft_lstadd_front(t_list **lst, t_list *new);
 int		ft_lstsize(t_list *lst);
 t_list	*ft_lstlast(t_list *lst);
-void	ft_lstadd_back(t_list **lst, t_list *new);
+void	ft_lstadd_bSPACEk(t_list **lst, t_list *new);
 void	ft_lstdelone(t_list *lst, void (*del)(void*));
 void	ft_lstclear(t_list **lst, void (*del)(void*));
 void	ft_lstiter(t_list *lst, void (*f)(void *));

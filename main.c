@@ -6,7 +6,7 @@
 /*   By: ataoufik <ataoufik@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/24 12:47:51 by ataoufik          #+#    #+#             */
-/*   Updated: 2024/05/03 18:31:57 by ataoufik         ###   ########.fr       */
+/*   Updated: 2024/05/07 20:23:31 by ataoufik         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,12 +29,13 @@ void	init_path_env(t_data *pip,char *env[])
 	pip->outfile = -1;
 }
 
-
 int main(int argc, char *argv[], char **env)
 {
 	char *input;
+	// int	e_status;
 	t_lst_env *lst_env;
 	t_data pip;
+	// atexit(f);
 	lst_env = NULL;
 	pip.env = env;
 	if (argc > 1)
@@ -44,19 +45,19 @@ int main(int argc, char *argv[], char **env)
 	}
 	init_env(&lst_env, env);
 	init_path_env(&pip,pip.env);
-	// int i = 0;
-	// while(pip.env_path[i])
-	// 	printf("%s\n",pip.env_path[i++]);
-
-	// print_lst_env(lst_env);
-	
+	ft_signal_handeler();
 	while (1)
 	{
 		t__lst_token *t = NULL;
 		t_cmd *cmd = NULL;
-		// input = readline(ANSI_COLOR_CY AN "~ " ANSI_COLOR_BLUE "minishell 😎 " ANSI_COLOR_MAGENTA "↪ " ANSI_COLOR_RESET);
-		input = readline("minishell -> 😎 ");
-		if (input == NULL || input[0] == '\0')
+		input = readline(ANSI_COLOR_CYAN "~ " ANSI_COLOR_BLUE "minishell 😎 " ANSI_COLOR_MAGENTA "↪ " ANSI_COLOR_RESET);
+		// input = readline("minishell 😎> ");
+		if (input == NULL)
+		{
+			printf("\b\bexit\n");
+			exit(0);
+		}
+		if (input[0]=='\0')
 			continue;
 		add_history(input);
 		if (ft__lst_tokenize(&t, input) || generate_errors(&t) == 1)
@@ -66,9 +67,8 @@ int main(int argc, char *argv[], char **env)
 		// print__lst_tokens(t);
 		ft_heredoc(&t);
 		ft_cmd(&cmd, &t);
-		print_lst_cmd(cmd);
+		// print_lst_cmd(cmd);
 		ft_chech_excut_cmd(cmd,lst_env,&pip);
-		// sleep(2);  
 		free(input);
 	}
 	return (0);

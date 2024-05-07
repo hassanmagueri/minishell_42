@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expend.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: emagueri <emagueri@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ataoufik <ataoufik@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/01 10:12:12 by emagueri          #+#    #+#             */
-/*   Updated: 2024/05/03 17:54:12 by emagueri         ###   ########.fr       */
+/*   Updated: 2024/05/04 22:05:05 by ataoufik         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,7 +67,7 @@ int ft_expand(t__lst_token **lst_token, t_lst_env **lst_env)
 			parent = cur;
 			next = cur->next;
 			cur->str = ft_get_env_val(lst_env, cur->str + 1);
-			if (cur->str && is_with_spaces(cur->str[0]))
+			if (cur->str && is_with_SPACEs(cur->str[0]))
 			{
 				tmp = ft_new_token(cur->str, cur->type);
 				cur->str = " ";

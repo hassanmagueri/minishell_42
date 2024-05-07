@@ -1,41 +1,14 @@
-# NAME = minishell
-# CC = cc
-# FLAGS = -Wall -Wextra -Werror
-# RM = rm -rf
-
-# SRC =  main.c
-# OBJ_DIR = obj
-
-
-# OBJ = $(addprefix $(OBJ_DIR)/,$(SRC:.c=.o))
-
-# all : $(NAME)
-
-# $(NAME) : $(OBJ)
-# 	$(CC) $(FLAGS) $(OBJ) -o $(NAME)
-
-# $(OBJ_DIR)/%.o : %.c minishell.h | $(OBJ_DIR)
-# 	$(CC) $(FLAGS) -c $< -o $@
-
-# $(OBJ_DIR):
-# 	mkdir -p $(OBJ_DIR)
-
-# clean:
-# 	$(RM) $(OBJ_DIR)
-
-# fclean: clean
-# 	$(RM) $(NAME)
-
-# re: fclean all
+READLINE_INCLUDE = $(shell brew --prefix readline)/include
+READLINE_LIB = $(shell brew --prefix readline)/lib
 
 CC = cc -g -fsanitize=address
-CFLAGS = #-Wall -Wextra -Werror 
+# CFLAGS = #-Wall -Wextra -Werror 
+CFLAGS = -g -fsanitize=address -I$(READLINE_INCLUDE)  # Add Readline include path
+LDFLAGS = -L$(READLINE_LIB) -lreadline 
 SRC_DIR = .
 OBJ_DIR = obj
 
-# SRC_FILES = $(wildcard *.c)
-SRC_FILES = ft_strnjoin.c  \
-			main.c \
+SRC_FILES = ft_strnjoin.c main.c \
 
 
 OBJ_FILES = $(addprefix $(OBJ_DIR)/, $(SRC_FILES:.c=.o))
@@ -62,7 +35,7 @@ all: $(EXECUTABLE)
 # 	echo $(OBJ_FILES)
 
 $(EXECUTABLE): $(LIBFT_OBJ_FILES) $(BUILT_OBJ_FILES) $(OBJ_FILES) $(PARS_OBJ_FILES) $(EXECU_OBJ_FILES)
-	$(CC) $(CFLAGS) $^ -o $@ -lreadline
+	$(CC) $(CFLAGS) $^ -o $@ $(LDFLAGS)
 
 $(OBJ_DIR)/%.o: $(SRC_DIR)/%.c | $(OBJ_DIR)
 	$(CC) $(CFLAGS) -c $< -o $@
