@@ -6,7 +6,7 @@
 /*   By: emagueri <emagueri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/24 12:47:51 by ataoufik          #+#    #+#             */
-/*   Updated: 2024/05/05 16:53:33 by emagueri         ###   ########.fr       */
+/*   Updated: 2024/05/07 14:28:22 by emagueri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,6 @@ void	init_path_env(t_data *pip,char *env[])
 	pip->infile = -1;
 	pip->outfile = -1;
 }
-
 
 int main(int argc, char *argv[], char **env)
 {
@@ -65,9 +64,10 @@ int main(int argc, char *argv[], char **env)
 		printf("----------------------\n");
 		ft_expand(&t, &lst_env);
 		ft_join(&t);
-		print__lst_tokens(t);
+		
 		ft_heredoc(&t, &lst_env);
-		ft_cmd(&cmd, &t);
+		print__lst_tokens(t);
+		ft_cmd(&cmd, &t, pip.env);
 		print_lst_cmd(&cmd);
 		ft_chech_excut_cmd(cmd, lst_env, &pip); 
 		if (input)
@@ -75,3 +75,6 @@ int main(int argc, char *argv[], char **env)
 	}
 	return (0);
 }
+
+
+//[export] [var=][value] [var=][value] [var=][value]

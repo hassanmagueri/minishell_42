@@ -6,7 +6,7 @@
 /*   By: emagueri <emagueri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/17 11:22:57 by emagueri          #+#    #+#             */
-/*   Updated: 2024/05/05 12:33:47 by emagueri         ###   ########.fr       */
+/*   Updated: 2024/05/08 14:52:10 by emagueri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,6 +80,7 @@ typedef struct s_cmd
     char			**cmd;
     struct s_cmd	*next;
     struct s_redir	*redir;
+	int				*ignore_white_spaces;
 }    t_cmd;
 
 typedef struct s_token //| > < >> << "" '' $VAR SPACE 
@@ -159,7 +160,7 @@ int		ft_exit(t_cmd   *args);
 int		is_with_spaces(int c);
 char	*ft_handle_var(t_lst_env **lst_env, char *old_output, int *index);
 //ft_cmd
-int		ft_cmd(t_cmd **cmd, t__lst_token **tokens);
+int		ft_cmd(t_cmd **cmd, t__lst_token **tokens, char **env_path);
 void	print_lst_cmd(t_cmd **cmd);
 //
 //libft

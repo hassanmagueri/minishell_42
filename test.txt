@@ -1,0 +1,15 @@
+cat << a ls
+export cmd= ""ls
+cat << ho"la"
+
+----------------------
+bash-3.2$ echo "        -la"
+	-la
+bash-3.2$ echo ""$la
+----------------------
+export cmd=$la
+
+
+
+---------------
+echo "$l"a

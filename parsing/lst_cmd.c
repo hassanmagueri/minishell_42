@@ -6,7 +6,7 @@
 /*   By: emagueri <emagueri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/20 10:43:06 by emagueri          #+#    #+#             */
-/*   Updated: 2024/05/05 19:37:12 by emagueri         ###   ########.fr       */
+/*   Updated: 2024/05/08 14:52:53 by emagueri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,13 +45,14 @@ int ft_add_back_redir(t_redir **redirs, t_redir *cmd)
 	return (0);
 }
 
-t_cmd	*ft_new_cmd(char **cmd, t_redir *redir)
+t_cmd	*ft_new_cmd(char **cmd, t_redir *redir, int *ignore_white_spaces)
 {
 	t_cmd *cmds;
 
 	cmds = malloc(sizeof(t_cmd));
 	cmds->cmd = cmd;
 	cmds->redir = redir;
+	cmds->ignore_white_spaces = ignore_white_spaces;
 	cmds->next = NULL;
 	return cmds;
 }
@@ -74,7 +75,7 @@ int ft_add_back_cmd(t_cmd **cmds, t_cmd *cmd)
 	return (0);
 }
 
-char	**ft_prepare_cmd(t__lst_token **tokens, t_redir **redirs)
+char	**ft_prepare_cmd(t__lst_token **tokens, t_redir **redirs, int **ignore_white_spaces)
 {
 	char **cmd;
 	t__lst_token *last_token;
@@ -103,6 +104,7 @@ char	**ft_prepare_cmd(t__lst_token **tokens, t_redir **redirs)
 		last_token = last_token->next;
 	}
 	cmd = malloc(sizeof(char *) * (len + 1));
+	*ignore_white_spaces = malloc(sizeof(int) * (len + 1));
 	cur = *tokens;
 	i = 0;
 	while (cur && cur->type != PIPE)
@@ -124,6 +126,9 @@ char	**ft_prepare_cmd(t__lst_token **tokens, t_redir **redirs)
 				cur = cur->next;
 			continue;
 		}
+		(*ignore_white_spaces)[i] = 1;
+		if (cur->type == DOUB_Q)
+			(*ignore_white_spaces)[i] = 0;
 		cmd[i++] = cur->str;
 		cur = cur->next;
 	}
@@ -217,23 +222,17 @@ int reset_cmd_arr(t_cmd *cmd_node, int *indexes, int len_indexes, int len_arr_st
 	new_str_arr = malloc(sizeof(char *) * (len_indexes + len_arr_str + 1));
 	while (str_arr[i])
 	{
-		// if (i_count)
 		if (ft_is_this_arr(indexes, len_indexes, i))
 		{
 			i_count++;
-			printf(" in reset arr : [%s]\n", str_arr[i]);
-			printf("i_count : [%d]\n", i_count);
 			char **res = ft_split(str_arr[i], ' ');
 			new_str_arr[i + i_count - 1] = res[0];
 			new_str_arr[i + i_count] = res[1];
-			// printf("res1 %s\n", res[0]);
-			// printf("res2 %s\n", res[1]);
 		}
 		else
 			new_str_arr[i + i_count] = str_arr[i];
 		i++;
 	}
-	// printf("last index {%d}\n", i + i_count);
 	new_str_arr[i + i_count] = NULL;
 	cmd_node->cmd = new_str_arr;
 	return 0;
@@ -254,34 +253,54 @@ int ft_split_array(t_cmd **lst_cmd)
 		len_indexes = 0;
 		indexes = NULL;
 		str_arr = cur->cmd;
+		if (str_arr && ft_strchr(str_arr[i], ' '))
+			ft_add_int(&indexes, &len_indexes, i);
 		while (str_arr[i])
-		{
-			if (ft_strchr(str_arr[i], ' '))
-				ft_add_int(&indexes, &len_indexes, i);
 			i++;
-		}
 		if (len_indexes > 0)
 			reset_cmd_arr(cur, indexes, len_indexes, i);
+		cur = cur->next;
+	}
+	cur = *lst_cmd;
+	while (cur)
+	{
+		i = 0;
+		while (cur->cmd[i])
+		{
+			printf("i = {%d}\n", i);
+			printf("cur->ignore_white_spaces[%d] = %d\n", i, cur->ignore_white_spaces[i]);
+			if ((ft_strncmp("echo", cur->cmd[0], ft_strlen("echo") + 1) == 0 && cur->ignore_white_spaces[i]) || i != 0)
+			{
+				printf("it should ignore withe spaces \n");
+				cur->cmd[i] = ft_strtrim(cur->cmd[i], " \t\n\v\r\f");
+			}
+			i++;
+		}
 		cur = cur->next;
 	}
 	return 0;
 }
 
-int ft_cmd(t_cmd **lst_cmd, t__lst_token **tokens)
+int ft_cmd(t_cmd **lst_cmd, t__lst_token **tokens, char **env_path)
 {
 	char **cmd_str;
 	int	i = 0;
 	t_redir *lst_redir;
-	
+	int *ignore_white_spaces;
+
 	while (*tokens)
 	{
+		
 		lst_redir = malloc(sizeof(t_redir *));
 		lst_redir = NULL;
-		cmd_str = ft_prepare_cmd(tokens, &lst_redir);
+		cmd_str = ft_prepare_cmd(tokens, &lst_redir, &ignore_white_spaces);
 		t_cmd *cc = NULL;
-		cc = ft_new_cmd(cmd_str, lst_redir);
+		cc = ft_new_cmd(cmd_str, lst_redir, ignore_white_spaces);
 		ft_add_back_cmd(lst_cmd, cc);
-		// print_lst_redir(cc->redir);
+		// if (ft_check_buitin_cmd(cc) == 0 && find_path_executable(env_path, cmd_str[0]) == NULL)
+		// 	return 0;
+			// printf(ANSI_COLOR_RED"%s : command not found\n"ANSI_COLOR_RESET, cmd_str[0]);
+		print_lst_redir(cc->redir);
 		i++;
 	}
 	print_lst_cmd(lst_cmd);
