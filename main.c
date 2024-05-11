@@ -6,36 +6,20 @@
 /*   By: ataoufik <ataoufik@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/24 12:47:51 by ataoufik          #+#    #+#             */
-/*   Updated: 2024/05/07 20:23:31 by ataoufik         ###   ########.fr       */
+/*   Updated: 2024/05/11 04:03:37 by ataoufik         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 
 #include "minishell.h"
 
-void	init_path_env(t_data *pip,char *env[])
-{
-	char *str;
-	while (env && *env && ft_strncmp(*env, "PATH=", 5) != 0)
-        env++;
-	if (*env == NULL)
-		printf("Path not found");
-	*env += 5;
-	// printf("%s\n",*pip->env);
-	pip->env_path = ft_split(*env, ':');
-	if (!pip->env_path)
-		printf("Invalid argument");
-	pip->infile = -1;
-	pip->outfile = -1;
-}
-
 int main(int argc, char *argv[], char **env)
 {
 	char *input;
 	// int	e_status;
 	t_lst_env *lst_env;
+	t_lst_env *last_lst;
 	t_data pip;
-	// atexit(f);
 	lst_env = NULL;
 	pip.env = env;
 	if (argc > 1)
@@ -44,17 +28,20 @@ int main(int argc, char *argv[], char **env)
 		return (1);
 	}
 	init_env(&lst_env, env);
-	init_path_env(&pip,pip.env);
-	ft_signal_handeler();
+	// init_path_env(&pip,lst_env);
+	init_path_env(&pip,lst_env,env);
+	signal(SIGINT, handle_c_slash_ctrol);
+    signal(SIGQUIT, handle_c_slash_ctrol);
+	rl_catch_signals = 0;
 	while (1)
 	{
 		t__lst_token *t = NULL;
 		t_cmd *cmd = NULL;
-		input = readline(ANSI_COLOR_CYAN "~ " ANSI_COLOR_BLUE "minishell 😎 " ANSI_COLOR_MAGENTA "↪ " ANSI_COLOR_RESET);
-		// input = readline("minishell 😎> ");
+		// input = readline(ANSI_COLOR_CYAN "~ " ANSI_COLOR_BLUE "minishell 😎 " ANSI_COLOR_MAGENTA "↪ " ANSI_COLOR_RESET);
+		input = readline("minishell 😎> ");
 		if (input == NULL)
 		{
-			printf("\b\bexit\n");
+			printf("exit\n");
 			exit(0);
 		}
 		if (input[0]=='\0')
@@ -73,8 +60,3 @@ int main(int argc, char *argv[], char **env)
 	}
 	return (0);
 }
-
-
-// path = "bui/";
-// path += cmd;
-// path += .c;
