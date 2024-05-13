@@ -6,7 +6,7 @@
 /*   By: emagueri <emagueri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/20 12:22:27 by emagueri          #+#    #+#             */
-/*   Updated: 2024/05/12 18:28:05 by emagueri         ###   ########.fr       */
+/*   Updated: 2024/05/13 18:19:37 by emagueri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ int ft_join(t__lst_token **lst_token)
 	while (cur)
 	{
 		cur_cmd = cur;
-		while (cur_cmd && cur_cmd->type != SPACE && cur_cmd->type != PIPE && cur_cmd->type > OUTPUT)
+		while (cur_cmd && cur_cmd->type != WSP && cur_cmd->type != PIPE && cur_cmd->type > OUTPUT)
 		{
 			if (cur_cmd->type == DOUB_Q)
 			{
@@ -59,12 +59,12 @@ int ft_join(t__lst_token **lst_token)
 // 	// ft_lst_token_add_back(&token, ft_new_token("\"s\"", DOUB_Q));
 // 	// ft_lst_token_add_back(&token, ft_new_token(">", OUTPUT));
 // 	// ft_lst_token_add_back(&token, ft_new_token("ls", WORD));
-// 	// ft_lst_token_add_back(&token, ft_new_token("space", SPACE));
+// 	// ft_lst_token_add_back(&token, ft_new_token("WSP", WSP));
 // 	ft_lst_token_add_back(&token, ft_new_token("<<", HEARDOC));
 // 	ft_lst_token_add_back(&token, ft_new_token("", WORD));
 // 	ft_lst_token_add_back(&token, ft_new_token("EOF", DOUB_Q));
 // 	// ft_lst_token_add_back(&token, ft_new_token("\"s\"", DOUB_Q));
-// 	// ft_lst_token_add_back(&token, ft_new_token("space", SPACE));
+// 	// ft_lst_token_add_back(&token, ft_new_token("WSP", WSP));
 // 	// ft_lst_token_add_back(&token, ft_new_token("-a", WORD));
 // 	ft_join(&token);
 // 	print__lst_tokens(token);

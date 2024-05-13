@@ -6,7 +6,7 @@
 /*   By: emagueri <emagueri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/22 22:34:15 by emagueri          #+#    #+#             */
-/*   Updated: 2024/05/13 13:05:05 by emagueri         ###   ########.fr       */
+/*   Updated: 2024/05/13 18:19:21 by emagueri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@
 // 		if (token == NULL)
 // 			break;
 // 		limiter = token->next->str;
-// 		if (token->next->type == SPACE && token->next->next)
+// 		if (token->next->type == WSP && token->next->next)
 // 			limiter = token->next->next->str;
 // 		fd = -1;
 // 		n = 0;
@@ -57,8 +57,8 @@
 // 			// token->type = INPUT;
 // 			token = token->next;
 // 			// if (token->next)
-// 			// 	token->next->next->type = SPACE;
-// 			if (token->next && token->next->type == SPACE && token->next->next)
+// 			// 	token->next->next->type = WSP;
+// 			if (token->next && token->next->type == WSP && token->next->next)
 // 				token->next = token->next->next->next;
 // 			printf("str :%s\n", token->str);
 // 		}
@@ -73,7 +73,7 @@ t__lst_token *ft_next_token(t__lst_token **token)
 	t__lst_token *cur;
 
 	cur = (*token)->next;
-	while (cur && cur->type == SPACE)
+	while (cur && cur->type == WSP)
 		cur = cur->next;
 	return cur;
 }
@@ -140,12 +140,12 @@ int ft_heredoc(t__lst_token **lst_token, t_lst_env **lst_env)
 		if (token == NULL)
 			break;
 		next_token = token->next;
-		if (next_token && next_token->type == SPACE)
+		if (next_token && next_token->type == WSP)
 			next_token = next_token->next;
 		if (next_token == NULL)
 			break;
 		limiter = token->next->str;
-		if (token->next->type == SPACE && token->next->next)
+		if (token->next->type == WSP && token->next->next)
 			limiter = token->next->next->str;
 		fd = -1;
 		buffer = "";

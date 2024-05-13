@@ -6,7 +6,7 @@
 /*   By: emagueri <emagueri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/01 10:12:12 by emagueri          #+#    #+#             */
-/*   Updated: 2024/05/11 03:06:52 by emagueri         ###   ########.fr       */
+/*   Updated: 2024/05/13 18:19:05 by emagueri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,7 +73,7 @@ int ft_expand(t__lst_token **lst_token, t_lst_env **lst_env)
 			{
 				tmp = ft_new_token(cur->str, cur->type);
 				cur->str = " ";
-				cur->type = SPACE;
+				cur->type = WSP;
 				cur->next = tmp;
 				cur = cur->next;
 			}
@@ -92,7 +92,7 @@ int ft_expand(t__lst_token **lst_token, t_lst_env **lst_env)
 				// printf("var = %s\n", cur->str);
 				if (value_twod_array[i] != 0)
 				{
-					cur->next = ft_new_token(" ", SPACE);
+					cur->next = ft_new_token(" ", WSP);
 					cur = cur->next;
 				}
 				
@@ -106,7 +106,7 @@ int ft_expand(t__lst_token **lst_token, t_lst_env **lst_env)
 						cur = cur->next;
 						continue;
 					}
-					cur->next->next = ft_new_token(" ", SPACE);
+					cur->next->next = ft_new_token(" ", WSP);
 					cur = cur->next->next;
 				}
 				cur->next = next;

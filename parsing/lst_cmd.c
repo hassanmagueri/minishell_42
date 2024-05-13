@@ -6,7 +6,7 @@
 /*   By: emagueri <emagueri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/20 10:43:06 by emagueri          #+#    #+#             */
-/*   Updated: 2024/05/13 11:53:51 by emagueri         ###   ########.fr       */
+/*   Updated: 2024/05/13 18:20:18 by emagueri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,7 +84,7 @@ char	**ft_prepare_cmd(t__lst_token **tokens, t_redir **redirs)
 	last_token = *tokens;
 	while (last_token && last_token->type != PIPE )
 	{
-		if (last_token->type == SPACE)
+		if (last_token->type == WSP)
 		{
 			last_token = last_token->next;
 			continue;
@@ -92,7 +92,7 @@ char	**ft_prepare_cmd(t__lst_token **tokens, t_redir **redirs)
 		else if (last_token->type <= OUTPUT)
 		{
 			last_token = last_token->next;
-			if (last_token && last_token->type == SPACE)
+			if (last_token && last_token->type == WSP)
 				last_token = last_token->next;
 			if (last_token)
 				last_token = last_token->next;
@@ -107,7 +107,7 @@ char	**ft_prepare_cmd(t__lst_token **tokens, t_redir **redirs)
 	i = 0;
 	while (cur && cur->type != PIPE)
 	{
-		if (cur->type == SPACE)
+		if (cur->type == WSP)
 		{
 			cur = cur->next;
 			continue;
@@ -117,7 +117,7 @@ char	**ft_prepare_cmd(t__lst_token **tokens, t_redir **redirs)
 			t_type type;
 			type = cur->type;
 			cur = cur->next;
-			if (cur && cur->type == SPACE)
+			if (cur && cur->type == WSP)
 				cur = cur->next;
 			ft_add_back_redir(redirs, ft_new_redir(cur->str, type));
 			if (cur)

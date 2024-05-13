@@ -6,7 +6,7 @@
 /*   By: emagueri <emagueri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/17 15:08:30 by emagueri          #+#    #+#             */
-/*   Updated: 2024/05/13 11:48:01 by emagueri         ###   ########.fr       */
+/*   Updated: 2024/05/13 18:18:53 by emagueri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,13 +46,13 @@ int generate_errors(t__lst_token **tokens)
 	while (cur)
 	{
 		next_node = cur->next;
-		if (next_node && next_node->type == SPACE)
+		if (next_node && next_node->type == WSP)
 			next_node = next_node->next;
 		if (is_redirection(cur->type))
 		{
-			// if (cur->next == NULL || (cur->next->type == SPACE && cur->next->next == NULL))
+			// if (cur->next == NULL || (cur->next->type == WSP && cur->next->next == NULL))
 			// 	return print_error(NULL);
-			// else if ( cur->next->type == SPACE && cur->next->next &&
+			// else if ( cur->next->type == WSP && cur->next->next &&
 			// 	(cur->next->next->type == PIPE || is_redirection(cur->next->next->type)))
 			// 	return (print_error(NULL));
 			// if (cur->next->type == PIPE || is_redirection(cur->next->type))
@@ -64,14 +64,14 @@ int generate_errors(t__lst_token **tokens)
 				return (print_error(NULL));
 			// if (cur->next->type == PIPE || is_redirection(cur->next->type))
 			// 	return print_error(NULL);
-			// else if (cur->next->type == SPACE && cur->next->next && 
+			// else if (cur->next->type == WSP && cur->next->next && 
 			// 		(cur->next->next->type == PIPE || is_redirection(cur->next->next->type)))
 				// return print_error(NULL);
 		}
 		// else if (cur->type == PIPE && ((cur->next && cur->next->type == PIPE))  )
 		else if (cur->type == PIPE && next_node && next_node->type == PIPE)
 			return( print_error(NULL));
-		if (cur->type != SPACE)
+		if (cur->type != WSP)
 			prev = cur;
 		cur = cur->next;
 	}

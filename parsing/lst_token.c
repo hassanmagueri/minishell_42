@@ -6,7 +6,7 @@
 /*   By: emagueri <emagueri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/01 22:43:35 by emagueri          #+#    #+#             */
-/*   Updated: 2024/05/12 22:23:09 by emagueri         ###   ########.fr       */
+/*   Updated: 2024/05/13 18:20:31 by emagueri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ t__lst_token *ft_get_next_token(t__lst_token **lst_token, t__lst_token *node)
 	cur = node;
 	while (cur)
 	{
-		if (cur->type == SPACE)
+		if (cur->type == WSP)
 			return (cur);
 		cur = cur->next;
 	}
@@ -83,8 +83,8 @@ void print__lst_tokens(t__lst_token *lst)
 		printf("%s\t", lst->str);
 		if (lst->type == WORD)
 			printf("WORD\n");
-		else if (lst->type == SPACE)
-			printf("SPACE\n");
+		else if (lst->type == WSP)
+			printf("WSP\n");
 		else if (lst->type == APPEND)
 			printf("APPEND\n");
 		else if (lst->type == HEARDOC)

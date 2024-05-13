@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ataoufik <ataoufik@student.42.fr>          +#+  +:+       +#+        */
+/*   By: emagueri <emagueri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/17 11:22:57 by emagueri          #+#    #+#             */
-/*   Updated: 2024/05/13 18:00:48 by ataoufik         ###   ########.fr       */
+/*   Updated: 2024/05/13 18:18:03 by emagueri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,7 +60,7 @@ typedef enum e_type
 	INPUT,// < 
 	OUTPUT,// >
 	WORD,
-	SPACE,
+	WSP,
 	VAR,//$
 	PIPE,//|
 	SING_Q,//""
@@ -102,7 +102,7 @@ typedef struct s_cmd
     struct s_cmd *next;
 }    t_cmd;
 
-typedef struct s_token //| > < >> << "" '' $VAR SPACE 
+typedef struct s_token //| > < >> << "" '' $VAR WSP 
 {
 	char			*str;
 	t_type			type;
