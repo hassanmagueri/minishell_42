@@ -6,7 +6,7 @@
 /*   By: ataoufik <ataoufik@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/21 14:42:31 by ataoufik          #+#    #+#             */
-/*   Updated: 2024/04/29 12:48:32 by ataoufik         ###   ########.fr       */
+/*   Updated: 2024/05/13 15:39:57 by ataoufik         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,8 +35,8 @@ int ft_parsing_unset(char *str)
             return (2);
         if (str[i] == '!')
             return (i);
-        else if (ft_isalnum(str[i]) != 1)
-            return (1);
+        // else if (ft_isalnum(str[i]) != 1)
+        //     return (1);
         i++;
     }
     return(0);     
@@ -44,20 +44,12 @@ int ft_parsing_unset(char *str)
 int ft_unset(t_lst_env *lst, t_cmd *args)
 {
     t_lst_env   *cur;
-    // t_lst_env   *cur1;
+    int status = 0;
     t_lst_env   *prev;
     t_lst_env   *to_free;
     int i;
 
     i = 1;
-    // int j = 0;
-    // cur1 = lst; 
-	// while(cur1)
-    // {
-	//  	printf(" %d  %s\n",j++,cur1->key);
-    //     cur1 = cur1->next;
-    // }
-    // printf("---------------\n\n\n");
     while (args->cmd[i] != NULL)
     {
         cur = lst;
@@ -67,14 +59,16 @@ int ft_unset(t_lst_env *lst, t_cmd *args)
             if (ft_parsing_unset(args->cmd[i]) == 2)
             {
                 printf("unset: -%c: invalid option\n",args->cmd[i][1]);
+                status = 2;
                 break;
             }
-            else if (ft_parsing_unset(args->cmd[i]) != 2)
+            else if (ft_parsing_unset(args->cmd[i]) > 2)
             {
                 printf("!%c: event not found\n",args->cmd[i][ft_parsing_unset(args->cmd[i]) + 1]);
                 break;
             }
             printf("unset: `%s': not a valid identifier\n",args->cmd[i]);
+            status = 1;
             i++;
             continue;
         }
@@ -87,30 +81,15 @@ int ft_unset(t_lst_env *lst, t_cmd *args)
                     prev->next= cur->next;
                 else
                     lst = cur->next;
-                // printf("to_free ------>    %s\n",to_free->key);
-                // ft_free_node(to_free);//leaks
-                // printf("to_free ------>    %s\n",to_free->key);
-
                 cur = cur->next;
             }
             else
             {
                 prev = cur;
-                // printf("prev ------>    %s\n",prev->key);
                 cur=cur->next;
             }
         }
-        // printf("------%s------\n",args->cmd[i]);
         i++;
     }
-    // t_lst_env   *cur1;
-    // cur1 = lst;
-    // j = 0;
-	// while(cur1)
-    // {
-	//  	printf(" %d  %s\n",j++,cur1->key);
-    //     cur1 = cur1->next;
-        
-    // }
-    return (0);
+    return (status);
 }

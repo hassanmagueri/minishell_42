@@ -6,7 +6,7 @@
 /*   By: ataoufik <ataoufik@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/17 11:18:33 by ataoufik          #+#    #+#             */
-/*   Updated: 2024/05/08 15:04:55 by ataoufik         ###   ########.fr       */
+/*   Updated: 2024/05/13 16:22:46 by ataoufik         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 void	ft_lst_cmd(t_cmd	*command,t_lst_env *lst,t_data *pip)
 {
 	t_cmd	*cur;
+	int status;
 	cur = command;
 	int input_fd = -1;
 
@@ -33,8 +34,17 @@ void	ft_lst_cmd(t_cmd	*command,t_lst_env *lst,t_data *pip)
 	pip->first = 0;
 	pip->last = 1;
 	ft_excut_child(cur,pip,lst,&input_fd);
-	while (wait(NULL) != -1)
+	while (wait(&status) != -1)
 		;
+	// if (WIFEXITED(status))
+    //     printf("status=%d\n", WEXITSTATUS(status));
+	// else if (WIFSIGNALED(status))
+    //     printf("killed by signal %d\n", WTERMSIG(status)+ 128);
+	if (WIFEXITED(status))
+        cur->exit_status = WEXITSTATUS(status);
+	else if (WIFSIGNALED(status))
+        cur->exit_status = WTERMSIG(status)+ 128;
+    printf("status=%d\n", cur->exit_status);
 }
 
 void	ft_chech_excut_cmd(t_cmd	*command,t_lst_env *lst,t_data *pip)

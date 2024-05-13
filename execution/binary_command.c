@@ -6,7 +6,7 @@
 /*   By: ataoufik <ataoufik@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/01 16:38:40 by ataoufik          #+#    #+#             */
-/*   Updated: 2024/05/11 04:04:04 by ataoufik         ###   ########.fr       */
+/*   Updated: 2024/05/12 18:12:47 by ataoufik         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,7 +62,7 @@ int	ft_execute_command(t_data *pip,t_lst_env *lst,char **cmd)
 	if (command == NULL)
 	{
 		printf("%s :command not found\n",cmd[0]);
-		return(127);
+		exit(127);
 	}
 	execve(command, cmd, pip->env);
 	return (0);

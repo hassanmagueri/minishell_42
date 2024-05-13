@@ -6,7 +6,7 @@
 /*   By: ataoufik <ataoufik@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/24 12:47:51 by ataoufik          #+#    #+#             */
-/*   Updated: 2024/05/11 04:03:37 by ataoufik         ###   ########.fr       */
+/*   Updated: 2024/05/13 16:10:42 by ataoufik         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,8 +37,8 @@ int main(int argc, char *argv[], char **env)
 	{
 		t__lst_token *t = NULL;
 		t_cmd *cmd = NULL;
-		// input = readline(ANSI_COLOR_CYAN "~ " ANSI_COLOR_BLUE "minishell 😎 " ANSI_COLOR_MAGENTA "↪ " ANSI_COLOR_RESET);
-		input = readline("minishell 😎> ");
+		input = readline(ANSI_COLOR_CYAN "~ " ANSI_COLOR_BLUE "minishell 😎 " ANSI_COLOR_MAGENTA "↪ " ANSI_COLOR_RESET);
+		// input = readline("minishell 😎> ");
 		if (input == NULL)
 		{
 			printf("exit\n");
@@ -49,12 +49,12 @@ int main(int argc, char *argv[], char **env)
 		add_history(input);
 		if (ft__lst_tokenize(&t, input) || generate_errors(&t) == 1)
 			continue;
+		print__lst_tokens(t);
 		ft_expand(&t, &lst_env);
 		ft_join(&t);
-		// print__lst_tokens(t);
 		ft_heredoc(&t);
 		ft_cmd(&cmd, &t);
-		// print_lst_cmd(cmd);
+		print_lst_cmd(cmd);
 		ft_chech_excut_cmd(cmd,lst_env,&pip);
 		free(input);
 	}

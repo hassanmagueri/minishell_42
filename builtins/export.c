@@ -134,11 +134,14 @@ int	ft_prasing_export(char *str)
 int	ft_export(t_lst_env *lst_env, t_cmd *str)
 {
 	int		len;
+	int		status;
+	status = 0;
 	char	*value;
 	char	*key;
 	int i;
 	i = 1;
-
+	if (lst_env==NULL)
+		return 1;
 	if (str->cmd[i]== NULL)
 		print_lst_order_alpha(&lst_env);
 	else
@@ -159,6 +162,7 @@ int	ft_export(t_lst_env *lst_env, t_cmd *str)
 			if (ft_prasing_export(key) == 1)
 			{
 				printf("export: `%s': not a valid identifier\n",str->cmd[i]);
+				status = 1;
 				i++;
 				continue;
 			}
@@ -174,5 +178,5 @@ int	ft_export(t_lst_env *lst_env, t_cmd *str)
 			i++;
 		}
 	}
-	return (1);
+	return (status);
 }

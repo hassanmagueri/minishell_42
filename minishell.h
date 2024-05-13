@@ -6,7 +6,7 @@
 /*   By: ataoufik <ataoufik@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/17 11:22:57 by emagueri          #+#    #+#             */
-/*   Updated: 2024/05/11 01:07:03 by ataoufik         ###   ########.fr       */
+/*   Updated: 2024/05/13 15:49:58 by ataoufik         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,7 @@ typedef struct s_data
 	int		tub[2];
 	int		infile;
 	int		outfile;
-	pid_t	pid;
+	int		tab_pid[100];
 	char	**env_path;
 }	t_data;
 
@@ -80,6 +80,7 @@ typedef struct s_redir
 typedef struct s_cmd
 {
     char **cmd;
+	int	exit_status;
     struct s_redir *redir;
     struct s_cmd *next;
 }    t_cmd;
@@ -152,13 +153,14 @@ void    handle_c_slash_ctrol(int signal);
 void	init_path_env(t_data *pip,t_lst_env *lst,char **env);
 // void	init_path_env(t_data *pip,t_lst_env *lst);
 //
+int	ft_cmd_builtin_child(t_lst_env *lst, t_cmd *args, t_data *pip);
 // builtin
 int		ft_cd(t_lst_env *lst,t_cmd  *args);
 int		ft_export(t_lst_env *lst_env, t_cmd *str);
 int		ft_echo(t_cmd *cmd);
 int		ft_pwd(void);
 int		ft_unset(t_lst_env *lst, t_cmd *args);
-void	ft_env(t_lst_env *lst,t_cmd *args);
+int	ft_env(t_lst_env *lst,t_cmd *args);
 int		ft_exit(t_cmd   *args);
 //
 int		is_with_SPACEs(int c);

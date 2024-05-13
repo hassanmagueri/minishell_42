@@ -6,7 +6,7 @@
 /*   By: ataoufik <ataoufik@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/21 19:18:53 by ataoufik          #+#    #+#             */
-/*   Updated: 2024/05/07 19:50:51 by ataoufik         ###   ########.fr       */
+/*   Updated: 2024/05/12 21:25:37 by ataoufik         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -135,14 +135,19 @@ int    ft_cd(t_lst_env *lst,t_cmd  *args)
 	char	*pwd;
 	char	*oldpwd;
 	char cmd[1024];
+	int	status = 0;
 	char **str;
-	
+	status = 0;
 	pwd = getcwd(cmd, sizeof(cmd));
 	oldpwd = pwd;
-	if (args->cmd[1]!=NULL&&args->cmd[1][0] == '-' && args->cmd[1][1] == '\0')
+	if (args->cmd[1]!= NULL && args->cmd[1][0] == '-' && args->cmd[1][1] == '\0')
 		ft_chdir_oldpwd(lst);
-	else if(args->cmd[1]!=NULL&&args->cmd[1][0] == '-' && args->cmd[1][1] != '\0')
+	else if(args->cmd[1]!=NULL && args->cmd[1][0] == '-' && args->cmd[1][1] != '\0')
+	{
 		printf("cd: -%c: invalid option\n",args->cmd[1][1]);
+		status =1;
+		
+	}
 	else
 	{
 		str = ft_split(args->cmd[1], '/');
@@ -153,6 +158,6 @@ int    ft_cd(t_lst_env *lst,t_cmd  *args)
 		else
 			ft_lst_add_back_env(&lst, ft_new_env("OLDPWD", oldpwd));
 	}
-	return (0);
+	return (status);
 }
 
