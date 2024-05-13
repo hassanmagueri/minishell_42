@@ -6,7 +6,7 @@
 /*   By: ataoufik <ataoufik@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/01 16:38:40 by ataoufik          #+#    #+#             */
-/*   Updated: 2024/05/12 18:12:47 by ataoufik         ###   ########.fr       */
+/*   Updated: 2024/05/13 18:08:18 by ataoufik         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ void	init_path_env(t_data *pip,t_lst_env *lst,char **env)
 	pip->env = env;
 	str = ft_get_env_val(&lst, "PATH");
 	// printf("str   ->   %s\n",str);
-	pip->env_path = ft_split(str, ':');
+	pip->env_path = ft_split(str, ':', ALLOC);
 	if (!pip->env_path)
 		printf("Invalid argument\n");
 	pip->infile = -1;
@@ -40,8 +40,8 @@ char	*find_path_executable(char **env_path, char *cmd)
 		return (cmd);
 	while (env_path[i])
 	{
-		str = ft_strjoin(env_path[i], "/");
-		path = ft_strjoin(str, cmd);
+		str = ft_strjoin(env_path[i], "/", ALLOC);
+		path = ft_strjoin(str, cmd, ALLOC);
 		free(str);
 		if (access(path, F_OK) == 0 && access(path, X_OK) == 0)
 			return (path);
@@ -54,11 +54,7 @@ char	*find_path_executable(char **env_path, char *cmd)
 int	ft_execute_command(t_data *pip,t_lst_env *lst,char **cmd)
 {
 	char *command;
-	// init_path_env(pip,lst);
 	command = find_path_executable(pip->env_path, cmd[0]);
-	// int i = 0;
-	// while(pip->env_path[i])
-	//  	printf("%s\n",pip->env_path[i++]);
 	if (command == NULL)
 	{
 		printf("%s :command not found\n",cmd[0]);
@@ -66,6 +62,4 @@ int	ft_execute_command(t_data *pip,t_lst_env *lst,char **cmd)
 	}
 	execve(command, cmd, pip->env);
 	return (0);
-	// free_2d_arr(cmd);
-	// free(command);
 }

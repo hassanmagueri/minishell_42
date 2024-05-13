@@ -103,7 +103,7 @@ void	ft_add_val(t_lst_env	*lst,char *key ,char *val)
 	{
 		if (ft_strncmp(cur->key,key,ft_strlen(key))==0)
 		{
-			cur->value = ft_strjoin(cur->value, val);
+			cur->value = ft_strjoin(cur->value, val, ALLOC_ENV);
 			break;
 		}
 		cur = cur->next;
@@ -151,13 +151,13 @@ int	ft_export(t_lst_env *lst_env, t_cmd *str)
 			len = index_key(str->cmd[i], '=');
 			if (len != -1)
 			{
-				key = ft_substr(str->cmd[i], 0, len);
+				key = ft_substr(str->cmd[i], 0, len, ALLOC_ENV);
 				value = ft_strchr(str->cmd[i], '=') + 1;
 			}
 			else
 			{
-				key = ft_strdup(str->cmd[i]);
-				value = ft_strdup(NULL);
+				key = ft_strdup(str->cmd[i], ALLOC_ENV);
+				value = ft_strdup(NULL, ALLOC_ENV);
 			}
 			if (ft_prasing_export(key) == 1)
 			{

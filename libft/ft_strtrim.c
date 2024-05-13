@@ -6,13 +6,13 @@
 /*   By: emagueri <emagueri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/07 17:16:45 by emagueri          #+#    #+#             */
-/*   Updated: 2024/03/27 00:52:49 by emagueri         ###   ########.fr       */
+/*   Updated: 2024/05/10 19:10:16 by emagueri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-char	*ft_strtrim(char const *s1, char const *set)
+char	*ft_strtrim(char const *s1, char const *set, int type)
 {
 	int	lens1;
 	int	i;
@@ -31,5 +31,5 @@ char	*ft_strtrim(char const *s1, char const *set)
 		i--;
 		lens1--;
 	}
-	return (ft_substr(s1, start, lens1 - start));
+	return (ft_substr(s1, start, lens1 - start, type));
 }

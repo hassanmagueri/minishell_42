@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   join.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ataoufik <ataoufik@student.42.fr>          +#+  +:+       +#+        */
+/*   By: emagueri <emagueri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/20 12:22:27 by emagueri          #+#    #+#             */
-/*   Updated: 2024/05/04 22:05:05 by ataoufik         ###   ########.fr       */
+/*   Updated: 2024/05/12 18:28:05 by emagueri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,26 +14,35 @@
 
 int ft_join(t__lst_token **lst_token)
 {
+	t__lst_token *prev;
 	t__lst_token *cur;
 	t__lst_token *cur_cmd;
 
 	cur = *lst_token;
-	while (cur && cur->type != PIPE)
+	// while (cur && cur->type != PIPE)
+	while (cur)
 	{
 		cur_cmd = cur;
 		while (cur_cmd && cur_cmd->type != SPACE && cur_cmd->type != PIPE && cur_cmd->type > OUTPUT)
 		{
 			if (cur_cmd->type == DOUB_Q)
-				cur_cmd->str = ft_strtrim(cur_cmd->str, "\"");
+			{
+				cur->type = DOUB_Q;
+				cur_cmd->str = ft_strtrim(cur_cmd->str, "\"", ALLOC);
+				printf("======> %s\n", cur_cmd->str);
+			}
 			else if (cur_cmd->type == SING_Q)
-				cur_cmd->str = ft_strtrim(cur_cmd->str, "\'");
+			{
+				cur->type = SING_Q;
+				cur_cmd->str = ft_strtrim(cur_cmd->str, "\'", ALLOC);
+			}
 			if (cur == cur_cmd)
 			{
-				cur->type = WORD;
 				cur_cmd = cur_cmd->next;
 				continue;
 			}
-			cur->str = ft_strjoin(cur->str, cur_cmd->str);
+			prev = cur_cmd;
+			cur->str = ft_strjoin(cur->str, cur_cmd->str, ALLOC);
 			cur_cmd = cur_cmd->next;
 		}
 		if (cur != cur_cmd)
@@ -47,15 +56,16 @@ int ft_join(t__lst_token **lst_token)
 // {
 // 	t__lst_token *token;
 	
-// 	// ft_lst_token_add_bSPACEk(&token, ft_new_token("\"s\"", DOUB_Q));
-// 	// ft_lst_token_add_bSPACEk(&token, ft_new_token(">", OUTPUT));
-// 	ft_lst_token_add_bSPACEk(&token, ft_new_token("ls", WORD));
-// 	// ft_lst_token_add_bSPACEk(&token, ft_new_token("SPACE", SPACE));
-// 	ft_lst_token_add_bSPACEk(&token, ft_new_token(">>", OUTPUT));
-// 	ft_lst_token_add_bSPACEk(&token, ft_new_token("a", WORD));
-// 	// ft_lst_token_add_bSPACEk(&token, ft_new_token("\"s\"", DOUB_Q));
-// 	// ft_lst_token_add_bSPACEk(&token, ft_new_token("SPACE", SPACE));
-// 	// ft_lst_token_add_bSPACEk(&token, ft_new_token("-a", WORD));
+// 	// ft_lst_token_add_back(&token, ft_new_token("\"s\"", DOUB_Q));
+// 	// ft_lst_token_add_back(&token, ft_new_token(">", OUTPUT));
+// 	// ft_lst_token_add_back(&token, ft_new_token("ls", WORD));
+// 	// ft_lst_token_add_back(&token, ft_new_token("space", SPACE));
+// 	ft_lst_token_add_back(&token, ft_new_token("<<", HEARDOC));
+// 	ft_lst_token_add_back(&token, ft_new_token("", WORD));
+// 	ft_lst_token_add_back(&token, ft_new_token("EOF", DOUB_Q));
+// 	// ft_lst_token_add_back(&token, ft_new_token("\"s\"", DOUB_Q));
+// 	// ft_lst_token_add_back(&token, ft_new_token("space", SPACE));
+// 	// ft_lst_token_add_back(&token, ft_new_token("-a", WORD));
 // 	ft_join(&token);
 // 	print__lst_tokens(token);
 // 	return 0;

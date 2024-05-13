@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   lst_env.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ataoufik <ataoufik@student.42.fr>          +#+  +:+       +#+        */
+/*   By: emagueri <emagueri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/01 05:02:31 by emagueri          #+#    #+#             */
-/*   Updated: 2024/05/06 19:37:15 by ataoufik         ###   ########.fr       */
+/*   Updated: 2024/05/12 19:25:39 by emagueri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,9 +28,10 @@ t_lst_env *ft_new_env(char *key,char *value)
 {
 	t_lst_env	*node;
 
-	node = malloc(sizeof(t_lst_env));
-	node->key = ft_strdup(key);
-	node->value = ft_strdup(value);
+	// node = malloc(sizeof(t_lst_env));
+	node = gc_alloc(sizeof(t_lst_env), ALLOC_ENV);
+	node->key = ft_strdup(key, ALLOC_ENV);
+	node->value = ft_strdup(value, ALLOC_ENV);
 	node->next = NULL;
 	return node;
 }
@@ -62,7 +63,7 @@ t_lst_env *ft_get_env(t_lst_env **lst_env, char	*key)
 	return (NULL);
 }
 
-int  ft_lst_add_back_env(t_lst_env **lst_env, t_lst_env *node_env)
+int ft_lst_add_back_env(t_lst_env **lst_env, t_lst_env *node_env)
 {
     if (lst_env == NULL || ft_get_env(lst_env, node_env->key) != NULL)
 		return (-1);
@@ -91,9 +92,6 @@ int	ft_lst_remove_env(t_lst_env **lst_env,char *key)
 		if (ft_strncmp(cur->key, key, ft_strlen(cur->key) + 1) == 0)
 		{
 			prev->next = cur->next;
-			free(cur->key);
-			free(cur->value);
-			free(cur);
 			return (0);
 		}
 		prev = cur;
@@ -128,15 +126,10 @@ int	init_env(t_lst_env **lst, char **env)
 	while (env[i])
 	{
 		len = index_of(env[i], '=');
-		if (ft_strncmp(ft_substr(env[i], 0, len),"OLDPWD",len + 1) == 0)
-		{
-			i++;
-			continue;
-		}
 		if (len == -1)
 			return (-1);
 		value = ft_strchr(env[i], '=') + 1;
-		 ft_lst_add_back_env(lst, ft_new_env(ft_substr(env[i], 0, len), value));
+		ft_lst_add_back_env(lst, ft_new_env(ft_substr(env[i], 0, len, ALLOC_ENV), value));
 		i++;
 	}
 	return 1;
@@ -149,7 +142,7 @@ int	init_env(t_lst_env **lst, char **env)
 // 	init_env(&lst, env);
 // 	ft_get_env(&lst, "SHLVL")->value = ft_strdup("8");
 	
-// 	 ft_lst_add_back_env(&lst, ft_new_env("pp", "TEST"));
+// 	ft_lst_add_back_env(&lst, ft_new_env("pp", "TEST"));
 // 	print_lst_env(lst);
 // 	return 0;
 // }

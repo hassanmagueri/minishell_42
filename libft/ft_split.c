@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_split.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ataoufik <ataoufik@student.42.fr>          +#+  +:+       +#+        */
+/*   By: emagueri <emagueri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/07 17:36:19 by emagueri          #+#    #+#             */
-/*   Updated: 2024/05/07 19:44:19 by ataoufik         ###   ########.fr       */
+/*   Updated: 2024/05/10 19:04:58 by emagueri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ static int	count_word(char const *s, char c)
 	return (count);
 }
 
-static char	*ft_strsdup(char const *s, int *index, char c)
+static char	*ft_strsdup(char const *s, int *index, char c, int type)
 {
 	char	*str;
 	int		len;
@@ -40,7 +40,8 @@ static char	*ft_strsdup(char const *s, int *index, char c)
 	i = 0;
 	while (s[len] != c && s[len])
 		len++;
-	str = malloc(len + 1);
+	// str = malloc(len + 1);
+	str = gc_alloc(len + 1, type);
 	if (!str)
 		return (NULL);
 	while (i < len)
@@ -53,15 +54,15 @@ static char	*ft_strsdup(char const *s, int *index, char c)
 	return (str);
 }
 
-static char	**freetab(char **res, int i)
-{
-	while (i--)
-		free(res[i]);
-	free(res);
-	return (NULL);
-}
+// static char	**freetab(char **res, int i)
+// {
+// 	while (i--)
+// 		free(res[i]);
+// 	free(res);
+// 	return (NULL);
+// }
 
-char	**ft_split(char *s, char c)
+char	**ft_split(char *s, char c, int type)
 {
 	char	**res;
 	int		i;
@@ -71,16 +72,17 @@ char	**ft_split(char *s, char c)
 	i = 0;
 	if (!s)
 		return (NULL);
-	res = malloc((count_word(s, c) + 1) * sizeof(char *));
+	res = gc_alloc((count_word(s, c) + 1) * sizeof(char *), type);
+	// res = malloc((count_word(s, c) + 1) * sizeof(char *));
 	if (!res)
 		return (NULL);
 	while (i < count_word(s, c) && s[index])
 	{
 		while (s[index] == c)
 			index++;
-		res[i] = ft_strsdup(s + index, &index, c);
-		if (!res[i])
-			return (freetab(res, i));
+		res[i] = ft_strsdup(s + index, &index, c, type);
+		// if (!res[i])
+		// 	return (freetab(res, i));
 		i++;
 	}
 	res[i] = NULL;

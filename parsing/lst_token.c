@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   lst_token.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ataoufik <ataoufik@student.42.fr>          +#+  +:+       +#+        */
+/*   By: emagueri <emagueri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/01 22:43:35 by emagueri          #+#    #+#             */
-/*   Updated: 2024/05/04 22:05:05 by ataoufik         ###   ########.fr       */
+/*   Updated: 2024/05/12 22:23:09 by emagueri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,13 +26,28 @@ t__lst_token *ft_get_token_by_type(t__lst_token **lst_token, t_type type)
 	return (NULL);
 }
 
+t__lst_token *ft_get_next_token(t__lst_token **lst_token, t__lst_token *node)
+{
+	t__lst_token	*cur;
+
+	cur = node;
+	while (cur)
+	{
+		if (cur->type == SPACE)
+			return (cur);
+		cur = cur->next;
+	}
+	return (NULL);
+}
+
 t__lst_token *ft_new_token(char *str, t_type type)
 {
     t__lst_token* token;
 
 	if (str == NULL)
 		return NULL;
-    token = malloc(sizeof(t__lst_token));
+    // token = malloc(sizeof(t__lst_token));
+    token = gc_alloc(sizeof(t__lst_token), ALLOC);
     token->str = str;
     token->type = type;
     token->next = NULL;
@@ -51,7 +66,7 @@ t__lst_token	*ft__lst_token_last(t__lst_token **lst)
 	return (cur);
 }
 
-void    ft_lst_token_add_bSPACEk(t__lst_token **lst, t__lst_token *token)
+void    ft_lst_token_add_back(t__lst_token **lst, t__lst_token *token)
 {
 	if (lst == NULL || token == NULL)
 		return ;

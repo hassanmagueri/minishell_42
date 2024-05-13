@@ -6,7 +6,7 @@
 /*   By: ataoufik <ataoufik@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/21 19:18:53 by ataoufik          #+#    #+#             */
-/*   Updated: 2024/05/12 21:25:37 by ataoufik         ###   ########.fr       */
+/*   Updated: 2024/05/13 16:51:05 by ataoufik         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ int	ft_change_value_lst(t_lst_env	**lst_env,char *key,char *value)
 	{
 		if (ft_strncmp(cur->key,key,ft_strlen(cur->key)) == 0)
 		{
-			cur->value = ft_strdup(value);
+			cur->value = ft_strdup(value, ALLOC);
 			return(0);
 		}
 		cur = cur->next;
@@ -55,9 +55,9 @@ char *ft_get_newpwd_path(char *pwd)
 			break;
 	}
 	if (len == 0)
-		str = ft_strdup("/");
+		str = ft_strdup("/", ALLOC);
 	else
-		str = ft_substr(pwd, 0, len);
+		str = ft_substr(pwd, 0, len, ALLOC);
 	return (str);
 }
 int ft_change_directory(t_lst_env *lst,char *pwd,char *args)
@@ -99,8 +99,8 @@ char *ft_get_pwd(t_lst_env *lst,char **str, char *pwd,char *cmd)
 			i++;
 		else
 		{
-			pwd = ft_strjoin(pwd, "/");
-			pwd = ft_strjoin(pwd,str[i]);
+			pwd = ft_strjoin(pwd, "/", ALLOC);
+			pwd = ft_strjoin(pwd,str[i], ALLOC);
 			i++;
 		}
 	}
@@ -150,7 +150,7 @@ int    ft_cd(t_lst_env *lst,t_cmd  *args)
 	}
 	else
 	{
-		str = ft_split(args->cmd[1], '/');
+		str = ft_split(args->cmd[1], '/', ALLOC);
 		pwd = ft_get_pwd(lst,str,pwd,args->cmd[1]);
 		ft_change_directory(lst, pwd, args->cmd[1]);
 		if (ft_find_node(&lst,"OLDPWD") == 0)

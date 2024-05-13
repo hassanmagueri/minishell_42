@@ -6,22 +6,11 @@
 /*   By: ataoufik <ataoufik@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/21 14:42:31 by ataoufik          #+#    #+#             */
-/*   Updated: 2024/05/13 15:39:57 by ataoufik         ###   ########.fr       */
+/*   Updated: 2024/05/13 16:54:31 by ataoufik         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
-
-// void    ft_free_node(t_lst_env *node)
-// {
-//     // if (node)
-//     // {
-//         free(node->key);
-//         free(node->value);
-//         free(node);
-//     // }
-//     // return ;
-// }
 
 int ft_parsing_unset(char *str)
 {

@@ -3,16 +3,17 @@
 /*                                                        :::      ::::::::   */
 /*   ft_strdup.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ataoufik <ataoufik@student.42.fr>          +#+  +:+       +#+        */
+/*   By: emagueri <emagueri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/07 14:04:02 by emagueri          #+#    #+#             */
-/*   Updated: 2024/04/29 18:25:40 by ataoufik         ###   ########.fr       */
+/*   Updated: 2024/05/10 19:07:19 by emagueri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <stdlib.h>
+#include "../minishell.h"
 
-char	*ft_strdup(const char *s1)
+
+char	*ft_strdup(const char *s1, int type)
 {
 	char	*res;
 	int		len;
@@ -22,7 +23,8 @@ char	*ft_strdup(const char *s1)
 		return NULL;
 	while (s1[len])
 		len++;
-	res = malloc(len * sizeof(char) + 1);
+	// res = malloc(len * sizeof(char) + 1);
+	res = gc_alloc(len * sizeof(char) + 1, type);
 	if (!res)
 		return (0);
 	res[len] = 0;

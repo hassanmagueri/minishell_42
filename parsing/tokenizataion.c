@@ -3,23 +3,27 @@
 /*                                                        :::      ::::::::   */
 /*   tokenizataion.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ataoufik <ataoufik@student.42.fr>          +#+  +:+       +#+        */
+/*   By: emagueri <emagueri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/01 10:12:34 by emagueri          #+#    #+#             */
-/*   Updated: 2024/05/04 22:05:05 by ataoufik         ###   ########.fr       */
+/*   Updated: 2024/05/13 11:56:18 by emagueri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-int	is_with_SPACEs(int c)
+int	is_with_spaces(int c)
 {
 	return ((c >= 9 && c <= 13) || c == ' ');
 }
 
 int is_sep(int c)
 {
-	return ( is_with_SPACEs(c) || c == '|' || c == '\"' || c == '\'' || c == '<' || c == '>' || c == '|' || c == '$');
+	return
+	(
+		is_with_spaces(c) || c == '|' || c == '\"'
+			|| c == '\'' || c == '<' || c == '>' || c == '|' || c == '$'
+	);
 }
 
 int find_sec(char *s, char c)
@@ -51,21 +55,21 @@ int ft__lst_tokenize(t__lst_token **token, char *input)
 	while (input[i])
 	{
 		if (input[i] == '|')
-			ft_lst_token_add_bSPACEk(token, ft_new_token(ft_substr(input, i++, 1), PIPE));
+			ft_lst_token_add_back(token, ft_new_token(ft_substr(input, i++, 1, ALLOC), PIPE));
 		else if (input[i] == '<')
 		{
 			if (input[i + 1] == '<')
-				ft_lst_token_add_bSPACEk(token, ft_new_token(ft_substr(input, i++, 2), HEARDOC));
+				ft_lst_token_add_back(token, ft_new_token(ft_substr(input, i++, 2, ALLOC), HEARDOC));
 			else
-				ft_lst_token_add_bSPACEk(token, ft_new_token(ft_substr(input, i, 1), INPUT));
+				ft_lst_token_add_back(token, ft_new_token(ft_substr(input, i, 1, ALLOC), INPUT));
 			i++;
 		}
 		else if (input[i] == '>')
 		{
 			if (input[i + 1] == '>')
-				ft_lst_token_add_bSPACEk(token, ft_new_token(ft_substr(input, i++, 2), APPEND));
+				ft_lst_token_add_back(token, ft_new_token(ft_substr(input, i++, 2, ALLOC), APPEND));
 			else
-				ft_lst_token_add_bSPACEk(token, ft_new_token(ft_substr(input, i, 1), OUTPUT));
+				ft_lst_token_add_back(token, ft_new_token(ft_substr(input, i, 1, ALLOC), OUTPUT));
 			i++;
 		}
 		else if (input[i] == '\"')
@@ -73,9 +77,9 @@ int ft__lst_tokenize(t__lst_token **token, char *input)
 			int len = find_sec(input + i, '\"') + 1;
 			if (len == 0)
 				return (print_error(NULL));
-			char *str = ft_substr(input, i, len);
+			char *str = ft_substr(input, i, len, ALLOC);
 			t__lst_token *t = ft_new_token(str, DOUB_Q);
-			ft_lst_token_add_bSPACEk(token, t);
+			ft_lst_token_add_back(token, t);
 			i += len;
 		}
 		else if (input[i] == '\'')
@@ -83,20 +87,25 @@ int ft__lst_tokenize(t__lst_token **token, char *input)
 			int len = find_sec(input + i, '\'') + 1;
 			if (len == 0)
 				return (print_error(NULL));
-			char *str = ft_substr(input, i, len);
+			char *str = ft_substr(input, i, len, ALLOC);
 			t__lst_token *t = ft_new_token(str, SING_Q);
-			ft_lst_token_add_bSPACEk(token, t);
+			ft_lst_token_add_back(token, t);
 			i += len;
 		}
-		else if (is_with_SPACEs(input[i]))
+		else if (is_with_spaces(input[i]))
 		{
 			while (input[i] == ' ' || (input[i] >= 9 && input[i] <= 13))
 				i++;
-			ft_lst_token_add_bSPACEk(token, ft_new_token(" ", SPACE));
+			ft_lst_token_add_back(token, ft_new_token(" ", SPACE));
 		}
 		else if (input[i] == '$' && input[i + 1] == '$')
 		{
-			ft_lst_token_add_bSPACEk(token, ft_new_token(ft_substr(input, i, 2), WORD));
+			ft_lst_token_add_back(token, ft_new_token(ft_substr(input, i, 2, ALLOC), WORD));
+			i += 2;
+		}
+		else if (input[i] == '$' && input[i + 1] == '?')
+		{
+			ft_lst_token_add_back(token, ft_new_token(ft_substr(input, i, 2, ALLOC), EXIT_STATUS));
 			i += 2;
 		}
 		else if (input[i] == '$' && (ft_isalnum(input[i + 1]) || input[i + 1] == '_'))
@@ -109,7 +118,7 @@ int ft__lst_tokenize(t__lst_token **token, char *input)
 			else
 				while (input[i] && (ft_isalnum(input[i]) || input[i] == '_'))
 					i++;
-			ft_lst_token_add_bSPACEk(token, ft_new_token(ft_substr(input, start, i - start), VAR));
+			ft_lst_token_add_back(token, ft_new_token(ft_substr(input, start, i - start, ALLOC), VAR));
 		}
 		else
 		{
@@ -125,7 +134,7 @@ int ft__lst_tokenize(t__lst_token **token, char *input)
 			while (input[i] && !is_sep(input[i]))
 				i++;
 			// printf("%d\n", input[i]);
-			ft_lst_token_add_bSPACEk(token, ft_new_token(ft_substr(input, start, i - start), WORD));
+			ft_lst_token_add_back(token, ft_new_token(ft_substr(input, start, i - start, ALLOC), WORD));
 		}
 		// printf("%s", ft__lst_token_last(*token)->str);
 	}

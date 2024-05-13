@@ -6,7 +6,7 @@
 /*   By: emagueri <emagueri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/07 11:35:52 by emagueri          #+#    #+#             */
-/*   Updated: 2024/03/27 00:52:49 by emagueri         ###   ########.fr       */
+/*   Updated: 2024/05/11 08:18:24 by emagueri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ static int	nlen(long n)
 	return (i);
 }
 
-char	*ft_itoa(int n)
+char	*ft_itoa(int n, t_gc_type type)
 {
 	long	ln;
 	int		len;
@@ -40,7 +40,7 @@ char	*ft_itoa(int n)
 	len = nlen(ln);
 	if (n < 0)
 		len++;
-	res = ft_calloc(len + 1, 1);
+	res = ft_calloc(len + 1, 1, type);
 	if (!res)
 		return (NULL);
 	if (n < 0)
