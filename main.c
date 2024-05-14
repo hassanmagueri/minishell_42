@@ -6,7 +6,7 @@
 /*   By: ataoufik <ataoufik@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/24 12:47:51 by ataoufik          #+#    #+#             */
-/*   Updated: 2024/05/14 14:42:00 by ataoufik         ###   ########.fr       */
+/*   Updated: 2024/05/14 14:52:37 by ataoufik         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,7 @@ int main(int argc, char *argv[], char **env)
 		if (input[0]=='\0')
 			continue;
 		add_history(input);
-		ft__lst_tokenize(&t, input, cmd);
+		ft__lst_tokenize(&t, input);
 		int n = generate_errors(&t);
 		// print__lst_tokens(t);
 		ft_expand(&t, &lst_env, exit_state);
