@@ -6,7 +6,7 @@
 /*   By: emagueri <emagueri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/17 11:22:57 by emagueri          #+#    #+#             */
-/*   Updated: 2024/05/13 18:18:03 by emagueri         ###   ########.fr       */
+/*   Updated: 2024/05/13 21:36:43 by emagueri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -154,7 +154,7 @@ t_lst_env	*ft_lst_env_last(t_lst_env *lst);
 //
 
 //expend
-int ft_expand(t__lst_token **lst_token, t_lst_env **lst_env);
+int ft_expand(t__lst_token **lst_token, t_lst_env **lst_env, int exit_state);
 //
 //execution
 char	*find_path_executable(char **env_path, char *cmd);

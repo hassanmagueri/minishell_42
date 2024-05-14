@@ -6,7 +6,7 @@
 /*   By: emagueri <emagueri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/01 22:43:35 by emagueri          #+#    #+#             */
-/*   Updated: 2024/05/13 18:20:31 by emagueri         ###   ########.fr       */
+/*   Updated: 2024/05/13 18:30:21 by emagueri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,6 +101,8 @@ void print__lst_tokens(t__lst_token *lst)
 			printf("SING_Q\n");
 		else if (lst->type == DOUB_Q)
 			printf("DOUB_Q\n");
+		else if (lst->type == EXIT_STATUS)
+			printf("EXIT_STATUS\n");
 		lst = lst->next;
 	}
 }

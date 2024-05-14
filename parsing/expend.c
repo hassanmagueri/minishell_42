@@ -6,7 +6,7 @@
 /*   By: emagueri <emagueri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/01 10:12:12 by emagueri          #+#    #+#             */
-/*   Updated: 2024/05/13 18:19:05 by emagueri         ###   ########.fr       */
+/*   Updated: 2024/05/14 12:14:26 by emagueri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,7 @@ char *ft_handle_simple_string(char *old_output, char *new_output, int *index)
 	return new_output;
 }
 
-int ft_expand(t__lst_token **lst_token, t_lst_env **lst_env)
+int ft_expand(t__lst_token **lst_token, t_lst_env **lst_env, int exit_state)
 {
 	t__lst_token *cur;
 	t__lst_token *prev;
@@ -56,7 +56,9 @@ int ft_expand(t__lst_token **lst_token, t_lst_env **lst_env)
 	tmp = "";
 	while (cur)
 	{
-		if (cur->type == VAR)
+		if (cur->type == EXIT_STATUS)
+			cur->str = ft_itoa(exit_state, ALLOC);
+		else if (cur->type == VAR)
 		{
 
 			t__lst_token	*next;
@@ -99,7 +101,6 @@ int ft_expand(t__lst_token **lst_token, t_lst_env **lst_env)
 				while (value_twod_array[0] && value_twod_array[i])
 				{
 					cur->next = ft_new_token(value_twod_array[i], WORD);
-					// printf("-----%s\n", cur->next->str);
 					i++;
 					if (value_twod_array[i] == 0)
 					{
@@ -126,7 +127,7 @@ int ft_expand(t__lst_token **lst_token, t_lst_env **lst_env)
 				if (res[i] == '$' && res[i + 1] == '?')
 				{
 					i += 2;
-					tmp = ft_strjoin(tmp, "$?", ALLOC);
+					tmp = ft_strjoin(tmp, ft_itoa(exit_state, ALLOC), ALLOC);
 				}
 				else if (res[i] == '$' && res[i + 1] != 0 && (ft_isalnum(res[i + 1]) || res[i + 1] == '_'))
 				{

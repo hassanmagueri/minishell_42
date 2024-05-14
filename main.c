@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ataoufik <ataoufik@student.42.fr>          +#+  +:+       +#+        */
+/*   By: emagueri <emagueri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/24 12:47:51 by ataoufik          #+#    #+#             */
-/*   Updated: 2024/05/13 18:10:26 by ataoufik         ###   ########.fr       */
+/*   Updated: 2024/05/13 21:36:33 by emagueri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,10 +16,12 @@
 int main(int argc, char *argv[], char **env)
 {
 	char *input;
-	// int	e_status;
+	int	exit_state;
 	t_lst_env *lst_env;
 	t_lst_env *last_lst;
 	t_data pip;
+
+	exit_state = 0;
 	lst_env = NULL;
 	pip.env = env;
 	if (argc > 1)
@@ -37,8 +39,8 @@ int main(int argc, char *argv[], char **env)
 	{
 		t__lst_token *t = NULL;
 		t_cmd *cmd = NULL;
-		input = readline(ANSI_COLOR_CYAN "~ " ANSI_COLOR_BLUE "minishell 😎 " ANSI_COLOR_MAGENTA "↪ " ANSI_COLOR_RESET);
-		// input = readline("minishell 😎> ");
+		// input = readline(ANSI_COLOR_CYAN "~ " ANSI_COLOR_BLUE "minishell 😎 " ANSI_COLOR_MAGENTA "↪ " ANSI_COLOR_RESET);
+		input = readline("minishell 😎 : ");
 		if (input == NULL)
 		{
 			printf("exit\n");
@@ -47,15 +49,18 @@ int main(int argc, char *argv[], char **env)
 		if (input[0]=='\0')
 			continue;
 		add_history(input);
-		if (ft__lst_tokenize(&t, input) || generate_errors(&t) == 1)
-			continue;
-		// print__lst_tokens(t);
-		ft_expand(&t, &lst_env);
+		ft__lst_tokenize(&t, input);
+		int n = generate_errors(&t);
+		print__lst_tokens(t);
+		ft_expand(&t, &lst_env, exit_state);
 		ft_join(&t);
 		ft_heredoc(&t, &lst_env);
+		if (n) 
+			continue;
 		ft_cmd(&cmd, &t);
 		// print_lst_cmd(cmd);
 		ft_chech_excut_cmd(cmd,lst_env,&pip);
+		exit_state = cmd->exit_status;
 		free(input);
 	}
 	return (0);

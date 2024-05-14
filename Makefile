@@ -32,7 +32,7 @@ CC = cc #-g -fsanitize=address
 CFLAGS = #-Wall -Wextra -Werror 
 SRC_DIR = .
 OBJ_DIR = obj
-CFLAGS = -g -fsanitize=address -I$(READLINE_INCLUDE)  # Add Readline include path
+CFLAGS = -I$(READLINE_INCLUDE) -g -fsanitize=address   # Add Readline include path
 LDFLAGS = -L$(READLINE_LIB) -lreadline 
 # SRC_FILES = $(wildcard *.c)
 SRC_FILES = ft_strnjoin.c  \
@@ -64,9 +64,6 @@ TXT_FILES = a.out
 
 
 all: $(EXECUTABLE)
-f:
-# all:
-# 	echo $(OBJ_FILES)
 
 $(EXECUTABLE): $(LIBFT_OBJ_FILES) $(GC_OBJ_FILES) $(BUILT_OBJ_FILES) $(OBJ_FILES) $(PARS_OBJ_FILES) $(EXECU_OBJ_FILES)
 	$(CC) $(CFLAGS) $^ -o $@ $(LDFLAGS)
