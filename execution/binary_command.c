@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   binary_command.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ataoufik <ataoufik@student.42.fr>          +#+  +:+       +#+        */
+/*   By: emagueri <emagueri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/01 16:38:40 by ataoufik          #+#    #+#             */
-/*   Updated: 2024/05/13 18:08:18 by ataoufik         ###   ########.fr       */
+/*   Updated: 2024/05/14 12:27:48 by emagueri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ void	init_path_env(t_data *pip,t_lst_env *lst,char **env)
 	pip->env = env;
 	str = ft_get_env_val(&lst, "PATH");
 	// printf("str   ->   %s\n",str);
-	pip->env_path = ft_split(str, ':', ALLOC);
+	pip->env_path = ft_split(str, ':', ALLOC_ENV);
 	if (!pip->env_path)
 		printf("Invalid argument\n");
 	pip->infile = -1;
