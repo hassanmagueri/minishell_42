@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: emagueri <emagueri@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ataoufik <ataoufik@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/24 12:47:51 by ataoufik          #+#    #+#             */
-/*   Updated: 2024/05/14 12:26:16 by emagueri         ###   ########.fr       */
+/*   Updated: 2024/05/14 14:42:00 by ataoufik         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,8 +39,8 @@ int main(int argc, char *argv[], char **env)
 	{
 		t__lst_token *t = NULL;
 		t_cmd *cmd = NULL;
-		// input = readline(ANSI_COLOR_CYAN "~ " ANSI_COLOR_BLUE "minishell 😎 " ANSI_COLOR_MAGENTA "↪ " ANSI_COLOR_RESET);
-		input = readline("minishell 😎 : ");
+		input = readline(ANSI_COLOR_CYAN "~ " ANSI_COLOR_BLUE "minishell 😎 " ANSI_COLOR_MAGENTA "↪ " ANSI_COLOR_RESET);
+		// input = readline("minishell 😎 : ");
 		if (input == NULL)
 		{
 			printf("exit\n");
@@ -49,7 +49,7 @@ int main(int argc, char *argv[], char **env)
 		if (input[0]=='\0')
 			continue;
 		add_history(input);
-		ft__lst_tokenize(&t, input);
+		ft__lst_tokenize(&t, input, cmd);
 		int n = generate_errors(&t);
 		// print__lst_tokens(t);
 		ft_expand(&t, &lst_env, exit_state);
@@ -60,7 +60,7 @@ int main(int argc, char *argv[], char **env)
 		ft_cmd(&cmd, &t);
 		// print_lst_cmd(cmd);
 		ft_chech_excut_cmd(cmd,lst_env,&pip);
-		exit_state = cmd->exit_status;
+		cmd->exit_status= exit_state;
 		free(input);
 		gc_alloc(0, FREE);
 	}
