@@ -6,7 +6,7 @@
 /*   By: ataoufik <ataoufik@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/02 14:52:28 by ataoufik          #+#    #+#             */
-/*   Updated: 2024/05/08 16:30:41 by ataoufik         ###   ########.fr       */
+/*   Updated: 2024/05/14 14:33:15 by ataoufik         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,8 +21,8 @@ void    handle_c_slash_ctrol(int signal)
         rl_on_new_line();
         rl_redisplay();
     }
-     if (signal == SIGQUIT)
-        rl_replace_line("", 0);
+    //  if (signal == SIGQUIT)
+    //     rl_replace_line("", 0);
         // return ;
 }
 
