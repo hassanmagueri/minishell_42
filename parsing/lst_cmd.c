@@ -6,7 +6,7 @@
 /*   By: emagueri <emagueri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/20 10:43:06 by emagueri          #+#    #+#             */
-/*   Updated: 2024/05/14 13:12:33 by emagueri         ###   ########.fr       */
+/*   Updated: 2024/05/15 22:56:46 by emagueri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,7 +101,6 @@ char	**ft_prepare_cmd(t__lst_token **tokens, t_redir **redirs)
 		len++;
 		last_token = last_token->next;
 	}
-	// cmd = malloc(sizeof(char *) * (len + 1));
 	cmd = gc_alloc(sizeof(char *) * (len + 1), ALLOC);
 	cur = *tokens;
 	i = 0;
@@ -282,6 +281,7 @@ int ft_cmd(t_cmd **lst_cmd, t__lst_token **tokens)
 		t_cmd *cc = NULL;
 		cc = ft_new_cmd(cmd_str, lst_redir);
 		ft_add_back_cmd(lst_cmd, cc);
+		print_lst_cmd(&cc);
 		// print_lst_redir(cc->redir);
 		i++;
 	}

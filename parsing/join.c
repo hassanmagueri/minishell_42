@@ -6,7 +6,7 @@
 /*   By: emagueri <emagueri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/20 12:22:27 by emagueri          #+#    #+#             */
-/*   Updated: 2024/05/15 12:26:31 by emagueri         ###   ########.fr       */
+/*   Updated: 2024/05/15 22:49:51 by emagueri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,16 +26,9 @@ int ft_join(t__lst_token **lst_token)
 		while (cur_cmd && cur_cmd->type != WSP && cur_cmd->type != PIPE && cur_cmd->type > OUTPUT)
 		{
 			if (cur_cmd->type == DOUB_Q)
-			{
 				cur->type = DOUB_Q;
-				// cur_cmd->str = ft_strtrim(cur_cmd->str, "\"", ALLOC);
-				// printf("======> %s\n", cur_cmd->str);
-			}
 			else if (cur_cmd->type == SING_Q)
-			{
 				cur->type = SING_Q;
-				// cur_cmd->str = ft_strtrim(cur_cmd->str, "\'", ALLOC);
-			}
 			if (cur == cur_cmd)
 			{
 				cur_cmd = cur_cmd->next;

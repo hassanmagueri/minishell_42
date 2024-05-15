@@ -6,7 +6,7 @@
 /*   By: emagueri <emagueri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/01 10:12:12 by emagueri          #+#    #+#             */
-/*   Updated: 2024/05/15 13:22:51 by emagueri         ###   ########.fr       */
+/*   Updated: 2024/05/15 21:26:30 by emagueri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,7 +58,7 @@ char	*ft_first_cmd(t__lst_token **lst_token)
 		res = ft_strjoin(res, cur->str, ALLOC);
 		cur = cur->next;
 	}
-	printf("res : %s\n", res);
+	// printf("res : %s\n", res);
 	return (res);
 }
 
@@ -81,9 +81,13 @@ int ft_is_strong_word_befor(t__lst_token **lst_token, t__lst_token *last)
 		cur = cur->next;
 	while (cur && (cur->type == WORD || cur->type == DOUB_Q || cur->type == SING_Q))
 		cur = cur->next;
+	// skip first cmd to approach the args
+	if (cur->type == VAR)
+		return (1);
 	while (cur != last)
 	{
-		if (cur->type == WORD && cur->str[0] != '\0')
+		// if ((cur->type == WORD || cur->type == DOUB_Q || cur->type == SING_Q) && cur->str[0] != '\0')
+		if (((cur->type == WORD || cur->type == DOUB_Q || cur->type == SING_Q) && cur->str[0] != '\0'))
 			return (1);
 		cur = cur->next;
 	}
@@ -120,6 +124,7 @@ int ft_expand(t__lst_token **lst_token, t_lst_env **lst_env, int exit_state)
 			cur->str = ft_get_env_val(lst_env, cur->str + 1);
 			if (ft_strncmp(first_cmd, "export", ft_strlen(first_cmd) + 1) == 0)
 				return (1);
+			// if (cur->str && ft_is_with_spaces(cur->str[0]) && prev && (prev->type == VAR || (ft_is_strong_word_befor(lst_token, cur->next)))) // add also DOUB_Q and SING_Q
 			if (cur->str && ft_is_with_spaces(cur->str[0]) && prev && (prev->type == VAR || (ft_is_strong_word_befor(lst_token, cur->next)))) // add also DOUB_Q and SING_Q
 			{
 				tmp = ft_new_token(cur->str, cur->type);
@@ -152,6 +157,7 @@ int ft_expand(t__lst_token **lst_token, t_lst_env **lst_env, int exit_state)
 					cur->next->next = ft_new_token(" ", WSP);
 					cur = cur->next->next;
 				}
+				// if (next && next->type != VAR && next->type != WSP)
 				if (next && (next->type != VAR || ft_is_endl_with_with_space(str)) && next->type != WSP)
 				{
 					cur->next = ft_new_token(" ", WSP);

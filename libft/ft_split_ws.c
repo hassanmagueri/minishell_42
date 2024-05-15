@@ -6,7 +6,7 @@
 /*   By: emagueri <emagueri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/30 12:41:20 by emagueri          #+#    #+#             */
-/*   Updated: 2024/05/10 18:38:45 by emagueri         ###   ########.fr       */
+/*   Updated: 2024/05/15 14:46:50 by emagueri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,9 +43,11 @@ int count_words(char *s)
 
 char **ft_split_ws(char *str, t_gc_type type)
 {
-    char **res = gc_alloc((count_words(str) + 1) * sizeof(char *), type);
+    char **res;
     int i = 0;
     int index = 0;
+    
+    res = gc_alloc((count_words(str) + 1) * sizeof(char *), type);
     while (str[i] && index < count_words(str))
     {
         while (is_spliter(str[i]))
