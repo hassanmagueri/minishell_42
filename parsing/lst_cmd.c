@@ -6,7 +6,7 @@
 /*   By: emagueri <emagueri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/20 10:43:06 by emagueri          #+#    #+#             */
-/*   Updated: 2024/05/13 18:20:18 by emagueri         ###   ########.fr       */
+/*   Updated: 2024/05/14 13:12:33 by emagueri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -146,7 +146,7 @@ void print_lst_cmd(t_cmd **cmd)
 	{
 		int i = 0;
 		printf("[CMD]:");
-		while (cur->cmd[i])
+		while (cur->cmd && cur->cmd[i])
 			printf("[%s]", cur->cmd[i++]);
 		print_lst_redir(cur->redir);
 		printf("\n");

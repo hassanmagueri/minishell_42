@@ -6,7 +6,7 @@
 /*   By: emagueri <emagueri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/01 22:43:35 by emagueri          #+#    #+#             */
-/*   Updated: 2024/05/13 18:30:21 by emagueri         ###   ########.fr       */
+/*   Updated: 2024/05/14 13:28:01 by emagueri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,7 +80,7 @@ void print__lst_tokens(t__lst_token *lst)
 {
 	while (lst)
 	{
-		printf("%s\t", lst->str);
+		printf("\"%s\"\t", lst->str);
 		if (lst->type == WORD)
 			printf("WORD\n");
 		else if (lst->type == WSP)

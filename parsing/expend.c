@@ -6,7 +6,7 @@
 /*   By: emagueri <emagueri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/01 10:12:12 by emagueri          #+#    #+#             */
-/*   Updated: 2024/05/14 12:14:26 by emagueri         ###   ########.fr       */
+/*   Updated: 2024/05/15 13:22:51 by emagueri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,6 +44,52 @@ char *ft_handle_simple_string(char *old_output, char *new_output, int *index)
 	return new_output;
 }
 
+char	*ft_first_cmd(t__lst_token **lst_token)
+{
+	t__lst_token *cur;
+	char	*res;
+
+	res = "";
+	cur = *lst_token;
+	while (cur && cur->type != WORD && cur->type != DOUB_Q && cur->type != SING_Q)
+		cur = cur->next;
+	while (cur && (cur->type == WORD || cur->type == DOUB_Q || cur->type == SING_Q))
+	{
+		res = ft_strjoin(res, cur->str, ALLOC);
+		cur = cur->next;
+	}
+	printf("res : %s\n", res);
+	return (res);
+}
+
+int ft_is_endl_with_with_space(char *str)
+{
+	int len;
+
+	len = ft_strlen(str);
+	if (ft_is_with_spaces(str[len - 1]))
+		return 1;
+	return 0;
+}
+
+int ft_is_strong_word_befor(t__lst_token **lst_token, t__lst_token *last)
+{
+	t__lst_token *cur;
+
+	cur = *lst_token;
+	while (cur && cur->type != WORD && cur->type != DOUB_Q && cur->type != SING_Q)
+		cur = cur->next;
+	while (cur && (cur->type == WORD || cur->type == DOUB_Q || cur->type == SING_Q))
+		cur = cur->next;
+	while (cur != last)
+	{
+		if (cur->type == WORD && cur->str[0] != '\0')
+			return (1);
+		cur = cur->next;
+	}
+	return (0);
+}
+
 int ft_expand(t__lst_token **lst_token, t_lst_env **lst_env, int exit_state)
 {
 	t__lst_token *cur;
@@ -51,6 +97,7 @@ int ft_expand(t__lst_token **lst_token, t_lst_env **lst_env, int exit_state)
 	char *tmp;
 	char *var;
 
+	char *first_cmd = ft_first_cmd(lst_token);
 	prev = NULL;
 	cur = *lst_token;
 	tmp = "";
@@ -67,11 +114,13 @@ int ft_expand(t__lst_token **lst_token, t_lst_env **lst_env, int exit_state)
 			char **value_twod_array;
 			int i = 0;
 			char *value;
-			
+
 			parent = cur;
 			next = cur->next;
 			cur->str = ft_get_env_val(lst_env, cur->str + 1);
-			if (cur->str && is_with_spaces(cur->str[0]))
+			if (ft_strncmp(first_cmd, "export", ft_strlen(first_cmd) + 1) == 0)
+				return (1);
+			if (cur->str && ft_is_with_spaces(cur->str[0]) && prev && (prev->type == VAR || (ft_is_strong_word_befor(lst_token, cur->next)))) // add also DOUB_Q and SING_Q
 			{
 				tmp = ft_new_token(cur->str, cur->type);
 				cur->str = " ";
@@ -79,19 +128,12 @@ int ft_expand(t__lst_token **lst_token, t_lst_env **lst_env, int exit_state)
 				cur->next = tmp;
 				cur = cur->next;
 			}
+			char *str;
 			if (cur->str != NULL)
 			{
+				str = cur->str;
 				value_twod_array = ft_split_ws(cur->str, ALLOC);
-				// printf("------------ %s \t %s \n", value_twod_array[0], value_twod_array[1]);
-				// if (value_twod_array == NULL)
-				// {
-				// 	printf("sad\n");
-				// 	cur->str = "";
-				// 	cur->next = next;
-				// 	continue;
-				// }
 				cur->str = value_twod_array[i++];
-				// printf("var = %s\n", cur->str);
 				if (value_twod_array[i] != 0)
 				{
 					cur->next = ft_new_token(" ", WSP);
@@ -109,6 +151,11 @@ int ft_expand(t__lst_token **lst_token, t_lst_env **lst_env, int exit_state)
 					}
 					cur->next->next = ft_new_token(" ", WSP);
 					cur = cur->next->next;
+				}
+				if (next && (next->type != VAR || ft_is_endl_with_with_space(str)) && next->type != WSP)
+				{
+					cur->next = ft_new_token(" ", WSP);
+					cur = cur->next;
 				}
 				cur->next = next;
 			}

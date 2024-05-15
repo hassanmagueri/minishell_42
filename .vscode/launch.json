@@ -6,8 +6,8 @@
       "type": "lldb",
       "request": "launch",
       "args": [],
-      "cwd": "/Users/emagueri/Desktop/copy_new_mini",
-      "program": "/Users/emagueri/Desktop/copy_new_mini/build/Debug/outDebug"
+      "cwd": "/Users/emagueri/Desktop/new_mini",
+      "program": "/Users/emagueri/Desktop/new_mini/build/Debug/outDebug"
     }
   ]
 }

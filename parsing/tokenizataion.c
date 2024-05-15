@@ -6,13 +6,13 @@
 /*   By: emagueri <emagueri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/01 10:12:34 by emagueri          #+#    #+#             */
-/*   Updated: 2024/05/13 18:20:38 by emagueri         ###   ########.fr       */
+/*   Updated: 2024/05/15 13:23:20 by emagueri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-int	is_with_spaces(int c)
+int	ft_is_with_spaces(int c)
 {
 	return ((c >= 9 && c <= 13) || c == ' ');
 }
@@ -21,7 +21,7 @@ int is_sep(int c)
 {
 	return
 	(
-		is_with_spaces(c) || c == '|' || c == '\"'
+		ft_is_with_spaces(c) || c == '|' || c == '\"'
 			|| c == '\'' || c == '<' || c == '>' || c == '|' || c == '$'
 	);
 }
@@ -78,7 +78,7 @@ int ft__lst_tokenize(t__lst_token **token, char *input)
 			if (len == 0)
 				return (print_error(NULL));
 			char *str = ft_substr(input, i, len, ALLOC);
-			t__lst_token *t = ft_new_token(str, DOUB_Q);
+			t__lst_token *t = ft_new_token(ft_strtrim(str, "\"", ALLOC), DOUB_Q);
 			ft_lst_token_add_back(token, t);
 			i += len;
 		}
@@ -88,11 +88,11 @@ int ft__lst_tokenize(t__lst_token **token, char *input)
 			if (len == 0)
 				return (print_error(NULL));
 			char *str = ft_substr(input, i, len, ALLOC);
-			t__lst_token *t = ft_new_token(str, SING_Q);
+			t__lst_token *t = ft_new_token(ft_strtrim(str, "\'", ALLOC), SING_Q);
 			ft_lst_token_add_back(token, t);
 			i += len;
 		}
-		else if (is_with_spaces(input[i]))
+		else if (ft_is_with_spaces(input[i]))
 		{
 			while (input[i] == ' ' || (input[i] >= 9 && input[i] <= 13))
 				i++;

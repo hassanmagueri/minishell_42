@@ -6,7 +6,7 @@
 /*   By: emagueri <emagueri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/24 12:47:51 by ataoufik          #+#    #+#             */
-/*   Updated: 2024/05/14 12:26:16 by emagueri         ###   ########.fr       */
+/*   Updated: 2024/05/15 12:41:20 by emagueri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,16 +53,19 @@ int main(int argc, char *argv[], char **env)
 		int n = generate_errors(&t);
 		// print__lst_tokens(t);
 		ft_expand(&t, &lst_env, exit_state);
+		// continue;
+		printf("----------------------------------------------------\n");
+		print__lst_tokens(t);
 		ft_join(&t);
 		ft_heredoc(&t, &lst_env);
 		if (n) 
 			continue;
 		ft_cmd(&cmd, &t);
-		// print_lst_cmd(cmd);
+		print_lst_cmd(&cmd);
 		ft_chech_excut_cmd(cmd,lst_env,&pip);
-		exit_state = cmd->exit_status;
+		// exit_state = cmd->exit_status;
 		free(input);
-		gc_alloc(0, FREE);
+		// gc_alloc(0, FREE);
 	}
 	gc_alloc(0, FREE_ENV);
 	return (0);
