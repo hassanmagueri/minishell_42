@@ -35,6 +35,8 @@ void	print_lst_order_alpha(t_lst_env **lst)
 {
 	t_lst_env	*cur;
 
+	if (*lst == NULL)
+		ft_lst_add_back_env(lst, ft_new_env("OLDPWD", NULL));
 	cur = *lst;
 	while(cur->next!= NULL)
 	{
@@ -68,11 +70,11 @@ int	index_key(char *str, char c)
 	}
 	return -1;
 }
-int ft_check_lst_key(t_lst_env *lst,char *key)
+int ft_check_lst_key(t_lst_env **lst,char *key)
 {
 	t_lst_env	*cur;
 
-	cur = lst;
+	cur = *lst;
 	while (cur)
 	{
 		if (ft_strncmp(cur->key,key,ft_strlen(key)) == 0)
@@ -81,27 +83,28 @@ int ft_check_lst_key(t_lst_env *lst,char *key)
 	}
 	return (0);
 }
-void	ft_change_val(t_lst_env *lst ,char *key,char *value)
+void	ft_change_val(t_lst_env **lst ,char *key,char *value)
 {
 	t_lst_env	*cur;
-	cur = lst;
+	cur = *lst;
 	while (cur)
 	{
 		if (ft_strncmp(cur->key,key,ft_strlen(key)) == 0)
 		{
-			cur->value = value;
+			if (value != NULL)
+				cur->value = value;
 			break;
 		}
 		cur = cur->next;
 	}
 }
-void	ft_add_val(t_lst_env	*lst,char *key ,char *val)
+void	ft_add_val(t_lst_env	**lst,char *key ,char *val)
 {
 	t_lst_env	*cur;
-	cur = lst;
+	cur = *lst;
 	while (cur)
 	{
-		if (ft_strncmp(cur->key,key,ft_strlen(key))==0)
+		if (ft_strncmp(cur->key,key,ft_strlen(key)) == 0)
 		{
 			cur->value = ft_strjoin(cur->value, val, ALLOC_ENV);
 			break;
@@ -114,7 +117,7 @@ int	ft_prasing_export(char *str)
 	int i;
 
 	i = 0;
-	if (ft_isdigit(str[0])==1 || str[0]=='\0' || str[0]=='=')
+	if (ft_isdigit(str[0])==1 || str[0]=='\0' || str[0] == '=')
 		return (1);
 	while(str[i]=='_')
 		i++;
@@ -131,7 +134,7 @@ int	ft_prasing_export(char *str)
     }
 	return (0);
 }
-int	ft_export(t_lst_env *lst_env, t_cmd *str)
+int	ft_export(t_lst_env **lst_env, t_cmd *str)
 {
 	int		len;
 	int		status;
@@ -140,10 +143,10 @@ int	ft_export(t_lst_env *lst_env, t_cmd *str)
 	char	*key;
 	int i;
 	i = 1;
-	if (lst_env==NULL)
-		return 1;
+	// if (*lst_env== NULL)
+	// 	return 1;
 	if (str->cmd[i]== NULL)
-		print_lst_order_alpha(&lst_env);
+		print_lst_order_alpha(lst_env);
 	else
 	{
 		while (str->cmd[i])
@@ -157,7 +160,7 @@ int	ft_export(t_lst_env *lst_env, t_cmd *str)
 			else
 			{
 				key = ft_strdup(str->cmd[i], ALLOC_ENV);
-				value = ft_strdup(NULL, ALLOC_ENV);
+				value = ft_strdup(NULL, ALLOC_ENV);;
 			}
 			if (ft_prasing_export(key) == 1)
 			{
@@ -168,13 +171,13 @@ int	ft_export(t_lst_env *lst_env, t_cmd *str)
 			}
 			if (ft_check_lst_key(lst_env,key) == 1)
 			{
-				if (str->cmd[i][len]=='+')
+				if (len != -1 && str->cmd[i][len] == '+')
 					ft_add_val(lst_env,key,value);
 				else
 					ft_change_val(lst_env,key,value);
 			}
 			else
-				 ft_lst_add_back_env(&lst_env, ft_new_env(key, value));
+				 ft_lst_add_back_env(lst_env, ft_new_env(key, value));
 			i++;
 		}
 	}

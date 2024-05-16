@@ -3,20 +3,20 @@
 /*                                                        :::      ::::::::   */
 /*   excut_cmdline.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: emagueri <emagueri@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ataoufik <ataoufik@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/27 19:22:45 by ataoufik          #+#    #+#             */
-/*   Updated: 2024/05/13 21:35:41 by emagueri         ###   ########.fr       */
+/*   Updated: 2024/05/16 14:17:27 by ataoufik         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-int	ft_excut_cmd_line(t_lst_env *lst, t_cmd *args, t_data *pip)
+int	ft_excut_cmd_line(t_lst_env **lst, t_cmd *args, t_data *pip)
 {
 	if (ft_strncmp(args->cmd[0], "cd", 3) == 0)
 		args->exit_status = ft_cd(lst, args);
-	if (ft_strncmp(args->cmd[0],"echo",5) == 0)
+	else if (ft_strncmp(args->cmd[0],"echo",5) == 0)
 		args->exit_status = ft_echo(args);
 	else if (ft_strncmp(args->cmd[0], "env", 4) == 0)
 		args->exit_status = ft_env(lst,args); //
@@ -31,11 +31,11 @@ int	ft_excut_cmd_line(t_lst_env *lst, t_cmd *args, t_data *pip)
 	return (0);
 }
 
-int	ft_cmd_builtin_child(t_lst_env *lst, t_cmd *args, t_data *pip)
+int	ft_cmd_builtin_child(t_lst_env **lst, t_cmd *args, t_data *pip)
 {
 	if (ft_strncmp(args->cmd[0], "cd", 3) == 0)
 		exit(ft_cd(lst, args));
-	if (ft_strncmp(args->cmd[0],"echo",5) == 0)
+	else if (ft_strncmp(args->cmd[0],"echo",5) == 0)
 		exit(ft_echo(args));
 	else if (ft_strncmp(args->cmd[0], "env", 4) == 0)
 		exit(ft_env(lst,args));

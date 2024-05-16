@@ -6,13 +6,13 @@
 /*   By: ataoufik <ataoufik@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/17 11:18:33 by ataoufik          #+#    #+#             */
-/*   Updated: 2024/05/14 13:22:38 by ataoufik         ###   ########.fr       */
+/*   Updated: 2024/05/16 13:28:55 by ataoufik         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-void	ft_lst_cmd(t_cmd	*command,t_lst_env *lst,t_data *pip)
+void	ft_lst_cmd(t_cmd	*command,t_lst_env **lst,t_data *pip)
 {
 	t_cmd	*cur;
 	int status;
@@ -36,10 +36,6 @@ void	ft_lst_cmd(t_cmd	*command,t_lst_env *lst,t_data *pip)
 	ft_excut_child(cur,pip,lst,&input_fd);
 	while (wait(&status) != -1)
 		;
-	// if (WIFEXITED(status))
-    //     printf("status=%d\n", WEXITSTATUS(status));
-	// else if (WIFSIGNALED(status))
-    //     printf("killed by signal %d\n", WTERMSIG(status)+ 128);
 	if (WIFEXITED(status))
         cur->exit_status = WEXITSTATUS(status);
 	else if (WIFSIGNALED(status))
@@ -47,7 +43,7 @@ void	ft_lst_cmd(t_cmd	*command,t_lst_env *lst,t_data *pip)
     printf("status=%d\n", cur->exit_status);
 }
 
-void	ft_chech_excut_cmd(t_cmd	*command,t_lst_env *lst,t_data *pip)
+void	ft_chech_excut_cmd(t_cmd	*command,t_lst_env **lst,t_data *pip)
 {
 	int i;
 	i = 0;

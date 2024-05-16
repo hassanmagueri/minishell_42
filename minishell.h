@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: emagueri <emagueri@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ataoufik <ataoufik@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/17 11:22:57 by emagueri          #+#    #+#             */
-/*   Updated: 2024/05/13 21:36:43 by emagueri         ###   ########.fr       */
+/*   Updated: 2024/05/16 13:33:32 by ataoufik         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@
 # define ENV_LST 0
 # define TOKEN_LST 1
 // # define SEP " |"
-
+// extern int exit_state; 
 typedef struct s_list
 {
 	void			*content;
@@ -158,28 +158,28 @@ int ft_expand(t__lst_token **lst_token, t_lst_env **lst_env, int exit_state);
 //
 //execution
 char	*find_path_executable(char **env_path, char *cmd);
-int	ft_execute_command(t_data *pip,t_lst_env *lst,char **cmd);
-int		ft_excut_cmd_line(t_lst_env *lst, t_cmd *args, t_data *pip);
+int	ft_execute_command(t_data *pip,t_lst_env **lst,char **cmd);
+int		ft_excut_cmd_line(t_lst_env **lst, t_cmd *args, t_data *pip);
 int		ft_check_buitin_cmd(t_cmd	*args);
-void	ft_lst_cmd(t_cmd	*command,t_lst_env *lst,t_data *pip);
-void	ft_chech_excut_cmd(t_cmd	*command,t_lst_env *lst,t_data *pip);
-void	ft_excut_child(t_cmd *args,t_data *pip,t_lst_env *lst,int *input_fd);
+void	ft_lst_cmd(t_cmd	*command,t_lst_env **lst,t_data *pip);
+void	ft_chech_excut_cmd(t_cmd	*command,t_lst_env **lst,t_data *pip);
+void	ft_excut_child(t_cmd *args,t_data *pip,t_lst_env **lst,int *input_fd);
 void	ft_redirection(t_cmd	*cmd, t_data *pip);
 void    handle_c_slash_ctrol(int signal);
-void	init_path_env(t_data *pip,t_lst_env *lst,char **env);
+void	init_path_env(t_data *pip,t_lst_env **lst);
 // void	init_path_env(t_data *pip,t_lst_env *lst);
 
 // garbage collector 
 void	*gc_alloc(size_t size, t_gc_type type);
 
-int	ft_cmd_builtin_child(t_lst_env *lst, t_cmd *args, t_data *pip);
+int	ft_cmd_builtin_child(t_lst_env **lst, t_cmd *args, t_data *pip);
 // builtin
-int		ft_cd(t_lst_env *lst,t_cmd  *args);
-int		ft_export(t_lst_env *lst_env, t_cmd *str);
+int		ft_cd(t_lst_env **lst,t_cmd  *args);
+int		ft_export(t_lst_env **lst_env, t_cmd *str);
 int		ft_echo(t_cmd *cmd);
 int		ft_pwd(void);
-int		ft_unset(t_lst_env *lst, t_cmd *args);
-int	ft_env(t_lst_env *lst,t_cmd *args);
+int		ft_unset(t_lst_env **lst, t_cmd *args);
+int	ft_env(t_lst_env **lst,t_cmd *args);
 int		ft_exit(t_cmd   *args);
 //
 int		is_with_SPACEs(int c);

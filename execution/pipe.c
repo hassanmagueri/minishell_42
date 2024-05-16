@@ -6,15 +6,16 @@
 /*   By: ataoufik <ataoufik@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/01 16:33:38 by ataoufik          #+#    #+#             */
-/*   Updated: 2024/05/13 15:49:31 by ataoufik         ###   ########.fr       */
+/*   Updated: 2024/05/16 19:45:24 by ataoufik         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
 
-void	ft_excut_child(t_cmd *args,t_data *pip,t_lst_env *lst,int *input_fd)
+void	ft_excut_child(t_cmd *args,t_data *pip,t_lst_env **lst,int *input_fd)
 {
+	signal(SIGINT, SIG_IGN);
 	if (pip->last!= 1)
 		pipe(pip->tub);
 	pid_t pid = fork();

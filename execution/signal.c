@@ -6,7 +6,7 @@
 /*   By: ataoufik <ataoufik@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/02 14:52:28 by ataoufik          #+#    #+#             */
-/*   Updated: 2024/05/14 14:33:15 by ataoufik         ###   ########.fr       */
+/*   Updated: 2024/05/16 15:46:34 by ataoufik         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@ void    handle_c_slash_ctrol(int signal)
 {
     if (signal == SIGINT)
     {
+        // exit_state = 1;
         write(1,"\n",1);
         rl_replace_line("", 0);
         rl_on_new_line();
@@ -26,11 +27,6 @@ void    handle_c_slash_ctrol(int signal)
         // return ;
 }
 
-void    handle_slash_ctrol(int signal)
-{
-    printf(" ");
-    return ;
-}
 
 int ft_signal_handeler(void)
 {

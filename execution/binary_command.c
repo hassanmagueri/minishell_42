@@ -6,18 +6,59 @@
 /*   By: ataoufik <ataoufik@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/01 16:38:40 by ataoufik          #+#    #+#             */
-/*   Updated: 2024/05/14 14:49:15 by ataoufik         ###   ########.fr       */
+/*   Updated: 2024/05/16 16:05:25 by ataoufik         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include"../minishell.h"
-
-void	init_path_env(t_data *pip,t_lst_env *lst,char **env)
+char *ft_str_env(char *s1,char *s2)
 {
 	char *str;
-	pip->env = env;
-	str = ft_get_env_val(&lst, "PATH");
-	// printf("str   ->   %s\n",str);
+	// if (!s2)
+	str = ft_strjoin(s1,"=",ALLOC);
+	str = ft_strjoin(str,s2,ALLOC);
+	return (str);
+}
+char **ft_lst_to_tab(t_lst_env **lst)
+{
+	t_lst_env *cur;
+	char **res;
+	int cont ;
+	int i = 0;
+	cont = 0;
+	cur = *lst;
+	if (*lst == NULL)
+		return (NULL);
+	while(cur)
+	{
+		cont++;
+		cur = cur->next;
+	}
+	res = gc_alloc((cont + 1) * sizeof(char *), ALLOC_ENV);
+	cur = *lst;
+	while (cur)
+	{
+		if (cur->value != NULL)
+		{
+			res[i] = ft_str_env(cur->key,cur->value);
+			i++;
+		}
+		cur = cur->next;
+	}
+	res[i] = NULL;
+	return (res);
+}
+
+void	init_path_env(t_data *pip,t_lst_env **lst)
+{
+	char *str;
+		// printf("dewdewdewdewdwe\n");
+	pip->env = ft_lst_to_tab(lst);
+	// int i = 0;
+	// while(pip->env[i])
+	// 	i++;
+	// 	printf("hnaaaa %d\n",i);
+	str = ft_get_env_val(lst, "PATH");
 	pip->env_path = ft_split(str, ':', ALLOC_ENV);
 	if (!pip->env_path)
 		return ;
@@ -48,7 +89,10 @@ char	*find_path_executable(char **env_path, char *cmd)
 	str = NULL;
 	path = NULL;
 	if (!env_path)
-		return NULL;
+	{
+		printf("%s: No such file or directory\n",cmd);
+		exit(127);
+	}
 	if (parsing_cmd(cmd) != 0)
 	{
 		if (access(cmd, X_OK) == 0 && access(cmd, F_OK) == 0)
@@ -77,15 +121,29 @@ char	*find_path_executable(char **env_path, char *cmd)
 	return (NULL);
 }
 
-int	ft_execute_command(t_data *pip,t_lst_env *lst,char **cmd)
+int	ft_execute_command(t_data *pip,t_lst_env **lst,char **cmd)
 {
+	signal(SIGINT, SIG_DFL);
+	signal(SIGQUIT, SIG_DFL);
 	char *command;
+	// init_path_env(pip,lst);
 	command = find_path_executable(pip->env_path, cmd[0]);
+	// printf("%s\n",command);
 	if (command == NULL)
 	{
 		printf("%s :command not found\n",cmd[0]);
 		exit(127);
 	}
+	int i = 0;
+	t_lst_env *cur;
+	cur = *lst;
+	while (cur)
+	{
+		i++;
+		// printf("%s\n",cur->key);
+		cur = cur->next;
+	}
+	// printf("env count before %d \n", i);
 	execve(command, cmd, pip->env);
 	return (0);
 }
