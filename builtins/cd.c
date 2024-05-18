@@ -6,7 +6,7 @@
 /*   By: ataoufik <ataoufik@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/21 19:18:53 by ataoufik          #+#    #+#             */
-/*   Updated: 2024/05/18 17:17:51 by ataoufik         ###   ########.fr       */
+/*   Updated: 2024/05/18 20:21:49 by ataoufik         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -125,7 +125,7 @@ int	ft_chdir_oldpwd(t_lst_env **lst)
 	if (ft_check_value_node(lst,"OLDPWD") == 0)
 	{
 		printf("cd: OLDPWD not set\n");
-		return (1);	
+		return (1);
 	}
 	else
 	{
@@ -150,7 +150,10 @@ int    ft_cd(t_lst_env **lst,t_cmd  *args)
 	pwd = getcwd(cmd, sizeof(cmd));
 	oldpwd = pwd;
 	if (args->cmd[1] != NULL && args->cmd[1][0] == '-' && args->cmd[1][1] == '\0')
-		ft_chdir_oldpwd(lst);
+	{
+		if (ft_chdir_oldpwd(lst)==1)
+			return (1);
+	}
 	else if(args->cmd[1] != NULL && args->cmd[1][0] == '-' && args->cmd[1][1] != '\0')
 	{
 		printf("cd: -%c: invalid option\n",args->cmd[1][1]);

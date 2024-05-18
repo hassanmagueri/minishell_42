@@ -6,7 +6,7 @@
 /*   By: ataoufik <ataoufik@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/27 19:22:45 by ataoufik          #+#    #+#             */
-/*   Updated: 2024/05/16 14:17:27 by ataoufik         ###   ########.fr       */
+/*   Updated: 2024/05/18 20:18:12 by ataoufik         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,13 +21,13 @@ int	ft_excut_cmd_line(t_lst_env **lst, t_cmd *args, t_data *pip)
 	else if (ft_strncmp(args->cmd[0], "env", 4) == 0)
 		args->exit_status = ft_env(lst,args); //
 	else if (ft_strncmp(args->cmd[0], "exit", 5) == 0)
-		args->exit_status = ft_exit(args);
+		args->exit_status = ft_exit(args); //
 	else if (ft_strncmp(args->cmd[0], "export", 7) == 0)
 		args->exit_status = ft_export(lst, args); //
 	else if (ft_strncmp(args->cmd[0], "pwd", 4) == 0)
 		args->exit_status = ft_pwd();//
 	else if (ft_strncmp(args->cmd[0], "unset", 6) == 0)
-		args->exit_status = ft_unset(lst, args);
+		args->exit_status = ft_unset(lst, args); // 
 	return (0);
 }
 

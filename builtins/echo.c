@@ -48,5 +48,5 @@ int ft_echo(t_cmd *cmd)
 	print_echo(cmd_str + i);
 	if (i == 0)
 		printf("\n");
-	return 1;
+	return 0;
 }
