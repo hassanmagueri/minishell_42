@@ -6,7 +6,7 @@
 /*   By: ataoufik <ataoufik@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/21 19:18:53 by ataoufik          #+#    #+#             */
-/*   Updated: 2024/05/18 16:48:54 by ataoufik         ###   ########.fr       */
+/*   Updated: 2024/05/18 17:17:51 by ataoufik         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,7 +69,7 @@ int ft_change_directory(t_lst_env *lst,char *pwd,char *args)
 	if(access(pwd,F_OK) == 0)
 	{
 		if (chdir(pwd)!= 0)
-				perror("Failed to change directory");
+				perror("cd");
 		ft_change_value_lst(&lst, "PWD", pwd);
 	}
 	else if(access(args,F_OK) == 0)
@@ -101,19 +101,19 @@ char *ft_get_pwd(t_lst_env **lst, char *pwd,char *cmd)
 	{
 		return (pwd);
 	}
-	while(cmd[i])
-	{
-		if (cmd[i]=='/' || cmd[i]=='.')
-		{
-			if (cmd[i + 1]=='.' &&  cmd[i + 2]=='.')
-				return (cmd);
-			i++;
-		}
-		else
-			return (cmd);
-	}
-	pwd = ft_strdup("/",ALLOC);
-	return (pwd);
+	// while(cmd[i])
+	// {
+	// 	if (cmd[i]=='/' || cmd[i]=='.')
+	// 	{
+	// 		if (cmd[i + 1]=='.' &&  cmd[i + 2]=='.')
+	// 			return (cmd);
+	// 		i++;
+	// 	}
+	// 	else
+	// 		return (cmd);
+	// }
+	// pwd = cmd;
+	return (cmd);
 }
 
 int	ft_chdir_oldpwd(t_lst_env **lst)
@@ -132,7 +132,7 @@ int	ft_chdir_oldpwd(t_lst_env **lst)
 		oldpwd = ft_get_env_val(lst, "OLDPWD");
 		ft_change_value_lst(lst, "PWD",oldpwd);
 		if (chdir(oldpwd) != 0)
-			perror("Failed to change directory");
+			perror("cd ");
 		ft_change_value_lst(lst, "OLDPWD", pwd);
 		printf("%s\n",oldpwd);
 	}
