@@ -34,7 +34,6 @@ void print_echo(char **str)
 		if (str[i])
 			printf(" ");
 	}
-	
 }
 
 int ft_echo(t_cmd *cmd)

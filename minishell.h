@@ -6,7 +6,7 @@
 /*   By: ataoufik <ataoufik@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/17 11:22:57 by emagueri          #+#    #+#             */
-/*   Updated: 2024/05/16 13:33:32 by ataoufik         ###   ########.fr       */
+/*   Updated: 2024/05/17 17:55:30 by ataoufik         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -167,7 +167,6 @@ void	ft_excut_child(t_cmd *args,t_data *pip,t_lst_env **lst,int *input_fd);
 void	ft_redirection(t_cmd	*cmd, t_data *pip);
 void    handle_c_slash_ctrol(int signal);
 void	init_path_env(t_data *pip,t_lst_env **lst);
-// void	init_path_env(t_data *pip,t_lst_env *lst);
 
 // garbage collector 
 void	*gc_alloc(size_t size, t_gc_type type);

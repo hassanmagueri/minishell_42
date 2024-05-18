@@ -6,7 +6,7 @@
 /*   By: ataoufik <ataoufik@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/18 17:18:39 by ataoufik          #+#    #+#             */
-/*   Updated: 2024/05/16 22:42:18 by ataoufik         ###   ########.fr       */
+/*   Updated: 2024/05/18 15:54:44 by ataoufik         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,7 @@ int    ft_exit(t_cmd   *args)// % 256
     int r = 0;
     while(args->cmd[i])
     {
-        if (ft_parsing_exit(args->cmd[i]) == 1 && r==0)
+        if (ft_parsing_exit(args->cmd[i]) == 1 && r == 0)
         {
             printf("exit: %s: numeric argument required\n",args->cmd[i]);
              status = 2;
@@ -54,7 +54,7 @@ int    ft_exit(t_cmd   *args)// % 256
         }
         i++;  
     }
-    if ((i == 1 || i == 2)&& r==0)
+    if ((i == 1 || i == 2) && r == 0)
     {
         ft_putendl_fd("exit", 1);
         if(ft_parsing_exit(args->cmd[i]) != 1)
@@ -66,8 +66,7 @@ int    ft_exit(t_cmd   *args)// % 256
         status = 1;
         
     }
-
-            exit(status);
+    exit(status);
     // return(status);
 }
 

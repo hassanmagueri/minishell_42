@@ -6,7 +6,7 @@
 /*   By: ataoufik <ataoufik@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/01 16:38:40 by ataoufik          #+#    #+#             */
-/*   Updated: 2024/05/16 16:05:25 by ataoufik         ###   ########.fr       */
+/*   Updated: 2024/05/18 15:47:55 by ataoufik         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,17 +52,12 @@ char **ft_lst_to_tab(t_lst_env **lst)
 void	init_path_env(t_data *pip,t_lst_env **lst)
 {
 	char *str;
-		// printf("dewdewdewdewdwe\n");
 	pip->env = ft_lst_to_tab(lst);
-	// int i = 0;
-	// while(pip->env[i])
-	// 	i++;
-	// 	printf("hnaaaa %d\n",i);
 	str = ft_get_env_val(lst, "PATH");
 	pip->env_path = ft_split(str, ':', ALLOC_ENV);
 	if (!pip->env_path)
 		return ;
-	pip->infile = -1;
+	pip->infile = 0;
 	pip->outfile = -1;
 }
 int	parsing_cmd(char *str)
@@ -88,6 +83,7 @@ char	*find_path_executable(char **env_path, char *cmd)
 	i = 0;
 	str = NULL;
 	path = NULL;
+	// if 
 	if (!env_path)
 	{
 		printf("%s: No such file or directory\n",cmd);
@@ -123,10 +119,11 @@ char	*find_path_executable(char **env_path, char *cmd)
 
 int	ft_execute_command(t_data *pip,t_lst_env **lst,char **cmd)
 {
-	signal(SIGINT, SIG_DFL);
-	signal(SIGQUIT, SIG_DFL);
+	// signal(SIGINT, SIG_DFL);
+	// signal(SIGQUIT, SIG_DFL);
 	char *command;
-	// init_path_env(pip,lst);
+	if (cmd[0] == NULL || (cmd[0][0]==':'&&cmd[0][1]=='\0' ))
+		exit (0);
 	command = find_path_executable(pip->env_path, cmd[0]);
 	// printf("%s\n",command);
 	if (command == NULL)
@@ -134,15 +131,15 @@ int	ft_execute_command(t_data *pip,t_lst_env **lst,char **cmd)
 		printf("%s :command not found\n",cmd[0]);
 		exit(127);
 	}
-	int i = 0;
-	t_lst_env *cur;
-	cur = *lst;
-	while (cur)
-	{
-		i++;
-		// printf("%s\n",cur->key);
-		cur = cur->next;
-	}
+	// int i = 0;
+	// t_lst_env *cur;
+	// cur = *lst;
+	// while (cur)
+	// {
+	// 	i++;
+	// 	// printf("%s\n",cur->key);
+	// 	cur = cur->next;
+	// }
 	// printf("env count before %d \n", i);
 	execve(command, cmd, pip->env);
 	return (0);

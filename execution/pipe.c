@@ -6,7 +6,7 @@
 /*   By: ataoufik <ataoufik@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/01 16:33:38 by ataoufik          #+#    #+#             */
-/*   Updated: 2024/05/16 19:45:24 by ataoufik         ###   ########.fr       */
+/*   Updated: 2024/05/18 15:42:35 by ataoufik         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,29 +19,40 @@ void	ft_excut_child(t_cmd *args,t_data *pip,t_lst_env **lst,int *input_fd)
 	if (pip->last!= 1)
 		pipe(pip->tub);
 	pid_t pid = fork();
-	// pip->tab_pid[]
 	if (pid == 0)
 	{
 		ft_redirection(args,pip);
         // 
+			// printf("%d\n",pip->infile);
+		// if (args->redir->redirection_type == OUTPUT)
+		// 	printf("OUTPUT---->%d\n",pip->outfile);
+		// else if (args->redir->redirection_type == APPEND)
+		// 	printf("APPEND---->%d\n",pip->outfile);
+		// else
+		// 	printf("\n");
 		if (pip->infile != 0)// infile = 0 && outfile = 1
 		{
-			// if(pip->infile < 0)
-			// {
-			// 	perror("infile");
-			// 	exit(1);
-			// }
-			// else
-			//{	
+			if(pip->infile < 0)
+			{
+				perror("infile");
+				exit(1);
+			}
+			else
+			{	
 				dup2(pip->infile,STDIN_FILENO);
 				close(pip->infile);
-			//}
+			}
 		}
-		
-		if (pip->outfile!=0)
+		if (pip->outfile != -1)
 		{
-			dup2(pip->outfile,STDOUT_FILENO);
+			if (dup2(pip->outfile,1)== -1)
+			{
+				printf("haaa9e\n");
+				exit(3);
+				
+			}
 			close(pip->outfile);
+			// printf("22~->%d\n",pip->outfile);
 		}
         // fanction->redirection 
         //
