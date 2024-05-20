@@ -6,7 +6,7 @@
 /*   By: ataoufik <ataoufik@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/01 16:38:40 by ataoufik          #+#    #+#             */
-/*   Updated: 2024/05/18 15:47:55 by ataoufik         ###   ########.fr       */
+/*   Updated: 2024/05/20 18:01:34 by ataoufik         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,8 +57,6 @@ void	init_path_env(t_data *pip,t_lst_env **lst)
 	pip->env_path = ft_split(str, ':', ALLOC_ENV);
 	if (!pip->env_path)
 		return ;
-	pip->infile = 0;
-	pip->outfile = -1;
 }
 int	parsing_cmd(char *str)
 {
@@ -122,12 +120,13 @@ int	ft_execute_command(t_data *pip,t_lst_env **lst,char **cmd)
 	// signal(SIGINT, SIG_DFL);
 	// signal(SIGQUIT, SIG_DFL);
 	char *command;
-	if (cmd[0] == NULL || (cmd[0][0]==':'&&cmd[0][1]=='\0' ))
+	if (cmd[0] == NULL || (cmd[0][0]==':' && cmd[0][1]=='\0' ))
 		exit (0);
 	command = find_path_executable(pip->env_path, cmd[0]);
 	// printf("%s\n",command);
 	if (command == NULL)
 	{
+		// ft_putendl_fd("fffff",2);
 		printf("%s :command not found\n",cmd[0]);
 		exit(127);
 	}

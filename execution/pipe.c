@@ -6,7 +6,7 @@
 /*   By: ataoufik <ataoufik@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/01 16:33:38 by ataoufik          #+#    #+#             */
-/*   Updated: 2024/05/18 15:42:35 by ataoufik         ###   ########.fr       */
+/*   Updated: 2024/05/20 17:42:22 by ataoufik         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,22 +15,18 @@
 
 void	ft_excut_child(t_cmd *args,t_data *pip,t_lst_env **lst,int *input_fd)
 {
-	signal(SIGINT, SIG_IGN);
+	// signal(SIGINT, SIG_IGN);
 	if (pip->last!= 1)
 		pipe(pip->tub);
 	pid_t pid = fork();
 	if (pid == 0)
 	{
+		pip->infile = 0;
+		pip->outfile = 1;
+		// signal(SIGINT, SIG_DFL);
 		ft_redirection(args,pip);
-        // 
-			// printf("%d\n",pip->infile);
-		// if (args->redir->redirection_type == OUTPUT)
-		// 	printf("OUTPUT---->%d\n",pip->outfile);
-		// else if (args->redir->redirection_type == APPEND)
-		// 	printf("APPEND---->%d\n",pip->outfile);
-		// else
-		// 	printf("\n");
-		if (pip->infile != 0)// infile = 0 && outfile = 1
+			// printf("outfile %d\n",pip->outfile);
+		if (pip->infile != 0)
 		{
 			if(pip->infile < 0)
 			{
@@ -42,17 +38,6 @@ void	ft_excut_child(t_cmd *args,t_data *pip,t_lst_env **lst,int *input_fd)
 				dup2(pip->infile,STDIN_FILENO);
 				close(pip->infile);
 			}
-		}
-		if (pip->outfile != -1)
-		{
-			if (dup2(pip->outfile,1)== -1)
-			{
-				printf("haaa9e\n");
-				exit(3);
-				
-			}
-			close(pip->outfile);
-			// printf("22~->%d\n",pip->outfile);
 		}
         // fanction->redirection 
         //
@@ -67,11 +52,32 @@ void	ft_excut_child(t_cmd *args,t_data *pip,t_lst_env **lst,int *input_fd)
             close(pip->tub[0]);
             close(pip->tub[1]);
         }
-        // fanction->pp
-		if (ft_check_buitin_cmd(args) == 1)
-			ft_cmd_builtin_child(lst,args,pip);
+		if (pip->outfile != 1)
+        {
+            if (pip->outfile < 0)
+            {
+                perror("outfile");
+                exit(1);
+            }
+            dup2(pip->outfile, STDOUT_FILENO);
+			// ft_execute_command(pip,lst,args->cmd);
+			if (ft_check_buitin_cmd(args) == 1)
+				ft_cmd_builtin_child(lst,args,pip);
+			else
+				ft_execute_command(pip,lst,args->cmd);
+            close(pip->outfile);
+
+        }
 		else
-			ft_execute_command(pip,lst,args->cmd);
+		{
+			if (ft_check_buitin_cmd(args) == 1)
+				ft_cmd_builtin_child(lst,args,pip);
+			else
+				ft_execute_command(pip,lst,args->cmd);
+		}
+        // fanction->pp
+		// exit(EXIT_SUCCESS);
+		// close(pip->outfile);
 	}
 	else
 	{
