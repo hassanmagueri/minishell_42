@@ -6,7 +6,7 @@
 /*   By: ataoufik <ataoufik@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/21 14:42:31 by ataoufik          #+#    #+#             */
-/*   Updated: 2024/05/13 16:54:31 by ataoufik         ###   ########.fr       */
+/*   Updated: 2024/05/16 14:29:51 by ataoufik         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,18 +30,22 @@ int ft_parsing_unset(char *str)
     }
     return(0);     
 }
-int ft_unset(t_lst_env *lst, t_cmd *args)
+int ft_unset(t_lst_env **lst, t_cmd *args)
 {
     t_lst_env   *cur;
     int status = 0;
     t_lst_env   *prev;
-    t_lst_env   *to_free;
     int i;
 
     i = 1;
     while (args->cmd[i] != NULL)
     {
-        cur = lst;
+        cur = *lst;
+        if (cur->next == NULL &&ft_strncmp(cur->key,args->cmd[i], ft_strlen(args->cmd[i])) == 0)
+        {
+            (*lst) = NULL;
+            return (0);
+        }
         prev = NULL;
         if (ft_parsing_unset(args->cmd[i]) != 0)
         {
@@ -63,20 +67,16 @@ int ft_unset(t_lst_env *lst, t_cmd *args)
         }
         while (cur != NULL)
         {
-            if (ft_strncmp(cur->key,args->cmd[i],ft_strlen(args->cmd[i])) == 0)
+            if (ft_strncmp(cur->key,args->cmd[i], ft_strlen(args->cmd[i])) == 0)
             {
-                to_free = cur;
-                if (prev)
-                    prev->next= cur->next;
+                if (prev == NULL)
+                    (*lst) = cur->next;
                 else
-                    lst = cur->next;
-                cur = cur->next;
+                    prev->next = cur->next;
+                    break;
             }
-            else
-            {
-                prev = cur;
-                cur=cur->next;
-            }
+            prev = cur;
+            cur=cur->next;
         }
         i++;
     }

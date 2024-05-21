@@ -6,7 +6,7 @@
 /*   By: emagueri <emagueri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/24 12:47:51 by ataoufik          #+#    #+#             */
-/*   Updated: 2024/05/21 12:00:27 by emagueri         ###   ########.fr       */
+/*   Updated: 2024/05/21 12:35:45 by emagueri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,6 +83,7 @@ int main(int argc, char *argv[], char **env)
 		ft_cmd(&cmd, &t);
 		print_lst_cmd(&cmd);
 		ft_chech_excut_cmd(cmd,lst_env,&pip);
+		cmd->exit_status= exit_state;
 		free(input);
 		exit_state = cmd->exit_status;
 		gc_alloc(0, FREE);
