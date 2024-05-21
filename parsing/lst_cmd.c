@@ -6,7 +6,7 @@
 /*   By: emagueri <emagueri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/20 10:43:06 by emagueri          #+#    #+#             */
-/*   Updated: 2024/05/15 22:56:46 by emagueri         ###   ########.fr       */
+/*   Updated: 2024/05/21 11:45:52 by emagueri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,6 +101,7 @@ char	**ft_prepare_cmd(t__lst_token **tokens, t_redir **redirs)
 		len++;
 		last_token = last_token->next;
 	}
+	printf("len : %d\n", len);
 	cmd = gc_alloc(sizeof(char *) * (len + 1), ALLOC);
 	cur = *tokens;
 	i = 0;
@@ -214,16 +215,12 @@ int reset_cmd_arr(t_cmd *cmd_node, int *indexes, int len_indexes, int len_arr_st
 	i_count = 0;
 	str_arr = cmd_node->cmd;
 	i = 0;
-	// new_str_arr = malloc(sizeof(char *) * (len_indexes + len_arr_str + 1));
 	new_str_arr = gc_alloc(sizeof(char *) * (len_indexes + len_arr_str + 1), ALLOC);
 	while (str_arr[i])
 	{
-		// if (i_count)
 		if (ft_is_this_arr(indexes, len_indexes, i))
 		{
 			i_count++;
-			printf(" in reset arr : [%s]\n", str_arr[i]);
-			printf("i_count : [%d]\n", i_count);
 			char **res = ft_split(str_arr[i], ' ', ALLOC);
 			new_str_arr[i + i_count - 1] = res[0];
 			new_str_arr[i + i_count] = res[1];
@@ -232,7 +229,6 @@ int reset_cmd_arr(t_cmd *cmd_node, int *indexes, int len_indexes, int len_arr_st
 			new_str_arr[i + i_count] = str_arr[i];
 		i++;
 	}
-	// printf("last index {%d}\n", i + i_count);
 	new_str_arr[i + i_count] = NULL;
 	cmd_node->cmd = new_str_arr;
 	return 0;
@@ -266,6 +262,25 @@ int ft_split_array(t_cmd **lst_cmd)
 	return 0;
 }
 
+char	**ft_delete_first_array(char **matrix)
+{
+	int		i;
+	int		len;
+	char	**new_matrix;
+
+	len = 0;
+	while (matrix[len])
+		len++;
+	new_matrix = gc_alloc(len * sizeof(char *), ALLOC);
+	i = -1;
+	while (++i < len)
+	{
+		new_matrix[i] = matrix[i + 1];
+	}
+	// new_matrix[i] = NULL;
+	return (new_matrix);
+}
+
 int ft_cmd(t_cmd **lst_cmd, t__lst_token **tokens)
 {
 	char **cmd_str;
@@ -274,17 +289,15 @@ int ft_cmd(t_cmd **lst_cmd, t__lst_token **tokens)
 	
 	while (*tokens)
 	{
-		// lst_redir = malloc(sizeof(t_redir *));
 		lst_redir = gc_alloc(sizeof(t_redir *), ALLOC);
 		lst_redir = NULL;
 		cmd_str = ft_prepare_cmd(tokens, &lst_redir);
+		while (ft_strncmp(cmd_str[0], "/", 1) == 0)
+			cmd_str[0] = FLAG_HEREDOC;
 		t_cmd *cc = NULL;
 		cc = ft_new_cmd(cmd_str, lst_redir);
 		ft_add_back_cmd(lst_cmd, cc);
-		print_lst_cmd(&cc);
-		// print_lst_redir(cc->redir);
 		i++;
 	}
-	// ft_split_array(lst_cmd);
 	return 0;
 }

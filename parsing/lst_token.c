@@ -6,7 +6,7 @@
 /*   By: emagueri <emagueri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/01 22:43:35 by emagueri          #+#    #+#             */
-/*   Updated: 2024/05/14 13:28:01 by emagueri         ###   ########.fr       */
+/*   Updated: 2024/05/20 11:48:10 by emagueri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,6 @@ t__lst_token *ft_new_token(char *str, t_type type)
 
 	if (str == NULL)
 		return NULL;
-    // token = malloc(sizeof(t__lst_token));
     token = gc_alloc(sizeof(t__lst_token), ALLOC);
     token->str = str;
     token->type = type;
@@ -80,7 +79,7 @@ void print__lst_tokens(t__lst_token *lst)
 {
 	while (lst)
 	{
-		printf("\"%s\"\t", lst->str);
+		printf("(%s)\t", lst->str);
 		if (lst->type == WORD)
 			printf("WORD\n");
 		else if (lst->type == WSP)

@@ -6,7 +6,7 @@
 /*   By: emagueri <emagueri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/17 11:22:57 by emagueri          #+#    #+#             */
-/*   Updated: 2024/05/15 13:19:12 by emagueri         ###   ########.fr       */
+/*   Updated: 2024/05/20 14:33:06 by emagueri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,7 @@
 #define ANSI_COLOR_RESET   "\x1b[0m"
 # define ENV_LST 0
 # define TOKEN_LST 1
+# define FLAG_HEREDOC "|<><>||>><<><||"
 // # define SEP " |"
 
 typedef struct s_list

@@ -6,7 +6,7 @@
 /*   By: emagueri <emagueri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/22 22:34:15 by emagueri          #+#    #+#             */
-/*   Updated: 2024/05/13 18:19:21 by emagueri         ###   ########.fr       */
+/*   Updated: 2024/05/16 11:54:19 by emagueri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -161,10 +161,7 @@ int ft_heredoc(t__lst_token **lst_token, t_lst_env **lst_env)
 			buffer = ft_strjoin(ft_strjoin(buffer, input, ALLOC), "\n", ALLOC);
 			// if (input)
 			// 	free(input);
-			// if (input && input[0] != 0)
-			// 	free(input);
 		}
-		// printf("================\n");
 		token->str = file_name;
 		token->type = WORD;
 		token->next = token->next->next;
