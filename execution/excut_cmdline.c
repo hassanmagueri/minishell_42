@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   excut_cmdline.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: emagueri <emagueri@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ataoufik <ataoufik@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/27 19:22:45 by ataoufik          #+#    #+#             */
-/*   Updated: 2024/05/21 12:46:44 by emagueri         ###   ########.fr       */
+/*   Updated: 2024/05/21 15:44:37 by ataoufik         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,6 +69,7 @@ int	ft_excut_cmd_line(t_lst_env **lst, t_cmd *args, t_data *pip)
 
 int	ft_cmd_builtin_child(t_lst_env **lst, t_cmd *args, t_data *pip)
 {
+	signal(SIGINT, SIG_DFL);
 	if (ft_strncmp(args->cmd[0], "cd", 3) == 0)
 		exit(ft_cd(lst, args));
 	else if (ft_strncmp(args->cmd[0],"echo",5) == 0)

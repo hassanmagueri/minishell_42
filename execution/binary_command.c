@@ -6,7 +6,7 @@
 /*   By: ataoufik <ataoufik@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/01 16:38:40 by ataoufik          #+#    #+#             */
-/*   Updated: 2024/05/20 18:01:34 by ataoufik         ###   ########.fr       */
+/*   Updated: 2024/05/23 12:01:38 by ataoufik         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,6 @@
 char *ft_str_env(char *s1,char *s2)
 {
 	char *str;
-	// if (!s2)
 	str = ft_strjoin(s1,"=",ALLOC);
 	str = ft_strjoin(str,s2,ALLOC);
 	return (str);
@@ -62,8 +61,6 @@ int	parsing_cmd(char *str)
 {
 	int i;
 	i = 0;
-	if (str[0]=='.' && str[1]== '/')
-		return (-1);
 	while(str[i])
 	{
 		if (str[i]=='/')
@@ -81,7 +78,8 @@ char	*find_path_executable(char **env_path, char *cmd)
 	i = 0;
 	str = NULL;
 	path = NULL;
-	// if 
+	if(cmd[0]=='\0')
+		return NULL;
 	if (!env_path)
 	{
 		printf("%s: No such file or directory\n",cmd);
@@ -91,11 +89,6 @@ char	*find_path_executable(char **env_path, char *cmd)
 	{
 		if (access(cmd, X_OK) == 0 && access(cmd, F_OK) == 0)
 			return (cmd);
-		else if (parsing_cmd(cmd) == -1)
-		{
-			printf("%s: Permission denied\n",cmd);
-			exit(126);
-		}
 		else
 		{
 			printf("%s: No such file or directory\n",cmd);
@@ -117,29 +110,16 @@ char	*find_path_executable(char **env_path, char *cmd)
 
 int	ft_execute_command(t_data *pip,t_lst_env **lst,char **cmd)
 {
-	// signal(SIGINT, SIG_DFL);
-	// signal(SIGQUIT, SIG_DFL);
 	char *command;
-	if (cmd[0] == NULL || (cmd[0][0]==':' && cmd[0][1]=='\0' ))
+	if (cmd[0] == NULL || (cmd[0][0]==':' && cmd[0][1]== '\0' ))
 		exit (0);
 	command = find_path_executable(pip->env_path, cmd[0]);
-	// printf("%s\n",command);
 	if (command == NULL)
 	{
-		// ft_putendl_fd("fffff",2);
-		printf("%s :command not found\n",cmd[0]);
+		ft_putstr_fd(cmd[0],2);
+		ft_putendl_fd(" :command not found",2);
 		exit(127);
 	}
-	// int i = 0;
-	// t_lst_env *cur;
-	// cur = *lst;
-	// while (cur)
-	// {
-	// 	i++;
-	// 	// printf("%s\n",cur->key);
-	// 	cur = cur->next;
-	// }
-	// printf("env count before %d \n", i);
 	execve(command, cmd, pip->env);
 	return (0);
 }

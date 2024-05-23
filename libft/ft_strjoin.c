@@ -6,7 +6,7 @@
 /*   By: emagueri <emagueri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/07 14:08:47 by emagueri          #+#    #+#             */
-/*   Updated: 2024/05/17 11:39:40 by emagueri         ###   ########.fr       */
+/*   Updated: 2024/05/10 19:16:12 by emagueri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,12 +28,12 @@ char	*ft_strjoin(char const *s1, char const *s2, t_gc_type type)
 	if (!res)
 		return (NULL);
 	i = 0;
-	while (s1 && s1[i])
+	while (s1[i])
 	{
 		res[i] = s1[i];
 		i++;
 	}
-	while (s2 && s2[i - lens1])
+	while (s2[i - lens1])
 	{
 		res[i] = s2[i - lens1];
 		i++;

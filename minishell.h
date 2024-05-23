@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: emagueri <emagueri@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ataoufik <ataoufik@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/17 11:22:57 by emagueri          #+#    #+#             */
-/*   Updated: 2024/05/21 12:47:13 by emagueri         ###   ########.fr       */
+/*   Updated: 2024/05/22 20:31:08 by ataoufik         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,9 +33,8 @@
 #define ANSI_COLOR_RESET   "\x1b[0m"
 # define ENV_LST 0
 # define TOKEN_LST 1
-# define FLAG_HEREDOC "|<><>||>><<><||"
 // # define SEP " |"
-// extern int exit_state; 
+extern int exit_state;
 typedef struct s_list
 {
 	void			*content;
@@ -50,7 +49,6 @@ typedef struct s_data
 	int		tub[2];
 	int		infile;
 	int		outfile;
-	int		tab_pid[100];
 	char	**env_path;
 }	t_data;
 
@@ -82,8 +80,6 @@ typedef struct s_redir
 {
     char    *file_name;
     // char    *str;
-    int    infile;
-    int    outfile;
     t_type  redirection_type;
     struct s_redir *next;
 }    t_redir;
@@ -134,7 +130,7 @@ t__lst_token	*ft_new_token(char *str, t_type type);
 void    ft_lst_token_add_back(t__lst_token **lst, t__lst_token *token);
 t__lst_token	*ft__lst_token_last(t__lst_token **lst);
 t__lst_token *ft_get_token_by_type(t__lst_token **lst_token, t_type type);
-int	ft_is_with_spaces(int c);
+int	is_with_spaces(int c);
 int    ft__lst_tokenize(t__lst_token **token, char *cmd);
 int is_sep(int c);
 void	print__lst_tokens(t__lst_token *lst);
@@ -182,12 +178,14 @@ int		ft_unset(t_lst_env **lst, t_cmd *args);
 int	ft_env(t_lst_env **lst,t_cmd *args);
 int		ft_exit(t_cmd   *args);
 //
-int		is_with_SPACEs(int c);
 char	*ft_handle_var(t_lst_env **lst_env, char *old_output, int *index);
 //ft_cmd
 int		ft_cmd(t_cmd **cmd, t__lst_token **tokens);
 void	print_lst_cmd(t_cmd **cmd);
 //
+
+
+// void    handle_heredoc(int signal);
 
 int ft_signal_handeler(void);
 //libft

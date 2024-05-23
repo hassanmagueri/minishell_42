@@ -29,7 +29,7 @@
 # re: fclean all
 
 CC = cc #-g -fsanitize=address
-CFLAGS = #-Wall -Wextra -Werror 
+CFLAGS = -Wall -Wextra -Werror 
 SRC_DIR = .
 OBJ_DIR = obj
 CFLAGS = -I$(READLINE_INCLUDE) -g -fsanitize=address   # Add Readline include path

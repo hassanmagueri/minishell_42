@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_execut.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: emagueri <emagueri@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ataoufik <ataoufik@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/17 11:18:33 by ataoufik          #+#    #+#             */
-/*   Updated: 2024/05/21 12:36:39 by emagueri         ###   ########.fr       */
+/*   Updated: 2024/05/22 20:35:01 by ataoufik         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,6 @@ void	ft_lst_cmd(t_cmd	*command,t_lst_env **lst,t_data *pip)
 	int status;
 	cur = command;
 	int input_fd = -1;
-
 	int	i = 0;
 	pip->last = 0;
 	while(cur->next)
@@ -35,12 +34,18 @@ void	ft_lst_cmd(t_cmd	*command,t_lst_env **lst,t_data *pip)
 	pip->last = 1;
 	ft_excut_child(cur,pip,lst,&input_fd);
 	while (wait(&status) != -1)
-		;
-	if (WIFEXITED(status))
-        cur->exit_status = WEXITSTATUS(status);
-	else if (WIFSIGNALED(status))
-        cur->exit_status = WTERMSIG(status)+ 128;
-    printf("status=%d\n", cur->exit_status);
+	{
+		if (WIFEXITED(status))
+			command->exit_status = WEXITSTATUS(status);
+		else if (WIFSIGNALED(status))
+		{
+			command->exit_status = WTERMSIG(status) + 128;
+			if (command->exit_status == 131)
+				printf("Quit: 3\n");
+			else
+				printf("\n");
+		}
+	}
 }
 
 void	ft_chech_excut_cmd(t_cmd	*command,t_lst_env **lst,t_data *pip)

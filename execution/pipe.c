@@ -6,7 +6,7 @@
 /*   By: ataoufik <ataoufik@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/01 16:33:38 by ataoufik          #+#    #+#             */
-/*   Updated: 2024/05/20 17:42:22 by ataoufik         ###   ########.fr       */
+/*   Updated: 2024/05/22 19:52:28 by ataoufik         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,17 +15,18 @@
 
 void	ft_excut_child(t_cmd *args,t_data *pip,t_lst_env **lst,int *input_fd)
 {
-	// signal(SIGINT, SIG_IGN);
+	signal(SIGINT,SIG_IGN);
+	signal(SIGQUIT,SIG_IGN);
 	if (pip->last!= 1)
 		pipe(pip->tub);
 	pid_t pid = fork();
 	if (pid == 0)
 	{
+		signal(SIGINT, SIG_DFL);
+		signal(SIGQUIT, SIG_DFL);
 		pip->infile = 0;
 		pip->outfile = 1;
-		// signal(SIGINT, SIG_DFL);
 		ft_redirection(args,pip);
-			// printf("outfile %d\n",pip->outfile);
 		if (pip->infile != 0)
 		{
 			if(pip->infile < 0)
@@ -60,13 +61,11 @@ void	ft_excut_child(t_cmd *args,t_data *pip,t_lst_env **lst,int *input_fd)
                 exit(1);
             }
             dup2(pip->outfile, STDOUT_FILENO);
-			// ft_execute_command(pip,lst,args->cmd);
 			if (ft_check_buitin_cmd(args) == 1)
 				ft_cmd_builtin_child(lst,args,pip);
 			else
 				ft_execute_command(pip,lst,args->cmd);
             close(pip->outfile);
-
         }
 		else
 		{
@@ -76,8 +75,7 @@ void	ft_excut_child(t_cmd *args,t_data *pip,t_lst_env **lst,int *input_fd)
 				ft_execute_command(pip,lst,args->cmd);
 		}
         // fanction->pp
-		// exit(EXIT_SUCCESS);
-		// close(pip->outfile);
+		exit(EXIT_SUCCESS);
 	}
 	else
 	{

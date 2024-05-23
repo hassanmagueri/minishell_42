@@ -6,7 +6,7 @@
 /*   By: ataoufik <ataoufik@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/21 19:18:53 by ataoufik          #+#    #+#             */
-/*   Updated: 2024/05/18 20:21:49 by ataoufik         ###   ########.fr       */
+/*   Updated: 2024/05/22 19:23:58 by ataoufik         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,6 +90,11 @@ char *ft_get_pwd(t_lst_env **lst, char *pwd,char *cmd)
 	if (cmd == NULL)
 	{
 		pwd = ft_get_env_val(lst, "HOME");
+		if (pwd == NULL)
+		{
+			ft_putendl_fd("cd: HOME not set",2);
+			return NULL;
+		}
 		return (pwd);
 	}
 	if(ft_strncmp(cmd,"..",3) == 0)	
@@ -162,6 +167,8 @@ int    ft_cd(t_lst_env **lst,t_cmd  *args)
 	else
 	{
 		pwd = ft_get_pwd(lst,pwd,args->cmd[1]);
+		if (pwd ==NULL)
+			return (1);
 		ft_change_directory(*lst, pwd, args->cmd[1]);
 		if (ft_check_value_node(lst,"OLDPWD") == 0)
 			ft_change_value_lst(lst, "OLDPWD", oldpwd);
