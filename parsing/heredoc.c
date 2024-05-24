@@ -6,7 +6,7 @@
 /*   By: emagueri <emagueri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/22 22:34:15 by emagueri          #+#    #+#             */
-/*   Updated: 2024/05/16 11:54:19 by emagueri         ###   ########.fr       */
+/*   Updated: 2024/05/23 17:33:07 by emagueri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,7 @@
 // 				free(input);
 // 			}
 // 			close(fd);
-// 			unlink(file_name);	
+// 			unlink(file_name);
 // 			// token->str = file_name;
 // 			// token->type = INPUT;
 // 			token = token->next;
@@ -78,11 +78,11 @@ t__lst_token *ft_next_token(t__lst_token **token)
 	return cur;
 }
 
-char	*ft_expend_input(char *input, t_lst_env **lst_env)
+char *ft_expend_input(char *input, t_lst_env **lst_env)
 {
-	int		i;
-	char	*new_input;
-	int		start;
+	int i;
+	char *new_input;
+	int start;
 
 	i = 0;
 	new_input = "";
@@ -101,14 +101,14 @@ char	*ft_expend_input(char *input, t_lst_env **lst_env)
 			if (var == NULL)
 				var = "";
 			// printf("var: %s\n", var);
-			new_input = ft_strjoin(new_input ,var, ALLOC);
+			new_input = ft_strjoin(new_input, var, ALLOC);
 		}
 		else
 		{
 			start = i;
 			while (input[i] && input[i] != '$')
 				i++;
-			new_input = ft_strjoin(new_input ,ft_substr(input, start, i - start, ALLOC), ALLOC);
+			new_input = ft_strjoin(new_input, ft_substr(input, start, i - start, ALLOC), ALLOC);
 		}
 	}
 	return (new_input);
@@ -116,27 +116,28 @@ char	*ft_expend_input(char *input, t_lst_env **lst_env)
 
 int ft_heredoc(t__lst_token **lst_token, t_lst_env **lst_env)
 {
-	t__lst_token	*token;
-	t__lst_token	*next_token;
-	char			*limiter;
-	char			*buffer;
-	char			*file_name;
-	
-	int				fd = 1;
-	int				n;
-	int				acs;
+	t__lst_token *token;
+	t__lst_token *next_token;
+	char *limiter;
+	char *buffer;
+	char *file_name;
+	int fd_heredoc;
+	int fd = 1;
+	int n;
+	int acs;
 
 	acs = 0;
-	
+
 	while (acs == 0)
 	{
 		void *v = gc_alloc(0, ALLOC);
 		file_name = ft_strjoin(ft_strjoin("/tmp/.", ft_itoa((int)&v + n++, ALLOC), ALLOC), ".txt", ALLOC);
 		acs = access(file_name, F_OK);
 	}
+	token = *lst_token;
 	while (1)
 	{
-		token = ft_get_token_by_type(lst_token, HEARDOC);
+		token = ft_get_token_by_type(&token, HEARDOC);
 		if (token == NULL)
 			break;
 		next_token = token->next;
@@ -151,26 +152,30 @@ int ft_heredoc(t__lst_token **lst_token, t_lst_env **lst_env)
 		buffer = "";
 		char *input;
 		n = 0;
-		while(1)
+		while (1)
 		{
 			input = readline("> ");
 			if (ft_strncmp(input, limiter, ft_strlen(limiter) + 1) == 0)
 				break;
 			if (ft_next_token(&token)->type == WORD)
 				input = ft_expend_input(input, lst_env);
-			buffer = ft_strjoin(ft_strjoin(buffer, input, ALLOC), "\n", ALLOC);
+			buffer = ft_strjoin(ft_strjoin(buffer, input, ALLOC), "\n", ALLOC); // ! free input of read line
 			// if (input)
 			// 	free(input);
 		}
-		token->str = file_name;
-		token->type = WORD;
-		token->next = token->next->next;
+		token = token->next;
 		if (token->next && (token->next->type == WORD || token->next->type == SING_Q || token->next->type == DOUB_Q))
-			token->next = token->next->next;
+			token = token->next;
 		fd = open(file_name, O_CREAT | O_TRUNC | O_WRONLY, 0600);
-		if (ft_get_token_by_type(lst_token, HEARDOC) == NULL)
-			write(fd, buffer, ft_strlen(buffer));
+		fd_heredoc = open(file_name, O_RDWR, 0777);
+		token->str = ft_itoa(fd, ALLOC);
+		write(fd, buffer, ft_strlen(buffer));
 		close(fd);
+		unlink(file_name);
+		char *s = malloc(ft_strlen(buffer) + 1);
+		read(fd_heredoc, s, ft_strlen(buffer));
+		printf("heredoc: \n-----%s\n", s);
+		// exit(1);
 	}
 	return 1;
 }

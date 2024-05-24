@@ -6,7 +6,7 @@
 /*   By: emagueri <emagueri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/01 10:12:34 by emagueri          #+#    #+#             */
-/*   Updated: 2024/05/20 11:23:12 by emagueri         ###   ########.fr       */
+/*   Updated: 2024/05/24 22:26:14 by emagueri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,7 +79,6 @@ int ft__lst_tokenize(t__lst_token **token, char *input)
 				len++;
 				// return (print_error(NULL));
 			char *str = ft_substr(input, i, len, ALLOC);
-			printf("str: %s\n", str);
 			t__lst_token *t = ft_new_token(str, DOUB_Q);
 			// t__lst_token *t = ft_new_token(ft_strtrim(str, "\"", ALLOC), DOUB_Q);
 			ft_lst_token_add_back(token, t);
@@ -92,7 +91,6 @@ int ft__lst_tokenize(t__lst_token **token, char *input)
 				len++;
 			// return (print_error(NULL));
 			char *str = ft_substr(input, i, len, ALLOC);
-			printf("str: %s\n", str);
 			t__lst_token *t = ft_new_token(str, SING_Q);
 			// t__lst_token *t = ft_new_token(ft_strtrim(str, "\'", ALLOC), SING_Q);
 			ft_lst_token_add_back(token, t);

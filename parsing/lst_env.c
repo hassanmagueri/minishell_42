@@ -6,7 +6,7 @@
 /*   By: emagueri <emagueri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/01 05:02:31 by emagueri          #+#    #+#             */
-/*   Updated: 2024/05/21 11:46:04 by emagueri         ###   ########.fr       */
+/*   Updated: 2024/05/21 18:01:11 by emagueri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,8 +43,7 @@ char	*ft_get_env_val(t_lst_env **lst_env, char	*key)
 	cur = ft_get_env(lst_env, key);
 	if (cur == NULL)
 		return NULL;
-		// return ft_strdup("\t");
-	return cur->value;
+	return (cur->value);
 }
 
 t_lst_env *ft_get_env(t_lst_env **lst_env, char	*key)

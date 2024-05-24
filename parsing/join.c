@@ -3,14 +3,34 @@
 /*                                                        :::      ::::::::   */
 /*   join.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ataoufik <ataoufik@student.42.fr>          +#+  +:+       +#+        */
+/*   By: emagueri <emagueri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/20 12:22:27 by emagueri          #+#    #+#             */
-/*   Updated: 2024/05/23 12:21:46 by ataoufik         ###   ########.fr       */
+/*   Updated: 2024/05/21 17:15:55 by emagueri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
+
+// int ft_is_space_middle(t__lst_token **lst_token, char *str)
+// {
+// 	t__lst_token	*cur;
+// 	char			*new_str;
+// 	int				i;
+
+// 	cur = *lst_token;
+// 	while (cur && cur->type == VAR)
+// 	{
+		
+// 	}
+	
+// 	i = 0;
+// 	new_str = ft_strtrim(str, " ", ALLOC);
+// 	while (new_str[i])
+// 		if (new_str[i++] == ' ')
+// 			return 1;
+// 	return (0);
+// }
 
 int ft_ambiguous(t__lst_token **lst_token)
 {
@@ -59,6 +79,8 @@ int ft_join(t__lst_token **lst_token)
 			prev = cur_cmd;
 			if (cur->str == NULL)
 				cur->str = ft_strdup(cur_cmd->str, ALLOC);
+			else if (cur_cmd->str == NULL)
+				cur->str = ft_strdup(cur->str, ALLOC);
 			else
 				cur->str = ft_strjoin(cur->str, cur_cmd->str, ALLOC);
 			cur_cmd = cur_cmd->next;

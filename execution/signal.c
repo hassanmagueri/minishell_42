@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   signal.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ataoufik <ataoufik@student.42.fr>          +#+  +:+       +#+        */
+/*   By: emagueri <emagueri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/02 14:52:28 by ataoufik          #+#    #+#             */
-/*   Updated: 2024/05/22 20:31:02 by ataoufik         ###   ########.fr       */
+/*   Updated: 2024/05/24 22:15:37 by emagueri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@ void    handle_c_slash_ctrol(int signal)
 {
     if (signal == SIGINT)
     {
-        exit_state = 1;
+        exit_status = 1;
         write(1,"\n",1);
         rl_replace_line("", 0);
         rl_on_new_line();

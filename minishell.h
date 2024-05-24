@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ataoufik <ataoufik@student.42.fr>          +#+  +:+       +#+        */
+/*   By: emagueri <emagueri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/17 11:22:57 by emagueri          #+#    #+#             */
-/*   Updated: 2024/05/24 21:18:44 by ataoufik         ###   ########.fr       */
+/*   Updated: 2024/05/24 22:15:17 by emagueri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@
 # define ENV_LST 0
 # define TOKEN_LST 1
 // # define SEP " |"
-extern int exit_state;
+extern int exit_status;
 typedef struct s_list
 {
 	void			*content;
@@ -100,6 +100,7 @@ typedef struct s_gc
 typedef struct s_cmd
 {
     char **cmd;
+	int	len;
 	int	exit_status;
     struct s_redir *redir;
     struct s_cmd *next;
@@ -136,11 +137,12 @@ t__lst_token	*ft_new_token(char *str, t_type type);
 void    ft_lst_token_add_back(t__lst_token **lst, t__lst_token *token);
 t__lst_token	*ft__lst_token_last(t__lst_token **lst);
 t__lst_token *ft_get_token_by_type(t__lst_token **lst_token, t_type type);
-int	is_with_spaces(int c);
+int	ft_is_with_spaces(int c);
 int    ft__lst_tokenize(t__lst_token **token, char *cmd);
 int is_sep(int c);
 void	print__lst_tokens(t__lst_token *lst);
-
+//parsing
+int ft_parsing(t__lst_token **lst_token, t_lst_env **lst_env, t_cmd **lst_cmd, int exit_status);
 //errors
 int print_error(char *msg);
 int generate_errors(t__lst_token **tokens);
