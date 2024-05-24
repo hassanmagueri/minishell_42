@@ -6,7 +6,7 @@
 /*   By: ataoufik <ataoufik@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/17 11:22:57 by emagueri          #+#    #+#             */
-/*   Updated: 2024/05/22 20:31:08 by ataoufik         ###   ########.fr       */
+/*   Updated: 2024/05/24 21:18:44 by ataoufik         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,8 @@
 #include <signal.h>
 # include <limits.h>
 #include <stdio.h>
+#include <sys/stat.h>
+#include <termios.h>
 #include <fcntl.h>
 #include <string.h>
 #include <stdlib.h>
@@ -50,6 +52,10 @@ typedef struct s_data
 	int		infile;
 	int		outfile;
 	char	**env_path;
+	pid_t *pids;
+    int pid_index;
+    int num_cmds; 
+	
 }	t_data;
 
 typedef enum e_type
@@ -173,7 +179,7 @@ int	ft_cmd_builtin_child(t_lst_env **lst, t_cmd *args, t_data *pip);
 int		ft_cd(t_lst_env **lst,t_cmd  *args);
 int		ft_export(t_lst_env **lst_env, t_cmd *str);
 int		ft_echo(t_cmd *cmd);
-int		ft_pwd(void);
+int		ft_pwd(t_lst_env **lst);
 int		ft_unset(t_lst_env **lst, t_cmd *args);
 int	ft_env(t_lst_env **lst,t_cmd *args);
 int		ft_exit(t_cmd   *args);

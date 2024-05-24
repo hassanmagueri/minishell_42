@@ -6,7 +6,7 @@
 /*   By: ataoufik <ataoufik@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/17 11:18:33 by ataoufik          #+#    #+#             */
-/*   Updated: 2024/05/22 20:35:01 by ataoufik         ###   ########.fr       */
+/*   Updated: 2024/05/24 15:32:07 by ataoufik         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,10 +15,24 @@
 void	ft_lst_cmd(t_cmd	*command,t_lst_env **lst,t_data *pip)
 {
 	t_cmd	*cur;
+	struct termios state;
+	tcgetattr(STDOUT_FILENO,&state);
 	int status;
 	cur = command;
 	int input_fd = -1;
 	int	i = 0;
+	int num_cmds = 0;
+    while (cur) {
+        num_cmds++;
+        cur = cur->next;
+    }
+	pip->pids = malloc(num_cmds * sizeof(pid_t));
+    if (!pip->pids)
+        exit(EXIT_FAILURE);
+
+	pip->pid_index = 0;
+    pip->num_cmds = num_cmds;
+	cur = command;
 	pip->last = 0;
 	while(cur->next)
 	{
@@ -33,8 +47,11 @@ void	ft_lst_cmd(t_cmd	*command,t_lst_env **lst,t_data *pip)
 	pip->first = 0;
 	pip->last = 1;
 	ft_excut_child(cur,pip,lst,&input_fd);
-	while (wait(&status) != -1)
+	i = 0;
+	while (i < pip->num_cmds)
 	{
+        waitpid(pip->pids[i], &status, 0);
+		
 		if (WIFEXITED(status))
 			command->exit_status = WEXITSTATUS(status);
 		else if (WIFSIGNALED(status))
@@ -45,7 +62,10 @@ void	ft_lst_cmd(t_cmd	*command,t_lst_env **lst,t_data *pip)
 			else
 				printf("\n");
 		}
+		i++;
 	}
+	tcsetattr(STDOUT_FILENO,TCSANOW,&state);
+	// free -> pids 
 }
 
 void	ft_chech_excut_cmd(t_cmd	*command,t_lst_env **lst,t_data *pip)

@@ -6,7 +6,7 @@
 /*   By: ataoufik <ataoufik@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/01 16:33:38 by ataoufik          #+#    #+#             */
-/*   Updated: 2024/05/22 19:52:28 by ataoufik         ###   ########.fr       */
+/*   Updated: 2024/05/24 15:26:11 by ataoufik         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,12 +79,14 @@ void	ft_excut_child(t_cmd *args,t_data *pip,t_lst_env **lst,int *input_fd)
 	}
 	else
 	{
+		pip->pids[pip->pid_index++] = pid;
 		if (pip->first != 1)
 			close(*input_fd);
 		if (pip->last != 1)
 		{
 			close(pip->tub[1]);
 			*input_fd = pip->tub[0];
+			close(pip->tub[0]);
 		}
 	}	
 }

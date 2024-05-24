@@ -6,30 +6,33 @@
 /*   By: ataoufik <ataoufik@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/21 14:42:31 by ataoufik          #+#    #+#             */
-/*   Updated: 2024/05/16 14:29:51 by ataoufik         ###   ########.fr       */
+/*   Updated: 2024/05/23 16:45:53 by ataoufik         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-int ft_parsing_unset(char *str)
+int	ft_parsing_unset(char *str)
 {
-    int i;
-    i = 0;
-    if (str[0] == '$'|| ft_isdigit(str[0])==1)
-        i++;
-    while(str[i])
+	int i;
+
+	i = 0;
+	if (ft_isdigit(str[0])==1 || str[0]=='\0' || str[0] == '=')
+		return (1);
+	while(str[i]=='_')
+		i++;
+	while(str[i])
     {
-        if (str[0] == '-')
-            return (2);
-        if (str[i] == '!')
-            return (i);
-        // else if (ft_isalnum(str[i]) != 1)
-        //     return (1);
-        i++;
+		if (str[i]=='_')
+			i++;
+		else if (ft_isalnum(str[i])!=1)
+			return (1);
+        else
+			i++;
     }
-    return(0);     
+	return (0);
 }
+
 int ft_unset(t_lst_env **lst, t_cmd *args)
 {
     t_lst_env   *cur;
@@ -49,17 +52,6 @@ int ft_unset(t_lst_env **lst, t_cmd *args)
         prev = NULL;
         if (ft_parsing_unset(args->cmd[i]) != 0)
         {
-            if (ft_parsing_unset(args->cmd[i]) == 2)
-            {
-                printf("unset: -%c: invalid option\n",args->cmd[i][1]);
-                status = 2;
-                break;
-            }
-            else if (ft_parsing_unset(args->cmd[i]) > 2)
-            {
-                printf("!%c: event not found\n",args->cmd[i][ft_parsing_unset(args->cmd[i]) + 1]);
-                break;
-            }
             printf("unset: `%s': not a valid identifier\n",args->cmd[i]);
             status = 1;
             i++;

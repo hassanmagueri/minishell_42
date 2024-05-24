@@ -6,7 +6,7 @@
 /*   By: ataoufik <ataoufik@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/27 19:22:45 by ataoufik          #+#    #+#             */
-/*   Updated: 2024/05/21 15:44:37 by ataoufik         ###   ########.fr       */
+/*   Updated: 2024/05/24 21:18:59 by ataoufik         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,7 @@ int	ft_excut_cmd_line(t_lst_env **lst, t_cmd *args, t_data *pip)
 	else if (ft_strncmp(args->cmd[0], "export", 7) == 0)
 		args->exit_status = ft_export(lst, args); //
 	else if (ft_strncmp(args->cmd[0], "pwd", 4) == 0)
-		args->exit_status = ft_pwd();//
+		args->exit_status = ft_pwd(lst);//
 	else if (ft_strncmp(args->cmd[0], "unset", 6) == 0)
 		args->exit_status = ft_unset(lst, args); //
 	
@@ -81,7 +81,7 @@ int	ft_cmd_builtin_child(t_lst_env **lst, t_cmd *args, t_data *pip)
 	else if (ft_strncmp(args->cmd[0], "export", 7) == 0)
 		exit(ft_export(lst, args));
 	else if (ft_strncmp(args->cmd[0], "pwd", 4) == 0)
-		exit(ft_pwd());
+		exit(ft_pwd(lst));
 	else if (ft_strncmp(args->cmd[0], "unset", 6) == 0)
 		exit(ft_unset(lst, args));
 	return (0);

@@ -125,8 +125,8 @@ int	ft_prasing_export(char *str)
     {
 		if (str[i]=='_')
 			i++;
-		else if (str[i]=='$' && str[i + 1]=='?')
-			return (i);
+		// else if (str[i]=='$' && str[i + 1]=='?')
+		// 	return (i);
 		else if (ft_isalnum(str[i])!=1)
 			return (1);
         else

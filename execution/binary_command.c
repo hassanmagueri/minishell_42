@@ -6,7 +6,7 @@
 /*   By: ataoufik <ataoufik@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/01 16:38:40 by ataoufik          #+#    #+#             */
-/*   Updated: 2024/05/23 12:01:38 by ataoufik         ###   ########.fr       */
+/*   Updated: 2024/05/23 12:40:07 by ataoufik         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,16 @@ char *ft_str_env(char *s1,char *s2)
 	str = ft_strjoin(str,s2,ALLOC);
 	return (str);
 }
+//is_dir
+
+int is_directory(char *path)
+{
+    struct stat statbuf;
+    if (stat(path, &statbuf) != 0)//
+        return 0;
+    return S_ISDIR(statbuf.st_mode);
+}
+//
 char **ft_lst_to_tab(t_lst_env **lst)
 {
 	t_lst_env *cur;
@@ -88,13 +98,21 @@ char	*find_path_executable(char **env_path, char *cmd)
 	if (parsing_cmd(cmd) != 0)
 	{
 		if (access(cmd, X_OK) == 0 && access(cmd, F_OK) == 0)
+		{
+			if (is_directory(cmd))
+			{
+				printf(" %s: is a directory\n",cmd);
+				exit(126);	
+			}
 			return (cmd);
+		}
 		else
 		{
 			printf("%s: No such file or directory\n",cmd);
 			exit(127);
 		}
 	}
+	
 	while (env_path[i])
 	{
 		str = ft_strjoin(env_path[i], "/", ALLOC);

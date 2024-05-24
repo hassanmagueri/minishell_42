@@ -6,7 +6,7 @@
 /*   By: ataoufik <ataoufik@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/18 17:18:39 by ataoufik          #+#    #+#             */
-/*   Updated: 2024/05/18 20:16:52 by ataoufik         ###   ########.fr       */
+/*   Updated: 2024/05/23 16:25:29 by ataoufik         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@ int ft_parsing_exit(char *str)
 {
     int i;
     i = 0;
+
     if (str[i] == '-' || str[i] == '+')
         i++;
     while(str[i])
@@ -60,7 +61,7 @@ long long int ft_number_exit(char *str)
     return (num * sig);
 }
 
-int    ft_exit(t_cmd   *args)// % 256
+int    ft_exit(t_cmd   *args)
 {
     int i;
     int r = 0;
@@ -70,33 +71,25 @@ int    ft_exit(t_cmd   *args)// % 256
     ft_putendl_fd("exit", 1);
     while(args->cmd[i])
     {
+        if (i >= 2 && ft_parsing_exit(args->cmd[1]) == 0)
+        {
+            ft_putendl_fd("exit: too many arguments", 2);
+            return (1);
+        }
         if (ft_parsing_exit(args->cmd[i]) == 1)
         {
             printf("exit: %s: numeric argument required\n",args->cmd[i]);
-            status =2;
+            status = 2;
             r = 1;
             break;
         }
         i++;
     }
-    if ((i == 1 || i == 2) && r == 0)
+    if (i == 1)
+        status = 0;
+    else if (i == 2 && r == 0)
         status = ft_number_exit(args->cmd[1]) % 256;
-    if (i>2 && r == 0)
-    {
-        ft_putendl_fd("exit: too many arguments", 2);
-        return (1);
-    }
-    // int exit_status;
-    // printf("%d\n",status);
-    // int f = fork();
-    // if (f == 0)
-    // {
         exit(status);
-    // }
-    // wait(&status);
-	// if (WIFEXITED(status))
-    //     exit_status = WEXITSTATUS(status);
-    // printf("status=%d\n", exit_status);
-    // return(status);
-}
 
+    return (0);
+}
