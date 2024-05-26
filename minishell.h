@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: emagueri <emagueri@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ataoufik <ataoufik@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/17 11:22:57 by emagueri          #+#    #+#             */
-/*   Updated: 2024/05/24 22:15:17 by emagueri         ###   ########.fr       */
+/*   Updated: 2024/05/26 19:35:28 by ataoufik         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@
 # define ENV_LST 0
 # define TOKEN_LST 1
 // # define SEP " |"
-extern int exit_status;
+extern int g_var;
 typedef struct s_list
 {
 	void			*content;
@@ -142,7 +142,7 @@ int    ft__lst_tokenize(t__lst_token **token, char *cmd);
 int is_sep(int c);
 void	print__lst_tokens(t__lst_token *lst);
 //parsing
-int ft_parsing(t__lst_token **lst_token, t_lst_env **lst_env, t_cmd **lst_cmd, int exit_status);
+int ft_parsing(t__lst_token **lst_token, t_lst_env **lst_env, t_cmd **lst_cmd, int *exit_status);
 //errors
 int print_error(char *msg);
 int generate_errors(t__lst_token **tokens);
@@ -159,16 +159,16 @@ t_lst_env	*ft_lst_env_last(t_lst_env *lst);
 //
 
 //expend
-int ft_expand(t__lst_token **lst_token, t_lst_env **lst_env, int exit_state);
+int ft_expand(t__lst_token **lst_token, t_lst_env **lst_env, int *exit_state);
 //
 //execution
 char	*find_path_executable(char **env_path, char *cmd);
 int	ft_execute_command(t_data *pip,t_lst_env **lst,char **cmd);
-int		ft_excut_cmd_line(t_lst_env **lst, t_cmd *args, t_data *pip);
+int	ft_excut_cmd_line(t_lst_env **lst, t_cmd *args, t_data *pip,int *ex_state);
 int		ft_check_buitin_cmd(t_cmd	*args);
-void	ft_lst_cmd(t_cmd	*command,t_lst_env **lst,t_data *pip);
-void	ft_chech_excut_cmd(t_cmd	*command,t_lst_env **lst,t_data *pip);
-void	ft_excut_child(t_cmd *args,t_data *pip,t_lst_env **lst,int *input_fd);
+void	ft_lst_cmd(t_cmd	*command,t_lst_env **lst,t_data *pip,int *exit_state);
+void	ft_chech_excut_cmd(t_cmd	*command,t_lst_env **lst,t_data *pip,int *ex_state);
+void	ft_excut_child(t_cmd *args,t_data *pip,t_lst_env **lst,int *input_fd,int *ex_state);
 void	ft_redirection(t_cmd	*cmd, t_data *pip);
 void    handle_c_slash_ctrol(int signal);
 void	init_path_env(t_data *pip,t_lst_env **lst);
@@ -176,7 +176,7 @@ void	init_path_env(t_data *pip,t_lst_env **lst);
 // garbage collector 
 void	*gc_alloc(size_t size, t_gc_type type);
 
-int	ft_cmd_builtin_child(t_lst_env **lst, t_cmd *args, t_data *pip);
+int	ft_cmd_builtin_child(t_lst_env **lst, t_cmd *args, t_data *pip,int *ex_state);
 // builtin
 int		ft_cd(t_lst_env **lst,t_cmd  *args);
 int		ft_export(t_lst_env **lst_env, t_cmd *str);
@@ -184,7 +184,7 @@ int		ft_echo(t_cmd *cmd);
 int		ft_pwd(t_lst_env **lst);
 int		ft_unset(t_lst_env **lst, t_cmd *args);
 int	ft_env(t_lst_env **lst,t_cmd *args);
-int		ft_exit(t_cmd   *args);
+int    ft_exit(t_cmd   *args,int *ex_state);
 //
 char	*ft_handle_var(t_lst_env **lst_env, char *old_output, int *index);
 //ft_cmd
@@ -195,7 +195,9 @@ void	print_lst_cmd(t_cmd **cmd);
 
 // void    handle_heredoc(int signal);
 
-int ft_signal_handeler(void);
+// int ft_signal_handeler(void);
+void    handle_heredoc(int signal);
+char	**ft_split_space_tab(char *str ,int type);
 //libft
 int		index_of(char *str, char c);
 int		ft_strlen(const char *str);

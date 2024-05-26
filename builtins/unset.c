@@ -6,7 +6,7 @@
 /*   By: ataoufik <ataoufik@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/21 14:42:31 by ataoufik          #+#    #+#             */
-/*   Updated: 2024/05/23 16:45:53 by ataoufik         ###   ########.fr       */
+/*   Updated: 2024/05/25 19:26:11 by ataoufik         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,10 @@ int ft_unset(t_lst_env **lst, t_cmd *args)
         prev = NULL;
         if (ft_parsing_unset(args->cmd[i]) != 0)
         {
-            printf("unset: `%s': not a valid identifier\n",args->cmd[i]);
+            // printf("unset: `%s': not a valid identifier\n",args->cmd[i]);
+            	ft_putstr_fd("unset: `",2);
+				ft_putstr_fd(args->cmd[i],2);
+				ft_putendl_fd("': not a valid identifier",2);
             status = 1;
             i++;
             continue;

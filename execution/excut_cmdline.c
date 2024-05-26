@@ -6,13 +6,13 @@
 /*   By: ataoufik <ataoufik@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/27 19:22:45 by ataoufik          #+#    #+#             */
-/*   Updated: 2024/05/24 21:18:59 by ataoufik         ###   ########.fr       */
+/*   Updated: 2024/05/26 17:28:58 by ataoufik         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-int	ft_excut_cmd_line(t_lst_env **lst, t_cmd *args, t_data *pip)
+int	ft_excut_cmd_line(t_lst_env **lst, t_cmd *args, t_data *pip,int *ex_state)
 {
 	pip->infile = 0;
 	pip->outfile = 1;
@@ -22,7 +22,10 @@ int	ft_excut_cmd_line(t_lst_env **lst, t_cmd *args, t_data *pip)
 	if (pip->infile != 0)
 	{
 		perror("infile");
-		return (1);
+		close(pip->infile);
+		
+		*ex_state = 1;
+		return 1;
 	}
 	if (pip->outfile != 1)
     {
@@ -36,19 +39,19 @@ int	ft_excut_cmd_line(t_lst_env **lst, t_cmd *args, t_data *pip)
 	}
 	
 	if (ft_strncmp(args->cmd[0], "cd", 3) == 0)
-		args->exit_status = ft_cd(lst, args);
+		*ex_state = ft_cd(lst, args);
 	else if (ft_strncmp(args->cmd[0],"echo",5) == 0)
-		args->exit_status = ft_echo(args);
+		*ex_state = ft_echo(args);
 	else if (ft_strncmp(args->cmd[0], "env", 4) == 0)
-		args->exit_status = ft_env(lst,args); //
+		*ex_state = ft_env(lst,args); //
 	else if (ft_strncmp(args->cmd[0], "exit", 5) == 0)
-		args->exit_status = ft_exit(args); //
+		*ex_state = ft_exit(args,ex_state); //
 	else if (ft_strncmp(args->cmd[0], "export", 7) == 0)
-		args->exit_status = ft_export(lst, args); //
+		*ex_state = ft_export(lst, args); //
 	else if (ft_strncmp(args->cmd[0], "pwd", 4) == 0)
-		args->exit_status = ft_pwd(lst);//
+		*ex_state = ft_pwd(lst);//
 	else if (ft_strncmp(args->cmd[0], "unset", 6) == 0)
-		args->exit_status = ft_unset(lst, args); //
+		*ex_state = ft_unset(lst, args); //
 	
 	if (dup2(infile, 0) == -1)
     {
@@ -67,7 +70,7 @@ int	ft_excut_cmd_line(t_lst_env **lst, t_cmd *args, t_data *pip)
 	return (0);
 }
 
-int	ft_cmd_builtin_child(t_lst_env **lst, t_cmd *args, t_data *pip)
+int	ft_cmd_builtin_child(t_lst_env **lst, t_cmd *args, t_data *pip,int *ex_state)
 {
 	signal(SIGINT, SIG_DFL);
 	if (ft_strncmp(args->cmd[0], "cd", 3) == 0)
@@ -77,7 +80,7 @@ int	ft_cmd_builtin_child(t_lst_env **lst, t_cmd *args, t_data *pip)
 	else if (ft_strncmp(args->cmd[0], "env", 4) == 0)
 		exit(ft_env(lst,args));
 	else if (ft_strncmp(args->cmd[0], "exit", 5) == 0)
-		exit(ft_exit(args));
+		exit(ft_exit(args,ex_state));
 	else if (ft_strncmp(args->cmd[0], "export", 7) == 0)
 		exit(ft_export(lst, args));
 	else if (ft_strncmp(args->cmd[0], "pwd", 4) == 0)

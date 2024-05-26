@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   lst_env.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: emagueri <emagueri@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ataoufik <ataoufik@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/01 05:02:31 by emagueri          #+#    #+#             */
-/*   Updated: 2024/05/21 18:01:11 by emagueri         ###   ########.fr       */
+/*   Updated: 2024/05/26 19:21:29 by ataoufik         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -127,7 +127,10 @@ int	init_env(t_lst_env **lst, char **env)
 		len = index_of(env[i], '=');
 		if (len == -1)
 			return (-1);
-		value = ft_strchr(env[i], '=') + 1;
+		if (ft_strncmp(env[i],"OLDPWD",len)== 0)
+			value = NULL;
+		else
+			value = ft_strchr(env[i], '=') + 1;
 		ft_lst_add_back_env(lst, ft_new_env(ft_substr(env[i], 0, len, ALLOC_ENV), value));
 		i++;
 	}

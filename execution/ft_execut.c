@@ -6,13 +6,13 @@
 /*   By: ataoufik <ataoufik@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/17 11:18:33 by ataoufik          #+#    #+#             */
-/*   Updated: 2024/05/24 15:32:07 by ataoufik         ###   ########.fr       */
+/*   Updated: 2024/05/26 17:45:59 by ataoufik         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-void	ft_lst_cmd(t_cmd	*command,t_lst_env **lst,t_data *pip)
+void	ft_lst_cmd(t_cmd	*command,t_lst_env **lst,t_data *pip,int *ex_state)
 {
 	t_cmd	*cur;
 	struct termios state;
@@ -40,35 +40,35 @@ void	ft_lst_cmd(t_cmd	*command,t_lst_env **lst,t_data *pip)
 			pip->first = 1;
 		else
 			pip->first = 0;
-		ft_excut_child(cur,pip,lst,&input_fd);
+		ft_excut_child(cur,pip,lst,&input_fd,ex_state);
 		cur = cur->next;
 		i++;
 	}
 	pip->first = 0;
 	pip->last = 1;
-	ft_excut_child(cur,pip,lst,&input_fd);
+	ft_excut_child(cur,pip,lst,&input_fd,ex_state);
 	i = 0;
 	while (i < pip->num_cmds)
 	{
         waitpid(pip->pids[i], &status, 0);
-		
+		i++;
+	}
 		if (WIFEXITED(status))
-			command->exit_status = WEXITSTATUS(status);
+			*ex_state = WEXITSTATUS(status);
 		else if (WIFSIGNALED(status))
 		{
-			command->exit_status = WTERMSIG(status) + 128;
-			if (command->exit_status == 131)
+			*ex_state = WTERMSIG(status) + 128;
+			if (*ex_state == 131)
 				printf("Quit: 3\n");
 			else
 				printf("\n");
 		}
-		i++;
-	}
+
 	tcsetattr(STDOUT_FILENO,TCSANOW,&state);
-	// free -> pids 
+	free(pip->pids);
 }
 
-void	ft_chech_excut_cmd(t_cmd	*command,t_lst_env **lst,t_data *pip)
+void	ft_chech_excut_cmd(t_cmd	*command,t_lst_env **lst,t_data *pip,int *ex_state)
 {
 	int i;
 	i = 0;
@@ -80,7 +80,7 @@ void	ft_chech_excut_cmd(t_cmd	*command,t_lst_env **lst,t_data *pip)
 		cur = cur->next;
 	}
 	if (i == 1 && ft_check_buitin_cmd(command)==1)
-		ft_excut_cmd_line(lst,command,pip);
+		ft_excut_cmd_line(lst,command,pip,ex_state);
 	else
-		ft_lst_cmd(command,lst,pip);
+		ft_lst_cmd(command,lst,pip,ex_state);
 }

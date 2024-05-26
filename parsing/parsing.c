@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: emagueri <emagueri@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ataoufik <ataoufik@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/23 17:36:44 by emagueri          #+#    #+#             */
-/*   Updated: 2024/05/24 22:26:07 by emagueri         ###   ########.fr       */
+/*   Updated: 2024/05/25 18:04:15 by ataoufik         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,7 +73,7 @@ int ft_ambiguous_main(t__lst_token **lst_token, t_lst_env **lst_env)
 	return 0;
 }
 
-int ft_parsing(t__lst_token **lst_token, t_lst_env **lst_env, t_cmd **lst_cmd, int exit_status)
+int ft_parsing(t__lst_token **lst_token, t_lst_env **lst_env, t_cmd **lst_cmd, int *exit_status)
 {
 	
 	int n = generate_errors(lst_token);

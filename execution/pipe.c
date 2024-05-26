@@ -6,14 +6,13 @@
 /*   By: ataoufik <ataoufik@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/01 16:33:38 by ataoufik          #+#    #+#             */
-/*   Updated: 2024/05/24 15:26:11 by ataoufik         ###   ########.fr       */
+/*   Updated: 2024/05/26 17:41:57 by ataoufik         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-
-void	ft_excut_child(t_cmd *args,t_data *pip,t_lst_env **lst,int *input_fd)
+void	ft_excut_child(t_cmd *args,t_data *pip,t_lst_env **lst,int *input_fd,int *ex_state)
 {
 	signal(SIGINT,SIG_IGN);
 	signal(SIGQUIT,SIG_IGN);
@@ -32,6 +31,7 @@ void	ft_excut_child(t_cmd *args,t_data *pip,t_lst_env **lst,int *input_fd)
 			if(pip->infile < 0)
 			{
 				perror("infile");
+                // printf("no  such file or directory");
 				exit(1);
 			}
 			else
@@ -57,12 +57,12 @@ void	ft_excut_child(t_cmd *args,t_data *pip,t_lst_env **lst,int *input_fd)
         {
             if (pip->outfile < 0)
             {
-                perror("outfile");
+				ft_putendl_fd("No such file or directory",2);
                 exit(1);
             }
             dup2(pip->outfile, STDOUT_FILENO);
 			if (ft_check_buitin_cmd(args) == 1)
-				ft_cmd_builtin_child(lst,args,pip);
+				ft_cmd_builtin_child(lst,args,pip,ex_state);
 			else
 				ft_execute_command(pip,lst,args->cmd);
             close(pip->outfile);
@@ -70,7 +70,7 @@ void	ft_excut_child(t_cmd *args,t_data *pip,t_lst_env **lst,int *input_fd)
 		else
 		{
 			if (ft_check_buitin_cmd(args) == 1)
-				ft_cmd_builtin_child(lst,args,pip);
+				ft_cmd_builtin_child(lst,args,pip,ex_state);
 			else
 				ft_execute_command(pip,lst,args->cmd);
 		}
@@ -86,7 +86,7 @@ void	ft_excut_child(t_cmd *args,t_data *pip,t_lst_env **lst,int *input_fd)
 		{
 			close(pip->tub[1]);
 			*input_fd = pip->tub[0];
-			close(pip->tub[0]);
+			
 		}
 	}	
 }

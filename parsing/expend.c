@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expend.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: emagueri <emagueri@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ataoufik <ataoufik@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/01 10:12:12 by emagueri          #+#    #+#             */
-/*   Updated: 2024/05/22 09:09:13 by emagueri         ###   ########.fr       */
+/*   Updated: 2024/05/26 19:19:18 by ataoufik         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ char *ft_handle_var(t_lst_env **lst_env, char *key, int *index)
 		while (key[len] && (ft_isalnum(key[len]) || key[len] == '_'))
 			len++;
 	s = ft_get_env_val(lst_env, ft_strnjoin("", key, len, ALLOC));
-	if(!s)
+	if (!s)
 		s = "";
 	if (index != NULL)
 		(*index) += len;
@@ -46,10 +46,10 @@ char *ft_handle_simple_string(char *old_output, char *new_output, int *index)
 	return new_output;
 }
 
-char	*ft_first_cmd(t__lst_token **lst_token)
+char *ft_first_cmd(t__lst_token **lst_token)
 {
 	t__lst_token *cur;
-	char	*res;
+	char *res;
 
 	res = "";
 	cur = *lst_token;
@@ -95,13 +95,12 @@ int ft_is_strong_word_befor(t__lst_token **lst_token, t__lst_token *last)
 	return (0);
 }
 
-int	ft_expand(t__lst_token **lst_token, t_lst_env **lst_env, int exit_state)
+int ft_expand(t__lst_token **lst_token, t_lst_env **lst_env, int *exit_state)
 {
 	t__lst_token *cur;
 	t__lst_token *prev;
 	char *tmp;
 	char *var;
-
 	char *first_cmd = ft_first_cmd(lst_token);
 	prev = NULL;
 	cur = *lst_token;
@@ -109,13 +108,13 @@ int	ft_expand(t__lst_token **lst_token, t_lst_env **lst_env, int exit_state)
 	while (cur)
 	{
 		if (cur->type == EXIT_STATUS)
-			cur->str = ft_itoa(exit_state, ALLOC);
+			cur->str = ft_itoa(*exit_state, ALLOC);
 		else if (cur->type == VAR)
 		{
 
-			t__lst_token	*next;
-			t__lst_token	*tmp;
-			t__lst_token	*parent;
+			t__lst_token *next;
+			t__lst_token *tmp;
+			t__lst_token *parent;
 			char **value_twod_array;
 			int i = 0;
 			char *value;
@@ -124,7 +123,11 @@ int	ft_expand(t__lst_token **lst_token, t_lst_env **lst_env, int exit_state)
 			next = cur->next;
 			cur->str = ft_get_env_val(lst_env, cur->str + 1);
 			if (ft_strncmp(first_cmd, "export", ft_strlen(first_cmd) + 1) == 0)
-				return (1);
+			// return (1);
+			{
+				cur = next;
+				continue;
+			}
 			// if (cur->str == NULL)
 			// {
 			// 	if (prev)
@@ -188,7 +191,7 @@ int	ft_expand(t__lst_token **lst_token, t_lst_env **lst_env, int exit_state)
 				if (res[i] == '$' && res[i + 1] == '?')
 				{
 					i += 2;
-					tmp = ft_strjoin(tmp, ft_itoa(exit_state, ALLOC), ALLOC);
+					tmp = ft_strjoin(tmp, ft_itoa(*exit_state, ALLOC), ALLOC);
 				}
 				else if (res[i] == '$' && res[i + 1] != 0 && (ft_isalnum(res[i + 1]) || res[i + 1] == '_'))
 				{

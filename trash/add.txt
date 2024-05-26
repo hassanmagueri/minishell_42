@@ -1,10 +1,3 @@
-/bin/env
-
-builtin with redirection  exemple "pwd > file1"
-
-./minishll -> ./minishll -> ./minishll CTROL+c prblm;
-de |ls: echo $?--> -1094795586 not valid
-
 أهواك واتمنى لو انساك
 وأنسى روحي وياك
 وإن ضاعت يبقى فداك لو تنساني
@@ -28,10 +21,12 @@ de |ls: echo $?--> -1094795586 not valid
 
 
 
+value = ft_strchr(env[i], '=') + 1;
 
-!
-><<<<
-/
-//
-/.
-//
+exit "1  " tab V////////// 
+ls > $ds | ls valid
+ls > f1 < f2 > f3 V
+ls $A$A ls 
+heredoc
+
+

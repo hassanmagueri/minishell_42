@@ -1,5 +1,33 @@
 #include "../minishell.h"
 
+
+
+
+char	*ft_join_value_lst(char *s1, char *s2, t_gc_type type)
+{
+	char	*res;
+	int		i;
+	size_t	size;
+	int		lens1;
+
+	if (!s1 && !s2)
+		return (NULL);
+	lens1 = ft_strlen((char *)s1);
+	size = ft_strlen((char *)s2) + lens1 + 1;
+	// res = malloc(size);
+	res = gc_alloc(size, type);
+	if (!res)
+		return (NULL);
+	i = 0;
+	while (s2[i - lens1])
+	{
+		res[i] = s2[i - lens1];
+		i++;
+	}
+	res[i] = 0;
+	return (res);
+}
+
 void print_lst_export(t_lst_env *lst)
 {
 	t_lst_env *cur;
@@ -106,7 +134,10 @@ void	ft_add_val(t_lst_env	**lst,char *key ,char *val)
 	{
 		if (ft_strncmp(cur->key,key,ft_strlen(key)) == 0)
 		{
-			cur->value = ft_strjoin(cur->value, val, ALLOC_ENV);
+			if (cur->value == NULL)
+				cur->value = ft_join_value_lst(cur->value, val, ALLOC_ENV);
+			else
+				cur->value = ft_strjoin(cur->value,val,ALLOC_ENV);
 			break;
 		}
 		cur = cur->next;
@@ -151,6 +182,11 @@ int	ft_export(t_lst_env **lst_env, t_cmd *str)
 	{
 		while (str->cmd[i])
 		{
+			if (str->cmd[i]==NULL)
+			{
+				i++;
+				continue;
+			}
 			len = index_key(str->cmd[i], '=');
 			if (len != -1)
 			{
@@ -164,7 +200,10 @@ int	ft_export(t_lst_env **lst_env, t_cmd *str)
 			}
 			if (ft_prasing_export(key) == 1)
 			{
-				printf("export: `%s': not a valid identifier\n",str->cmd[i]);
+				// printf("export: `%s': not a valid identifier\n",str->cmd[i]);
+				ft_putstr_fd("export: `",2);
+				ft_putstr_fd(str->cmd[i],2);
+				ft_putendl_fd("': not a valid identifier",2);
 				status = 1;
 				i++;
 				continue;

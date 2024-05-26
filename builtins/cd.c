@@ -6,7 +6,7 @@
 /*   By: ataoufik <ataoufik@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/21 19:18:53 by ataoufik          #+#    #+#             */
-/*   Updated: 2024/05/24 21:58:22 by ataoufik         ###   ########.fr       */
+/*   Updated: 2024/05/26 16:07:45 by ataoufik         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,12 +35,8 @@ int	ft_check_value_node(t_lst_env **lst_env, char *key)
 	cur = *lst_env;
 	while (cur)
 	{
-		
 		if (ft_strncmp(cur->key, key, ft_strlen(key)) == 0)
-		{
-			if (cur->value == NULL)
-				return (0);
-		}
+			return (0);
 		cur = cur->next;
 	}
 	return (1);
@@ -51,7 +47,6 @@ char *ft_get_newpwd_path(char *pwd)
 	char *str;
 	len = ft_strlen(pwd);
 	len--;
-	printf("%s\n",pwd);
 	if (len == -1)
 	{
 		pwd = ft_strjoin(pwd ,"/",ALLOC);
@@ -88,7 +83,11 @@ int ft_change_directory(t_lst_env *lst,char *pwd,char *args)
 		ft_change_value_lst(&lst, "PWD", pwd);
 	}
 	else
+	{
 		perror("cd");
+		return (1);
+		
+	}
 	return(0);
 }
 char *ft_get_pwd(t_lst_env **lst, char *pwd,char *oldpwd,char *cmd)
@@ -125,7 +124,7 @@ int	ft_chdir_oldpwd(t_lst_env **lst)
 	pwd = getcwd(cmd, sizeof(cmd));
 	if (ft_check_value_node(lst,"OLDPWD") == 0)
 	{
-		printf("cd: OLDPWD not set\n");
+		ft_putendl_fd("cd: OLDPWD not set",2);
 		return (1);
 	}
 	else
@@ -134,26 +133,25 @@ int	ft_chdir_oldpwd(t_lst_env **lst)
 		ft_change_value_lst(lst, "PWD",oldpwd);
 		if (chdir(oldpwd) != 0)
 		{
-			printf("cd: OLDPWD not set\n");
+			ft_putendl_fd("cd: OLDPWD not set",2);
 			return (1);
 		}
 		ft_change_value_lst(lst, "OLDPWD", pwd);
-		printf("%s\n",oldpwd);
+		printf("-%s\n",oldpwd);
 	}
 	return (0);
 }
-int ft_not_access_parent(t_lst_env **lst ,char *str)
+int ft_not_access_parent(t_lst_env **lst ,char *str, char *pwd)
 {
-	char *pwd;
+	// char *pwd;
 	char *oldpwd;
 	char cmd[1024];
-	pwd = ft_get_env_val(lst, "PWD");
-	oldpwd = pwd;
+	// pwd = ft_get_env_val(lst, "PWD");
 	if(access(str,F_OK) == 0)
 	{
 		if (chdir(str) != 0)
 			perror("cd");
-		if (getcwd(cmd, sizeof(cmd))== NULL)	
+		if (getcwd(cmd, sizeof(cmd)) == NULL)
 			printf("cd: error retrieving current directory: getcwd: cannot access parent directories: No such file or directory\n");
 	}
 	else
@@ -161,11 +159,10 @@ int ft_not_access_parent(t_lst_env **lst ,char *str)
 		perror("cd");
 		return (1);
 	}
-	pwd = ft_strjoin(pwd,"/",ALLOC);
-	pwd = ft_strjoin(pwd,str,ALLOC);
+	oldpwd = cmd;
 	ft_change_value_lst(lst, "PWD", pwd);
 	ft_change_value_lst(lst, "OLDPWD", oldpwd);
-	return (1);
+	return (0);
 }
 
 int    ft_cd(t_lst_env **lst,t_cmd  *args)
@@ -178,7 +175,7 @@ int    ft_cd(t_lst_env **lst,t_cmd  *args)
 	status = 0;
 	pwd = getcwd(cmd, sizeof(cmd));
 	if (pwd == NULL)
-		status = ft_not_access_parent(lst,args->cmd[1]);
+		status = ft_not_access_parent(lst,args->cmd[1], cmd);
 	else
 	{
 		oldpwd = pwd;
@@ -190,10 +187,10 @@ int    ft_cd(t_lst_env **lst,t_cmd  *args)
 		else
 		{
 			pwd = ft_get_pwd(lst,pwd,oldpwd,args->cmd[1]);
-			printf("%s\n",pwd);
 			if (pwd == NULL)
 				return (1);
-			ft_change_directory(*lst, pwd, args->cmd[1]);
+			if (ft_change_directory(*lst, pwd, args->cmd[1])==1)
+				return 1;
 			if (ft_check_value_node(lst,"OLDPWD") == 0)
 				ft_change_value_lst(lst, "OLDPWD", oldpwd);
 			else
@@ -202,4 +199,3 @@ int    ft_cd(t_lst_env **lst,t_cmd  *args)
 	}
 	return (status);
 }
-

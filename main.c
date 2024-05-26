@@ -3,25 +3,26 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: emagueri <emagueri@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ataoufik <ataoufik@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/24 12:47:51 by ataoufik          #+#    #+#             */
-/*   Updated: 2024/05/24 22:14:52 by emagueri         ###   ########.fr       */
+/*   Updated: 2024/05/26 19:22:04 by ataoufik         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 
 #include "minishell.h"
-int exit_status ;
-
+int g_var;
 int main(int argc, char *argv[], char **env)
 {
 	char *input;
 	t_lst_env *lst_env;
 	t_lst_env *last_lst;
 	t_data pip;
-
-	exit_status = 0;
+	int ex_state;
+	int n= 0;
+	// ex_state = 0;
+	g_var = 0;
 	lst_env = NULL;
 	if (argc > 1)
 	{
@@ -32,14 +33,15 @@ int main(int argc, char *argv[], char **env)
 	init_env(&lst_env, env);
 	init_path_env(&pip,&lst_env);
 	rl_catch_signals = 0;
-	while (1 && isatty(STDIN_FILENO))
+		ex_state = 0;
+	// while (1 && isatty(STDIN_FILENO))
+	while(1)
 	{
 		t__lst_token *lst_token = NULL;
 		t_cmd *cmd = NULL;
 		signal(SIGINT, handle_c_slash_ctrol);
     	signal(SIGQUIT, handle_c_slash_ctrol);
-		input = readline(ANSI_COLOR_CYAN "~ " ANSI_COLOR_BLUE "minishell 😎 " ANSI_COLOR_MAGENTA "↪ " ANSI_COLOR_RESET);
-		// input = readline("~ minishell 😎 ↪ ");
+		input = readline("~ minishell 😎 ↪ ");
 		if (input == NULL)
 		{
 			printf("exit\n");	
@@ -49,13 +51,14 @@ int main(int argc, char *argv[], char **env)
 			continue;
 		add_history(input);
 		ft__lst_tokenize(&lst_token, input);
-		exit_status = ft_parsing(&lst_token, &lst_env, &cmd, exit_status);
-		ft_chech_excut_cmd(cmd,&lst_env,&pip);
-		exit_status = cmd->exit_status;
-		if (exit_status == 1)
-			cmd->exit_status = 1;
-			// printf("exit status == %d\n",exit_status);
+		n = ft_parsing(&lst_token, &lst_env, &cmd, &ex_state);//
+		if (n)
+			continue;
+		ft_chech_excut_cmd(cmd,&lst_env,&pip,&ex_state);
+		if (g_var == 1)
+			ex_state = 1;
 		free(input);
+		g_var = 0;
 		//gc_alloc(0, FREE);
 	}
 	gc_alloc(0, FREE_ENV);

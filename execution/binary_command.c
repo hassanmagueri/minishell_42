@@ -6,7 +6,7 @@
 /*   By: ataoufik <ataoufik@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/01 16:38:40 by ataoufik          #+#    #+#             */
-/*   Updated: 2024/05/23 12:40:07 by ataoufik         ###   ########.fr       */
+/*   Updated: 2024/05/26 17:22:16 by ataoufik         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,11 +66,14 @@ void	init_path_env(t_data *pip,t_lst_env **lst)
 	pip->env_path = ft_split(str, ':', ALLOC_ENV);
 	if (!pip->env_path)
 		return ;
+		// printf("%s\n",)
 }
 int	parsing_cmd(char *str)
 {
 	int i;
 	i = 0;
+	if (str[0]=='.' && str[1]== '/')
+		return (-1);
 	while(str[i])
 	{
 		if (str[i]=='/')
@@ -90,29 +93,39 @@ char	*find_path_executable(char **env_path, char *cmd)
 	path = NULL;
 	if(cmd[0]=='\0')
 		return NULL;
-	if (!env_path)
-	{
-		printf("%s: No such file or directory\n",cmd);
-		exit(127);
-	}
 	if (parsing_cmd(cmd) != 0)
 	{
 		if (access(cmd, X_OK) == 0 && access(cmd, F_OK) == 0)
 		{
 			if (is_directory(cmd))
 			{
-				printf(" %s: is a directory\n",cmd);
+				ft_putstr_fd(cmd,2);
+				ft_putendl_fd(": is a directory",2);
 				exit(126);	
 			}
 			return (cmd);
 		}
+		if (parsing_cmd(cmd) == -1)
+		{
+			// printf("%s: Permission denied\n",cmd);
+			ft_putstr_fd(cmd,2);
+			ft_putendl_fd(": Permission denied",2);
+			// perror(cmd);
+			exit(126);
+		}
 		else
 		{
-			printf("%s: No such file or directory\n",cmd);
+			perror(cmd);
 			exit(127);
 		}
 	}
-	
+	if (!env_path)
+	{
+		// printf("%s: No such file or directory\n",cmd);
+		ft_putstr_fd(cmd,2);
+		ft_putendl_fd(": No such file or directory",2);
+		exit(127);
+	}
 	while (env_path[i])
 	{
 		str = ft_strjoin(env_path[i], "/", ALLOC);
@@ -129,6 +142,7 @@ char	*find_path_executable(char **env_path, char *cmd)
 int	ft_execute_command(t_data *pip,t_lst_env **lst,char **cmd)
 {
 	char *command;
+	init_path_env(pip,lst);
 	if (cmd[0] == NULL || (cmd[0][0]==':' && cmd[0][1]== '\0' ))
 		exit (0);
 	command = find_path_executable(pip->env_path, cmd[0]);

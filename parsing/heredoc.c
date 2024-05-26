@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   heredoc.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: emagueri <emagueri@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ataoufik <ataoufik@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/22 22:34:15 by emagueri          #+#    #+#             */
-/*   Updated: 2024/05/23 17:33:07 by emagueri         ###   ########.fr       */
+/*   Updated: 2024/05/26 20:23:37 by ataoufik         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -154,8 +154,11 @@ int ft_heredoc(t__lst_token **lst_token, t_lst_env **lst_env)
 		n = 0;
 		while (1)
 		{
+			// signal(SIGINT, handle_heredoc);
 			input = readline("> ");
 			if (ft_strncmp(input, limiter, ft_strlen(limiter) + 1) == 0)
+				break;
+			if (input == NULL)
 				break;
 			if (ft_next_token(&token)->type == WORD)
 				input = ft_expend_input(input, lst_env);
@@ -168,13 +171,10 @@ int ft_heredoc(t__lst_token **lst_token, t_lst_env **lst_env)
 			token = token->next;
 		fd = open(file_name, O_CREAT | O_TRUNC | O_WRONLY, 0600);
 		fd_heredoc = open(file_name, O_RDWR, 0777);
-		token->str = ft_itoa(fd, ALLOC);
+		token->str = ft_itoa(fd_heredoc, ALLOC);
 		write(fd, buffer, ft_strlen(buffer));
 		close(fd);
 		unlink(file_name);
-		char *s = malloc(ft_strlen(buffer) + 1);
-		read(fd_heredoc, s, ft_strlen(buffer));
-		printf("heredoc: \n-----%s\n", s);
 		// exit(1);
 	}
 	return 1;
