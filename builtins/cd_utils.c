@@ -6,7 +6,7 @@
 /*   By: ataoufik <ataoufik@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/27 12:38:06 by ataoufik          #+#    #+#             */
-/*   Updated: 2024/05/27 16:35:05 by ataoufik         ###   ########.fr       */
+/*   Updated: 2024/05/27 17:36:53 by ataoufik         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,10 @@ int	ft_check_value_node(t_lst_env **lst_env, char *key)
 	while (cur)
 	{
 		if (ft_strncmp(cur->key, key, ft_strlen(key)) == 0)
-			return (0);
+		{
+			if (cur->value == NULL)
+				return (0);
+		}
 		cur = cur->next;
 	}
 	return (1);
