@@ -6,7 +6,7 @@
 /*   By: ataoufik <ataoufik@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/01 05:02:31 by emagueri          #+#    #+#             */
-/*   Updated: 2024/05/27 15:48:31 by ataoufik         ###   ########.fr       */
+/*   Updated: 2024/05/27 18:25:43 by ataoufik         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,6 +56,7 @@ int	index_of(char *str, char c)
 int	init_env(t_lst_env **lst, char **env)
 {
 	char	*value;
+	char	*key;
 	int		i;
 	int		len;
 
@@ -69,7 +70,8 @@ int	init_env(t_lst_env **lst, char **env)
 			value = NULL;
 		else
 			value = ft_strchr(env[i], '=') + 1;
-		ft_lst_add_back_env(lst, ft_new_env(ft_substr(env[i], 0, len, ALLOC_ENV), value));
+		key = ft_substr(env[i], 0, len, ALLOC_ENV);
+		ft_lst_add_back_env(lst, ft_new_env(key, value));
 		i++;
 	}
 	return (1);

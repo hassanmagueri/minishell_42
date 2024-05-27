@@ -6,7 +6,7 @@
 /*   By: ataoufik <ataoufik@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/17 11:22:57 by emagueri          #+#    #+#             */
-/*   Updated: 2024/05/27 15:13:47 by ataoufik         ###   ########.fr       */
+/*   Updated: 2024/05/27 18:21:38 by ataoufik         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -202,7 +202,9 @@ int	ft_strcmp(char *s1, char *s2);
 void	print_lst_order_alpha(t_lst_env **lst);
 void	ft_change_val(t_lst_env **lst, char *key, char *value);
 int	error_msg_export(char *str);
-void	ft_key_and_value(char *value ,char *key,int len ,char *str);
+char	*ft_value(char *value,int len ,char *str);
+char	*ft_key(char *key,int len ,char *str);
+void	ft_update_lst(t_lst_env **lst_env,char *key,char *value,char *str);
 ///
 int		ft_echo(t_cmd *cmd);
 int		ft_pwd(void);

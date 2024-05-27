@@ -6,7 +6,7 @@
 /*   By: ataoufik <ataoufik@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/27 13:07:01 by ataoufik          #+#    #+#             */
-/*   Updated: 2024/05/27 13:14:48 by ataoufik         ###   ########.fr       */
+/*   Updated: 2024/05/27 18:01:15 by ataoufik         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,7 @@ int	ft_check_lst_key(t_lst_env **lst, char *key)
 	cur = *lst;
 	while (cur)
 	{
-		if (ft_strncmp(cur->key, key, ft_strlen(key)) == 0)
+		if (ft_strncmp(cur->key, key, ft_strlen(key) + 1) == 0)
 			return (1);
 		cur = cur->next;
 	}

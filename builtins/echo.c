@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   echo.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: emagueri <emagueri@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ataoufik <ataoufik@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/28 10:38:56 by emagueri          #+#    #+#             */
-/*   Updated: 2024/05/24 22:13:00 by emagueri         ###   ########.fr       */
+/*   Updated: 2024/05/27 18:27:37 by ataoufik         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,21 +14,22 @@
 
 int	ft_is_arg(char *str)
 {
-	int i = 1;
+	int	i;
 
+	i = 1;
 	if (str == NULL || str[0] != '-')
-		return 0;
+		return (0);
 	while (str[i])
 		if (str[i++] != 'n')
 			return (0);
 	return (1);
 }
 
-void print_echo(char **str, int len)
+void	print_echo(char **str, int len)
 {
-	int i = 0;
+	int	i;
 
-	// while (str[i])
+	i = 0;
 	while (i < len)
 	{
 		if (str[i])
@@ -39,17 +40,17 @@ void print_echo(char **str, int len)
 	}
 }
 
-int ft_echo(t_cmd *cmd)
+int	ft_echo(t_cmd *cmd)
 {
-	char **cmd_str;
-	int	i;
+	char	**cmd_str;
+	int		i;
 
-	cmd_str = cmd->cmd + 1;
 	i = 0;
+	cmd_str = cmd->cmd + 1;
 	while (ft_is_arg(cmd_str[i]))
 		i++;
 	print_echo(cmd_str + i, cmd->len);
 	if (i == 0)
 		ft_putstr_fd("\n", 1);
-	return 0;
+	return (0);
 }
