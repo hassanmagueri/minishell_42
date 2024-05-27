@@ -6,7 +6,7 @@
 /*   By: ataoufik <ataoufik@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/17 11:22:57 by emagueri          #+#    #+#             */
-/*   Updated: 2024/05/26 19:35:28 by ataoufik         ###   ########.fr       */
+/*   Updated: 2024/05/27 15:13:47 by ataoufik         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,7 +85,6 @@ typedef enum e_gc_type
 typedef struct s_redir
 {
     char    *file_name;
-    // char    *str;
     t_type  redirection_type;
     struct s_redir *next;
 }    t_redir;
@@ -137,6 +136,7 @@ t__lst_token	*ft_new_token(char *str, t_type type);
 void    ft_lst_token_add_back(t__lst_token **lst, t__lst_token *token);
 t__lst_token	*ft__lst_token_last(t__lst_token **lst);
 t__lst_token *ft_get_token_by_type(t__lst_token **lst_token, t_type type);
+t__lst_token *ft_get_next_token_by_type(t__lst_token **lst_token, t_type type);
 int	ft_is_with_spaces(int c);
 int    ft__lst_tokenize(t__lst_token **token, char *cmd);
 int is_sep(int c);
@@ -167,7 +167,7 @@ int	ft_execute_command(t_data *pip,t_lst_env **lst,char **cmd);
 int	ft_excut_cmd_line(t_lst_env **lst, t_cmd *args, t_data *pip,int *ex_state);
 int		ft_check_buitin_cmd(t_cmd	*args);
 void	ft_lst_cmd(t_cmd	*command,t_lst_env **lst,t_data *pip,int *exit_state);
-void	ft_chech_excut_cmd(t_cmd	*command,t_lst_env **lst,t_data *pip,int *ex_state);
+void	ft_check_excut_cmd(t_cmd	*command,t_lst_env **lst,t_data *pip,int *ex_state);
 void	ft_excut_child(t_cmd *args,t_data *pip,t_lst_env **lst,int *input_fd,int *ex_state);
 void	ft_redirection(t_cmd	*cmd, t_data *pip);
 void    handle_c_slash_ctrol(int signal);
@@ -178,14 +178,38 @@ void	*gc_alloc(size_t size, t_gc_type type);
 
 int	ft_cmd_builtin_child(t_lst_env **lst, t_cmd *args, t_data *pip,int *ex_state);
 // builtin
+//\\cd
+int	ft_change_directory(t_lst_env *lst, char *pwd, char *args);
+char	*ft_get_newpwd_path(char *pwd);
+int	ft_check_value_node(t_lst_env **lst_env, char *key);
+int	ft_change_value_lst(t_lst_env	**lst_env, char *key, char *value);
 int		ft_cd(t_lst_env **lst,t_cmd  *args);
+int	ft_change_value_dir(t_lst_env **lst,char *pwd,char *oldpwd, char *str);
+char	*ft_get_pwd(t_lst_env **lst, char *pwd, char *oldpwd, char *cmd);
+int	ft_chdir_oldpwd(t_lst_env **lst);
+int	ft_not_access_parent(t_lst_env **lst, char *str, char *pwd);
+void	error_msg(void);
+///
+//\\export 
 int		ft_export(t_lst_env **lst_env, t_cmd *str);
+void	print_lst_export(t_lst_env *lst);
+int	index_key(char *str, char c);
+int	ft_check_lst_key(t_lst_env **lst, char *key);
+int	ft_prasing_export(char *str);
+void	ft_add_val(t_lst_env **lst, char *key, char *val);
+char	*ft_join_value_lst(char *s1, char *s2, t_gc_type type);
+int	ft_strcmp(char *s1, char *s2);
+void	print_lst_order_alpha(t_lst_env **lst);
+void	ft_change_val(t_lst_env **lst, char *key, char *value);
+int	error_msg_export(char *str);
+void	ft_key_and_value(char *value ,char *key,int len ,char *str);
+///
 int		ft_echo(t_cmd *cmd);
-int		ft_pwd(t_lst_env **lst);
+int		ft_pwd(void);
 int		ft_unset(t_lst_env **lst, t_cmd *args);
 int	ft_env(t_lst_env **lst,t_cmd *args);
 int    ft_exit(t_cmd   *args,int *ex_state);
-//
+/////////
 char	*ft_handle_var(t_lst_env **lst_env, char *old_output, int *index);
 //ft_cmd
 int		ft_cmd(t_cmd **cmd, t__lst_token **tokens);
@@ -203,7 +227,6 @@ int		index_of(char *str, char c);
 int		ft_strlen(const char *str);
 int		ft_isdigit(int c);
 int		ft_toupper(int c);
-// char	**ft_split(char  *s, char c);
 char	**ft_split(char *s, char c, int type);
 int		ft_tolower(int c);
 char	*ft_strchr(const char *s, int c);
@@ -215,21 +238,15 @@ void	*ft_memmove(void *dst, const void *src, size_t len);
 void	*ft_memchr(const void *s, int c, size_t n);
 int		ft_strncmp(const char *s1, const char *s2, size_t n);
 int		ft_memcmp(const void *s1, const void *s2, size_t n);
-// char	*ft_strdup(const char *s1);
 char	*ft_strdup(const char *s1, int type);
 char	*ft_strnstr(const char *haystack, const char *needle, size_t len);
 int		ft_atoi(const char *str);
-// void	*ft_calloc(size_t count, size_t size);
 void	*ft_calloc(size_t count, size_t size, int type);
-// char	*ft_substr(char const *s, unsigned int start, size_t len);
 char    *ft_substr(char const *s, unsigned int start, size_t len, int type);
-// char	*ft_strjoin(char const *s1, char const *s2);
 char	*ft_strjoin(char const *s1, char const *s2, t_gc_type type);
 char	*ft_strnjoin(char const *s1, char const *s2,unsigned int n, t_gc_type type);
-// char	*ft_strtrim(char const *s1, char const *set);
 char    *ft_strtrim(char const *s1, char const *set, int type);
 char	*ft_itoa(int n, t_gc_type type);
-// char	*ft_itoa(int n);
 char	*ft_strmapi(char const *s, char (*f)(unsigned int, char));
 void	ft_striteri(char *s, void (*f)(unsigned int, char*));
 void	ft_putchar_fd(char c, int fd);

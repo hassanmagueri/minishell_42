@@ -6,7 +6,7 @@
 /*   By: ataoufik <ataoufik@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/01 16:38:40 by ataoufik          #+#    #+#             */
-/*   Updated: 2024/05/26 17:22:16 by ataoufik         ###   ########.fr       */
+/*   Updated: 2024/05/27 16:34:01 by ataoufik         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,8 @@
 char *ft_str_env(char *s1,char *s2)
 {
 	char *str;
-	str = ft_strjoin(s1,"=",ALLOC);
-	str = ft_strjoin(str,s2,ALLOC);
+	str = ft_strjoin(s1,"=",ALLOC_ENV);
+	str = ft_strjoin(str,s2,ALLOC_ENV);
 	return (str);
 }
 //is_dir

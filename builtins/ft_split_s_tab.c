@@ -6,7 +6,7 @@
 /*   By: ataoufik <ataoufik@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/10 17:28:50 by ataoufik          #+#    #+#             */
-/*   Updated: 2024/05/26 19:38:36 by ataoufik         ###   ########.fr       */
+/*   Updated: 2024/05/27 13:02:17 by ataoufik         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,7 @@ static int	count_words(char *str)
 	return (count);
 }
 
-char	**ft_split_space_tab(char *str ,int type)
+char	**ft_split_space_tab(char *str, int type)
 {
 	char	**res;
 	int		index;

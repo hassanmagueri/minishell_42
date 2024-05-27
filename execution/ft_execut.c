@@ -6,7 +6,7 @@
 /*   By: ataoufik <ataoufik@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/17 11:18:33 by ataoufik          #+#    #+#             */
-/*   Updated: 2024/05/26 17:45:59 by ataoufik         ###   ########.fr       */
+/*   Updated: 2024/05/27 11:29:50 by ataoufik         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,7 +68,7 @@ void	ft_lst_cmd(t_cmd	*command,t_lst_env **lst,t_data *pip,int *ex_state)
 	free(pip->pids);
 }
 
-void	ft_chech_excut_cmd(t_cmd	*command,t_lst_env **lst,t_data *pip,int *ex_state)
+void	ft_check_excut_cmd(t_cmd	*command,t_lst_env **lst,t_data *pip,int *ex_state)
 {
 	int i;
 	i = 0;

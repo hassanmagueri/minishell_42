@@ -6,106 +6,107 @@
 /*   By: ataoufik <ataoufik@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/18 17:18:39 by ataoufik          #+#    #+#             */
-/*   Updated: 2024/05/26 19:37:51 by ataoufik         ###   ########.fr       */
+/*   Updated: 2024/05/27 16:27:03 by ataoufik         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-int ft_parsing_exit(char *str)
+int	error_msg_exit(char *str, int i)
 {
-    int i;
-    i = 0;
-
-    if (str[i] == '-' || str[i] == '+')
-        i++;
-    while(str[i])
-    {
-        if (ft_isdigit(str[i]) != 1)
-            return (1);
-        i++;
-    }
-    return (0);
+	if (i == 1)
+	{
+		ft_putstr_fd("exit: ", 2);
+		if (str != NULL)
+			ft_putstr_fd(str, 2);
+		ft_putendl_fd(": numeric argument required", 2);
+		return (255);
+	}
+	else
+	{
+		ft_putendl_fd("exit: too many arguments", 2);
+		return (1);
+	}
 }
 
-long long int ft_number_exit(char *str)
+int	ft_parsing_exit(char *str)
 {
-    int i;
-    int sig = 1;
-    unsigned long long num;
-    i = 0;
-    num = 0;
-     if (str == NULL)
-    {
-        printf("exit: numeric argument required\n");
-        return (255);
-    }
+	int	i;
 
-    if (str[i] == '-' || str[i] == '+')
-    {
-        if (str[i] == '-')
-            sig *= -1;
-        i++;
-    }
-    while(str[i])
-    {
-        num = num * 10 + str[i] - 48;
-        if (num != 0 && ((num > LLONG_MAX && sig == 1) || (num - 1 > LLONG_MAX && sig == -1)))
-        {
-            ft_putstr_fd("exit: ",2);
-            ft_putstr_fd(str,2);
-            ft_putendl_fd(": numeric argument required", 2);
-            return (2);
-        }
-        else
-            i++;
-    }
-    return (num * sig);
+	i = 0;
+	if (str[i] == '-' || str[i] == '+')
+		i++;
+	while (str[i])
+	{
+		if (ft_isdigit(str[i]) != 1)
+			return (1);
+		i++;
+	}
+	return (0);
 }
 
-int    ft_exit(t_cmd   *args,int *ex_state)
+long long int	ft_number_exit(char *str)
 {
-    int i = 0;
-    int r = 0;
-    int status;
-    char **str;
-    status = 0;
-    ft_putendl_fd("exit", 1);
-    if (args->cmd[1]== NULL)
-        exit(*ex_state);
-      str =   ft_split_space_tab(args->cmd[1], ALLOC);
-    // str = ft_split(args->cmd[1],' ',ALLOC);// spac tab...
-    while (str[i])
-        i++;
-    if (i > 1)
-    {
-        ft_putendl_fd("exit: too many arguments", 2);
-        return (1);
-    }  
-    else if (ft_parsing_exit(str[0]) == 0 && i ==1 &&args->len== 1)
-        exit(ft_number_exit(str[0]) % 256);
-    i = 1;
-    while(args->cmd[i])
-    {
-        if (i >= 2 && ft_parsing_exit(args->cmd[1]) == 0)
-        {
-            ft_putendl_fd("exit: too many arguments", 2);
-            return (1);
-        }
-        if (ft_parsing_exit(args->cmd[i]) == 1)
-        {
-            ft_putstr_fd("exit: ",2);
-            ft_putstr_fd(args->cmd[i],2);
-            ft_putendl_fd(": numeric argument required", 2);
-            status = 255;
-            r = 1;
-            break;
-        }
-        i++;
-    }
-    if (i == 2 && r == 0)
-        status = ft_number_exit(args->cmd[1]) % 256;
-    exit(status);
+	unsigned long long	num;
+	int					i;
+	int					sig;
 
-    return (0);
+	sig = 1;
+	i = 0;
+	num = 0;
+	if (str == NULL)
+		return (error_msg_exit(NULL, 1));
+	if (str[i] == '-' || str[i] == '+')
+	{
+		if (str[i] == '-')
+			sig *= -1;
+		i++;
+	}
+	while (str[i])
+	{
+		num = num * 10 + str[i] - 48;
+		if (num != 0 && ((num > LLONG_MAX && sig == 1)
+				|| (num - 1 > LLONG_MAX && sig == -1)))
+			return (error_msg_exit(str, 1));
+		else
+			i++;
+	}
+	return (num * sig);
+}
+
+int	ft_len_tab(char **str)
+{
+	int	i;
+
+	i = 0;
+	while (str[i])
+		i++;
+	return (i);
+}
+
+int	ft_exit(t_cmd *args, int *ex_state)
+{
+	char	**str;
+	int		i;
+
+	i = 1;
+	ft_putendl_fd("exit", 1);
+	if (args->cmd[1] == NULL)
+		exit(*ex_state);
+	str = ft_split_space_tab(args->cmd[1], ALLOC);
+	if (ft_len_tab(str) > 1)
+		return (error_msg_exit(NULL, 0));
+	else if (ft_parsing_exit(str[0]) == 0 && i == 1 && args->len == 1)
+		exit(ft_number_exit(str[0]) % 256);
+	while (args->cmd[i])
+	{
+		if (i >= 2 && ft_parsing_exit(args->cmd[1]) == 0)
+			return (error_msg_exit(NULL, 0));
+		if (ft_parsing_exit(args->cmd[i]) == 1)
+			exit(error_msg_exit(args->cmd[i], 1));
+		i++;
+	}
+	if (i == 2)
+		exit (ft_number_exit(args->cmd[1]) % 256);
+	return (0);
 }

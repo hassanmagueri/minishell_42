@@ -6,67 +6,11 @@
 /*   By: ataoufik <ataoufik@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/22 22:34:15 by emagueri          #+#    #+#             */
-/*   Updated: 2024/05/26 20:23:37 by ataoufik         ###   ########.fr       */
+/*   Updated: 2024/05/27 16:56:06 by ataoufik         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
-
-// int ft_heredoc(t__lst_token **lst_token)
-// {
-// 	t__lst_token	*token;
-// 	char			*limiter;
-// 	char			*buffer;
-// 	char			*file_name;
-// 	int				fd = 1;
-// 	int				n;
-
-// 	while (1)
-// 	{
-// 		token = ft_get_token_by_type(lst_token, HEARDOC);
-// 		if (token == NULL)
-// 			break;
-// 		limiter = token->next->str;
-// 		if (token->next->type == WSP && token->next->next)
-// 			limiter = token->next->next->str;
-// 		fd = -1;
-// 		n = 0;
-// 		while (fd == -1)
-// 		{
-// 			file_name = ft_strjoin(ft_strjoin(".heredoc", ft_itoa(n++)), ".txt");
-// 			fd = open(file_name, O_CREAT | O_TRUNC | O_WRONLY, 777);
-// 		}
-// 		printf("fd: %d\n", fd);
-// 		if (fd >= 0)
-// 		{
-// 			char *input;
-// 			input = "";
-// 			printf("limiter %s\n", limiter);
-// 			while(1)
-// 			{
-// 				input = readline(">");
-// 				if (ft_strncmp(input, limiter, ft_strlen(limiter) + 1) == 0)
-// 					break;
-// 				write(fd, input, ft_strlen(input));
-// 				write(fd, "\n", 1);
-// 				free(input);
-// 			}
-// 			close(fd);
-// 			unlink(file_name);
-// 			// token->str = file_name;
-// 			// token->type = INPUT;
-// 			token = token->next;
-// 			// if (token->next)
-// 			// 	token->next->next->type = WSP;
-// 			if (token->next && token->next->type == WSP && token->next->next)
-// 				token->next = token->next->next->next;
-// 			printf("str :%s\n", token->str);
-// 		}
-// 		else
-// 			break;
-// 	}
-// 	return 1;
-// }
 
 t__lst_token *ft_next_token(t__lst_token **token)
 {
@@ -125,6 +69,7 @@ int ft_heredoc(t__lst_token **lst_token, t_lst_env **lst_env)
 	int fd = 1;
 	int n;
 	int acs;
+	char *input;
 
 	acs = 0;
 
@@ -150,22 +95,29 @@ int ft_heredoc(t__lst_token **lst_token, t_lst_env **lst_env)
 			limiter = token->next->next->str;
 		fd = -1;
 		buffer = "";
-		char *input;
 		n = 0;
+		int sec_fd_in;
+		sec_fd_in = dup(0);
 		while (1)
 		{
-			// signal(SIGINT, handle_heredoc);
+			signal(SIGINT, handle_heredoc);
 			input = readline("> ");
-			if (ft_strncmp(input, limiter, ft_strlen(limiter) + 1) == 0)
-				break;
 			if (input == NULL)
 				break;
+			char *tmp_input = input;
+			if (ft_strncmp(tmp_input, limiter, ft_strlen(limiter) + 1) == 0)
+			{
+				free(input);
+				break;
+			}
 			if (ft_next_token(&token)->type == WORD)
-				input = ft_expend_input(input, lst_env);
-			buffer = ft_strjoin(ft_strjoin(buffer, input, ALLOC), "\n", ALLOC); // ! free input of read line
-			// if (input)
-			// 	free(input);
+				tmp_input = ft_expend_input(tmp_input, lst_env);
+			buffer = ft_strjoin(ft_strjoin(buffer, tmp_input, ALLOC), "\n", ALLOC); // ! free tmp_input of read line
+			if (input)
+				free(input);
 		}
+		dup2(sec_fd_in, 0);
+		close(sec_fd_in);
 		token = token->next;
 		if (token->next && (token->next->type == WORD || token->next->type == SING_Q || token->next->type == DOUB_Q))
 			token = token->next;

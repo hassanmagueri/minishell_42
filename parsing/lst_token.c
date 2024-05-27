@@ -6,11 +6,25 @@
 /*   By: emagueri <emagueri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/01 22:43:35 by emagueri          #+#    #+#             */
-/*   Updated: 2024/05/20 11:48:10 by emagueri         ###   ########.fr       */
+/*   Updated: 2024/05/26 14:36:44 by emagueri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
+
+t__lst_token *ft_get_next_token_by_type(t__lst_token **lst_token, t_type type)
+{
+	t__lst_token *cur;
+
+	cur = *lst_token;
+	while (cur)
+	{
+		if (cur->type == type)
+			return cur->next;
+		cur = cur->next;
+	}
+	return (NULL);
+}
 
 t__lst_token *ft_get_token_by_type(t__lst_token **lst_token, t_type type)
 {

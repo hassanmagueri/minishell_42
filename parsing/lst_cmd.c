@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   lst_cmd.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: emagueri <emagueri@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ataoufik <ataoufik@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/20 10:43:06 by emagueri          #+#    #+#             */
-/*   Updated: 2024/05/24 22:15:25 by emagueri         ###   ########.fr       */
+/*   Updated: 2024/05/27 16:09:39 by ataoufik         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 void print_lst_redir(t_redir *redir);
 
-t_redir	*ft_new_redir(char *file_name, t_type redirection_type)
+t_redir *ft_new_redir(char *file_name, t_type redirection_type)
 {
 	t_redir *cmds;
 
@@ -43,7 +43,7 @@ int ft_add_back_redir(t_redir **redirs, t_redir *cmd)
 	return (0);
 }
 
-t_cmd	*ft_new_cmd(char **cmd, t_redir *redir, int len)
+t_cmd *ft_new_cmd(char **cmd, t_redir *redir, int len)
 {
 	t_cmd *cmds;
 
@@ -74,18 +74,20 @@ int ft_add_back_cmd(t_cmd **cmds, t_cmd *cmd)
 	return (0);
 }
 
-char	**ft_prepare_cmd(t__lst_token **tokens, t_redir **redirs, int *lens)
+char **ft_prepare_cmd(t__lst_token **tokens, t_redir **redirs, int *lens)
 {
 	char **cmd;
 	t__lst_token *last_token;
 	t__lst_token *cur;
 	int len = 0;
 	int i = 0;
-	
+
 	last_token = *tokens;
-	while (last_token && last_token->type != PIPE )
+	while (last_token && last_token->type != PIPE)
 	{
-		if (last_token->type == WSP)
+		// if (last_token->type == WSP)
+		if (last_token->type == WSP ||
+			(last_token->type == VAR && last_token->str == NULL))
 		{
 			last_token = last_token->next;
 			continue;
@@ -109,7 +111,7 @@ char	**ft_prepare_cmd(t__lst_token **tokens, t_redir **redirs, int *lens)
 	i = 0;
 	while (cur && cur->type != PIPE)
 	{
-		if (cur->type == WSP)
+		if (cur->type == WSP || cur->str == NULL)
 		{
 			cur = cur->next;
 			continue;
@@ -117,13 +119,38 @@ char	**ft_prepare_cmd(t__lst_token **tokens, t_redir **redirs, int *lens)
 		else if (cur->type <= OUTPUT)
 		{
 			t_type type;
+			char *file_name;
+			file_name = "";
 			type = cur->type;
 			cur = cur->next;
 			if (cur && cur->type == WSP)
 				cur = cur->next;
-			ft_add_back_redir(redirs, ft_new_redir(cur->str, type));
-			if (cur)
+			// if (cur->type == VAR)
+			// {
+			while (cur && (cur->type == VAR || cur->type == WORD || cur->type == DOUB_Q || cur->type == SING_Q))
+			{
+				if (cur->str == NULL)
+				{
+					cur = cur->next;
+					if (!(cur && cur->type == VAR))
+						file_name = NULL;
+					continue;
+				}
+				file_name = ft_strjoin(file_name, cur->str, ALLOC);
 				cur = cur->next;
+				if (cur && cur->type == WSP && cur->str[0] == 0) // this is fake WSP
+				{
+					// which mean withe spaces in the var
+					file_name = NULL;
+					cur = cur->next;
+				}
+			}
+			// }
+			// else
+			// 	file_name = cur->str;
+			ft_add_back_redir(redirs, ft_new_redir(file_name, type));
+			// if (cur)
+			// 	cur = cur->next;
 			continue;
 		}
 		cmd[i++] = cur->str;
@@ -133,7 +160,7 @@ char	**ft_prepare_cmd(t__lst_token **tokens, t_redir **redirs, int *lens)
 	if (cur)
 		*tokens = cur->next;
 	else
-		*tokens  = NULL;
+		*tokens = NULL;
 	if ((*tokens) && (*tokens)->type == PIPE)
 		*tokens = (*tokens)->next;
 	return cmd;
@@ -170,7 +197,7 @@ void print_lst_redir(t_redir *redir)
 	printf("\n");
 }
 
-int	*ft_add_int(int **ref_arr, int *len, int n)
+int *ft_add_int(int **ref_arr, int *len, int n)
 {
 	int *res;
 	int *arr;
@@ -195,10 +222,10 @@ int	*ft_add_int(int **ref_arr, int *len, int n)
 int ft_cmd(t_cmd **lst_cmd, t__lst_token **tokens)
 {
 	char **cmd_str;
-	int	i = 0;
-	int	len = 0;
+	int i = 0;
+	int len = 0;
 	t_redir *lst_redir;
-	
+
 	while (*tokens)
 	{
 		lst_redir = gc_alloc(sizeof(t_redir *), ALLOC);

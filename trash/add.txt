@@ -30,3 +30,6 @@ ls $A$A ls
 heredoc
 
 
+ls >$D$F|ls
+pip->pids = malloc(num_cmds * sizeof(pid_t));
+

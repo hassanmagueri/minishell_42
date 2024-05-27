@@ -6,7 +6,7 @@
 /*   By: ataoufik <ataoufik@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/02 14:52:28 by ataoufik          #+#    #+#             */
-/*   Updated: 2024/05/26 20:23:50 by ataoufik         ###   ########.fr       */
+/*   Updated: 2024/05/27 16:46:55 by ataoufik         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,11 +24,11 @@ void    handle_c_slash_ctrol(int signal)
     }
 }
 
-// void    handle_heredoc(int signal)
-// {
-//     if (signal == SIGINT)
-//         close(0);
-// }
+void    handle_heredoc(int signal)
+{
+    if (signal == SIGINT)
+        close(0);
+}
 
 // int ft_signal_handeler(void)
 // {

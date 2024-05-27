@@ -6,7 +6,7 @@
 /*   By: ataoufik <ataoufik@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/01 10:12:12 by emagueri          #+#    #+#             */
-/*   Updated: 2024/05/26 19:19:18 by ataoufik         ###   ########.fr       */
+/*   Updated: 2024/05/27 15:04:33 by ataoufik         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,12 +101,22 @@ int ft_expand(t__lst_token **lst_token, t_lst_env **lst_env, int *exit_state)
 	t__lst_token *prev;
 	char *tmp;
 	char *var;
+
 	char *first_cmd = ft_first_cmd(lst_token);
 	prev = NULL;
 	cur = *lst_token;
 	tmp = "";
 	while (cur)
 	{
+		if (cur->type == HEARDOC)
+		{
+			cur = cur->next;
+			if (cur && cur->type == WSP)
+				cur = cur->next;
+			while (cur && cur->type != WSP)
+				cur = cur->next;
+			continue;
+		}
 		if (cur->type == EXIT_STATUS)
 			cur->str = ft_itoa(*exit_state, ALLOC);
 		else if (cur->type == VAR)
@@ -128,14 +138,6 @@ int ft_expand(t__lst_token **lst_token, t_lst_env **lst_env, int *exit_state)
 				cur = next;
 				continue;
 			}
-			// if (cur->str == NULL)
-			// {
-			// 	if (prev)
-			// 		prev->next = cur->next;
-			// 	cur = cur->next;
-			// 	continue;
-			// }
-			// if (cur->str && ft_is_with_spaces(cur->str[0]) && prev && (prev->type == VAR || (ft_is_strong_word_befor(lst_token, cur->next)))) // add also DOUB_Q and SING_Q
 			if (cur->str && ft_is_with_spaces(cur->str[0]) && prev && (prev->type == VAR || (ft_is_strong_word_befor(lst_token, cur->next)))) // add also DOUB_Q and SING_Q
 			{
 				tmp = ft_new_token(cur->str, cur->type);
@@ -150,9 +152,9 @@ int ft_expand(t__lst_token **lst_token, t_lst_env **lst_env, int *exit_state)
 				str = cur->str;
 				value_twod_array = ft_split_ws(cur->str, ALLOC);
 				cur->str = value_twod_array[i++];
-				if (value_twod_array[i] != 0)
+				if (value_twod_array[0] && value_twod_array[i] != 0)
 				{
-					cur->next = ft_new_token(" ", WSP);
+					cur->next = ft_new_token("", WSP);
 					cur = cur->next;
 				}
 				while (value_twod_array[0] && value_twod_array[i])

@@ -6,7 +6,7 @@
 /*   By: ataoufik <ataoufik@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/01 16:34:38 by ataoufik          #+#    #+#             */
-/*   Updated: 2024/05/26 19:27:56 by ataoufik         ###   ########.fr       */
+/*   Updated: 2024/05/27 16:29:00 by ataoufik         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,6 +51,11 @@ void	ft_redirection(t_cmd	*cmd, t_data *pip)
 		{
 			if (pip->infile != 0)
 				close(pip->infile);
+			if (cur->file_name == NULL)
+			{
+				ft_putendl_fd("ambiguous redirect ",2);
+				exit (1);
+			}
 			pip->infile = open(cur->file_name, O_RDONLY);
 		}
 		else if (cur->redirection_type == HEARDOC)

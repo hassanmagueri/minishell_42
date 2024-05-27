@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   join.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: emagueri <emagueri@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ataoufik <ataoufik@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/20 12:22:27 by emagueri          #+#    #+#             */
-/*   Updated: 2024/05/21 17:15:55 by emagueri         ###   ########.fr       */
+/*   Updated: 2024/05/27 16:39:08 by ataoufik         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,7 @@ int ft_ambiguous(t__lst_token **lst_token)
 			if (tmp->type == WSP)
 				tmp = tmp->next;
 			if (tmp->type == VAR && tmp->str == NULL)
-					return print_error("ambiguous redirect\n");
+					return print_error("ambiguous redirect");
 			// else if (tmp->type == VAR && ft_is_space_middle(tmp->str))
 		}
 		cur = cur->next;
@@ -89,7 +89,7 @@ int ft_join(t__lst_token **lst_token)
 			cur->next = cur_cmd;
 		cur = cur->next;
 	}
-	return (ft_ambiguous(lst_token));
+	return (0);
 }
 
 // int main(int argc, char const *argv[])
