@@ -6,7 +6,7 @@
 /*   By: ataoufik <ataoufik@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/17 11:22:57 by emagueri          #+#    #+#             */
-/*   Updated: 2024/05/27 18:21:38 by ataoufik         ###   ########.fr       */
+/*   Updated: 2024/05/28 22:56:17 by ataoufik         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,6 +52,7 @@ typedef struct s_data
 	int		infile;
 	int		outfile;
 	char	**env_path;
+	int		input_fd;
 	pid_t *pids;
     int pid_index;
     int num_cmds; 
@@ -130,6 +131,7 @@ typedef	struct s_lst_env
 int ft_join(t__lst_token **lst_token);
 // heredoc
 int ft_heredoc(t__lst_token **lst_token, t_lst_env **lst_env);
+int ft_fake_heredoc(t__lst_token **lst_token);
 
 // lst token
 t__lst_token	*ft_new_token(char *str, t_type type);
@@ -146,7 +148,7 @@ int ft_parsing(t__lst_token **lst_token, t_lst_env **lst_env, t_cmd **lst_cmd, i
 //errors
 int print_error(char *msg);
 int generate_errors(t__lst_token **tokens);
-
+char **ft_check_env(char **env); //// 
 // env
 int			init_env(t_lst_env **lst, char **env);
 int			ft_lst_remove_env(t_lst_env **lst_env,char *key);
@@ -162,13 +164,26 @@ t_lst_env	*ft_lst_env_last(t_lst_env *lst);
 int ft_expand(t__lst_token **lst_token, t_lst_env **lst_env, int *exit_state);
 //
 //execution
+//binry
+void	ft_signal_ignore(void);
+void	ft_default_signal(void);
+int	ft_dup_close_infile(int infile);
+void	ft_setup_pipeline(t_data *pip);
+void	ft_update_pipeline_fds(t_data *pip);
 char	*find_path_executable(char **env_path, char *cmd);
 int	ft_execute_command(t_data *pip,t_lst_env **lst,char **cmd);
+int	parsing_cmd(char *str);
+int	error_msg_cmd(char *str, int i);
+char	**ft_lst_to_tab(t_lst_env **lst);
+int	len_lst(t_lst_env *lst);
+int	is_directory(char *path);
+char	*ft_str_env(char *s1, char *s2);
+///  
 int	ft_excut_cmd_line(t_lst_env **lst, t_cmd *args, t_data *pip,int *ex_state);
 int		ft_check_buitin_cmd(t_cmd	*args);
 void	ft_lst_cmd(t_cmd	*command,t_lst_env **lst,t_data *pip,int *exit_state);
-void	ft_check_excut_cmd(t_cmd	*command,t_lst_env **lst,t_data *pip,int *ex_state);
-void	ft_excut_child(t_cmd *args,t_data *pip,t_lst_env **lst,int *input_fd,int *ex_state);
+void	ft_check_cmd(t_cmd	*command,t_lst_env **lst,t_data *pip,int *ex_state);
+void	ft_excut_child(t_cmd *args,t_data *pip, t_lst_env **lst, int *ex_state);
 void	ft_redirection(t_cmd	*cmd, t_data *pip);
 void    handle_c_slash_ctrol(int signal);
 void	init_path_env(t_data *pip,t_lst_env **lst);
@@ -176,7 +191,7 @@ void	init_path_env(t_data *pip,t_lst_env **lst);
 // garbage collector 
 void	*gc_alloc(size_t size, t_gc_type type);
 
-int	ft_cmd_builtin_child(t_lst_env **lst, t_cmd *args, t_data *pip,int *ex_state);
+int	ft_cmd_bui_child(t_lst_env **lst, t_cmd *args, t_data *pip,int *ex_state);
 // builtin
 //\\cd
 int	ft_change_directory(t_lst_env *lst, char *pwd, char *args);
@@ -220,7 +235,8 @@ void	print_lst_cmd(t_cmd **cmd);
 
 
 // void    handle_heredoc(int signal);
-
+int	ft_dup_and_close(int file, int i);
+int	ft_dup_and_close_outfile(int outfile, int i);
 // int ft_signal_handeler(void);
 void    handle_heredoc(int signal);
 char	**ft_split_space_tab(char *str ,int type);

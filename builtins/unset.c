@@ -6,7 +6,7 @@
 /*   By: ataoufik <ataoufik@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/21 14:42:31 by ataoufik          #+#    #+#             */
-/*   Updated: 2024/05/27 18:31:09 by ataoufik         ###   ########.fr       */
+/*   Updated: 2024/05/28 19:33:03 by ataoufik         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,9 +65,8 @@ int	ft_unset(t_lst_env **lst, t_cmd *args)
 	int			status;
 	int			i;
 
-	i = 0;
-	status = 0;
-	while (args->cmd[++i] != NULL)
+	(1) && (i = 1, status = 0);
+	while (args->cmd[i] != NULL)
 	{
 		cur = *lst;
 		if (cur->next == NULL
@@ -83,6 +82,7 @@ int	ft_unset(t_lst_env **lst, t_cmd *args)
 			continue ;
 		}
 		ft_unset_node(lst, cur, prev, args->cmd[i]);
+		i++;
 	}
 	return (status);
 }

@@ -1,31 +1,36 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   signal.c                                           :+:      :+:    :+:   */
+/*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ataoufik <ataoufik@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/05/02 14:52:28 by ataoufik          #+#    #+#             */
-/*   Updated: 2024/05/27 18:37:46 by ataoufik         ###   ########.fr       */
+/*   Created: 2024/05/28 16:28:54 by ataoufik          #+#    #+#             */
+/*   Updated: 2024/05/28 16:29:36 by ataoufik         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-void	handle_c_slash_ctrol(int signal)
+int	ft_dup_and_close(int file, int i)
 {
-	if (signal == SIGINT)
+	if (dup2(file, i) == -1)
 	{
-		g_var = 1;
-		write(1, "\n", 1);
-		rl_replace_line("", 0);
-		rl_on_new_line();
-		rl_redisplay();
+		perror("dup2");
+		return (1);
 	}
+	close(file);
+	return (0);
 }
 
-void	handle_heredoc(int signal)
+int	ft_dup_and_close_outfile(int outfile, int i)
 {
-	if (signal == SIGINT)
-		close(0);
+	if (outfile < 0)
+	{
+		perror("outfile");
+		return (1);
+	}
+	dup2(outfile, 1);
+	close(outfile);
+	return (0);
 }

@@ -6,81 +6,94 @@
 /*   By: ataoufik <ataoufik@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/17 11:18:33 by ataoufik          #+#    #+#             */
-/*   Updated: 2024/05/27 11:29:50 by ataoufik         ###   ########.fr       */
+/*   Updated: 2024/05/28 20:29:31 by ataoufik         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-void	ft_lst_cmd(t_cmd	*command,t_lst_env **lst,t_data *pip,int *ex_state)
+int	ft_num_node(t_cmd *args)
 {
 	t_cmd	*cur;
-	struct termios state;
-	tcgetattr(STDOUT_FILENO,&state);
-	int status;
-	cur = command;
-	int input_fd = -1;
-	int	i = 0;
-	int num_cmds = 0;
-    while (cur) {
-        num_cmds++;
-        cur = cur->next;
-    }
-	pip->pids = malloc(num_cmds * sizeof(pid_t));
-    if (!pip->pids)
-        exit(EXIT_FAILURE);
+	int		i;
 
-	pip->pid_index = 0;
-    pip->num_cmds = num_cmds;
-	cur = command;
-	pip->last = 0;
-	while(cur->next)
+	i = 0;
+	cur = args;
+	while (cur)
 	{
-		if (i==0)
+		i++;
+		cur = cur->next;
+	}
+	return (i);
+}
+
+void	ft_excut_all_cmd(t_cmd *cmd, t_data *pip, t_lst_env **lst, int *ex_s)
+{
+	t_cmd	*cur;
+	int		i;
+
+	i = 0;
+	cur = cmd;
+	pip->pid_index = 0;
+	pip->last = 0;
+	while (cur->next)
+	{
+		if (i == 0)
 			pip->first = 1;
 		else
 			pip->first = 0;
-		ft_excut_child(cur,pip,lst,&input_fd,ex_state);
+		ft_excut_child(cur, pip, lst, ex_s);
 		cur = cur->next;
 		i++;
 	}
 	pip->first = 0;
 	pip->last = 1;
-	ft_excut_child(cur,pip,lst,&input_fd,ex_state);
-	i = 0;
-	while (i < pip->num_cmds)
-	{
-        waitpid(pip->pids[i], &status, 0);
-		i++;
-	}
-		if (WIFEXITED(status))
-			*ex_state = WEXITSTATUS(status);
-		else if (WIFSIGNALED(status))
-		{
-			*ex_state = WTERMSIG(status) + 128;
-			if (*ex_state == 131)
-				printf("Quit: 3\n");
-			else
-				printf("\n");
-		}
-
-	tcsetattr(STDOUT_FILENO,TCSANOW,&state);
-	free(pip->pids);
+	ft_excut_child(cur, pip, lst, ex_s);
 }
 
-void	ft_check_excut_cmd(t_cmd	*command,t_lst_env **lst,t_data *pip,int *ex_state)
+void	ft_lst_cmd(t_cmd	*command, t_lst_env **lst, t_data *pip, int *ex_s)
 {
-	int i;
+	struct termios	state;
+	int				status;
+	int				i;
+
 	i = 0;
+	tcgetattr(STDOUT_FILENO, &state);
+	pip->input_fd = -1;
+	pip->num_cmds = ft_num_node(command);
+	pip->pids = gc_alloc(pip->num_cmds * sizeof(pid_t), ALLOC_ENV);
+	if (!pip->pids)
+		exit(EXIT_FAILURE);
+	ft_excut_all_cmd(command, pip, lst, ex_s);
+	while (i < pip->num_cmds)
+		waitpid(pip->pids[i++], &status, 0);
+	if (WIFEXITED(status))
+		*ex_s = WEXITSTATUS(status);
+	else if (WIFSIGNALED(status))
+	{
+		*ex_s = WTERMSIG(status) + 128;
+		if (*ex_s == 131)
+			printf("Quit: 3\n");
+		else
+			printf("\n");
+	}
+	tcsetattr(STDOUT_FILENO, TCSANOW, &state);
+}
+
+void	ft_check_cmd(t_cmd *command, t_lst_env **lst, t_data *pip, int *ex_s)
+{
 	t_cmd	*cur;
+	int		i;
+
+	i = 0;
 	cur = command;
 	while (cur)
 	{
 		i++;
 		cur = cur->next;
 	}
-	if (i == 1 && ft_check_buitin_cmd(command)==1)
-		ft_excut_cmd_line(lst,command,pip,ex_state);
+	if (i == 1 && ft_check_buitin_cmd(command) == 1)
+		ft_excut_cmd_line(lst, command, pip, ex_s);
 	else
-		ft_lst_cmd(command,lst,pip,ex_state);
+		ft_lst_cmd(command, lst, pip, ex_s);
 }

@@ -6,7 +6,7 @@
 /*   By: ataoufik <ataoufik@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/18 17:18:39 by ataoufik          #+#    #+#             */
-/*   Updated: 2024/05/27 16:27:03 by ataoufik         ###   ########.fr       */
+/*   Updated: 2024/05/28 15:43:53 by ataoufik         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,7 @@ int	ft_parsing_exit(char *str)
 
 long long int	ft_number_exit(char *str)
 {
-	unsigned long long	num;
+	long long			num;
 	int					i;
 	int					sig;
 

@@ -1,31 +1,43 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   signal.c                                           :+:      :+:    :+:   */
+/*   pipe_utils.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ataoufik <ataoufik@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/05/02 14:52:28 by ataoufik          #+#    #+#             */
-/*   Updated: 2024/05/27 18:37:46 by ataoufik         ###   ########.fr       */
+/*   Created: 2024/05/28 22:49:22 by ataoufik          #+#    #+#             */
+/*   Updated: 2024/05/28 22:58:19 by ataoufik         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-void	handle_c_slash_ctrol(int signal)
+void	ft_signal_ignore(void)
 {
-	if (signal == SIGINT)
-	{
-		g_var = 1;
-		write(1, "\n", 1);
-		rl_replace_line("", 0);
-		rl_on_new_line();
-		rl_redisplay();
-	}
+	signal(SIGINT, SIG_IGN);
+	signal(SIGQUIT, SIG_IGN);
 }
 
-void	handle_heredoc(int signal)
+void	ft_default_signal(void)
 {
-	if (signal == SIGINT)
-		close(0);
+	signal(SIGINT, SIG_DFL);
+	signal(SIGQUIT, SIG_DFL);
+}
+
+int	ft_dup_close_infile(int infile)
+{
+	if (infile != 0)
+	{
+		if (infile < 0)
+		{
+			perror("infile");
+			exit(1);
+		}
+		else
+		{
+			dup2(infile, STDIN_FILENO);
+			close(infile);
+		}
+	}
+	return (0);
 }
