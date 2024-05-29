@@ -1,98 +1,52 @@
-# NAME = minishell
-# CC = cc
-# FLAGS = -Wall -Wextra -Werror
-# RM = rm -rf
-
-# SRC =  main.c
-# OBJ_DIR = obj
-
-
-# OBJ = $(addprefix $(OBJ_DIR)/,$(SRC:.c=.o))
-
-# all : $(NAME)
-
-# $(NAME) : $(OBJ)
-# 	$(CC) $(FLAGS) $(OBJ) -o $(NAME)
-
-# $(OBJ_DIR)/%.o : %.c minishell.h | $(OBJ_DIR)
-# 	$(CC) $(FLAGS) -c $< -o $@
-
-# $(OBJ_DIR):
-# 	mkdir -p $(OBJ_DIR)
-
-# clean:
-# 	$(RM) $(OBJ_DIR)
-
-# fclean: clean
-# 	$(RM) $(NAME)
-
-# re: fclean all
-
-CC = cc #-g -fsanitize=address
-CFLAGS = -Wall -Wextra -Werror 
+CC = cc
+CFLAGS = #-Wall -Wextra -Werror -g -fsanitize=address
 SRC_DIR = .
 OBJ_DIR = obj
-CFLAGS = -I$(READLINE_INCLUDE) -g -fsanitize=address   # Add Readline include path
-LDFLAGS = -L$(READLINE_LIB) -lreadline 
-# SRC_FILES = $(wildcard *.c)
-SRC_FILES = ft_strnjoin.c  \
-			main.c \
-
 READLINE_INCLUDE = $(shell brew --prefix readline)/include
 READLINE_LIB = $(shell brew --prefix readline)/lib
+CFLAGS += -I$(READLINE_INCLUDE) -g -fsanitize=address
+LDFLAGS = -L$(READLINE_LIB) -lreadline 
+SRC_FILES = ft_strnjoin.c parsing/error.c parsing/expend.c parsing/heredoc.c parsing/join.c \
+			parsing/lst_cmd.c parsing/lst_token.c parsing/parsing.c parsing/tokenizataion.c \
+			garbage_collector/malloc.c \
+			builtins/cd.c builtins/cd_utils.c builtins/echo.c builtins/env.c  builtins/exit.c\
+			builtins/exit_utils.c builtins/export.c builtins/export_utils.c builtins/export_utils1.c \
+			builtins/export_utils2.c builtins/ft_split_s_tab.c builtins/lst_env.c builtins/lst_env_utils.c \
+			builtins/pwd.c builtins/unset.c\
+			execution/binary_command.c execution/excut_cmdline.c  execution/pipe.c execution/redirection.c \
+			execution/utils.c execution/binary_command_utils.c execution/ft_execut.c execution/pipe_utils.c execution/signal.c\
+			main.c\
+
 OBJ_FILES = $(addprefix $(OBJ_DIR)/, $(SRC_FILES:.c=.o))
-
-PARS_FILES = $(wildcard parsing/*.c)
-PARS_OBJ_FILES = $(addprefix $(OBJ_DIR)/, $(notdir $(PARS_FILES:.c=.o)))
-
-GC_FILES = $(wildcard garbage_collector/*.c)
-GC_OBJ_FILES = $(addprefix $(OBJ_DIR)/, $(notdir $(GC_FILES:.c=.o)))
-
 LIBFT_FILES = $(wildcard libft/*.c)
 LIBFT_OBJ_FILES = $(addprefix $(OBJ_DIR)/, $(notdir $(LIBFT_FILES:.c=.o)))
+NAME = minishell
 
-BUILT_FILES = $(wildcard builtins/*.c)
-BUILT_OBJ_FILES = $(addprefix $(OBJ_DIR)/, $(notdir $(BUILT_FILES:.c=.o)))
+all: $(NAME)
 
-EXECU_FILES = $(wildcard execution/*.c)
-EXECU_OBJ_FILES = $(addprefix $(OBJ_DIR)/, $(notdir $(EXECU_FILES:.c=.o)))
- 
-EXECUTABLE = minishell
-TXT_FILES = a.out
+$(NAME): $(LIBFT_OBJ_FILES) $(OBJ_FILES)
+	@$(CC) $(CFLAGS) $^ -o $@ $(LDFLAGS)
+	@printf "\033[0;32mMinishell compiled\033[0m\n"
 
-.PHONY: all clean fclean re
+$(OBJ_DIR)/%.o: $(SRC_DIR)/%.c | $(OBJ_DIR)/subdirs
+	@printf "\033[0;32mCompiling minishell: \033[0;33m$<\033[0m\r"
+	@$(CC) $(CFLAGS) -c $< -o $@
 
+$(OBJ_DIR)/%.o: libft/%.c | $(OBJ_DIR)/subdirs
+	@printf "\033[0;32mCompiling minishell: \033[0;33m$<\033[0m\r"
+	@$(CC) $(CFLAGS) -c $< -o $@
 
-all: $(EXECUTABLE)
-
-$(EXECUTABLE): $(LIBFT_OBJ_FILES) $(GC_OBJ_FILES) $(BUILT_OBJ_FILES) $(OBJ_FILES) $(PARS_OBJ_FILES) $(EXECU_OBJ_FILES)
-	$(CC) $(CFLAGS) $^ -o $@ $(LDFLAGS)
-
-$(OBJ_DIR)/%.o: $(SRC_DIR)/%.c | $(OBJ_DIR)
-	$(CC) $(CFLAGS) -c $< -o $@
-
-$(OBJ_DIR)/%.o: libft/%.c | $(OBJ_DIR)
-	$(CC) $(CFLAGS) -c $< -o $@
-
-$(OBJ_DIR)/%.o: builtins/%.c | $(OBJ_DIR)
-	$(CC) $(CFLAGS) -c $< -o $@
-
-$(OBJ_DIR)/%.o: garbage_collector/%.c | $(OBJ_DIR)
-	$(CC) $(CFLAGS) -c $< -o $@
-
-$(OBJ_DIR)/%.o: parsing/%.c | $(OBJ_DIR)
-	$(CC) $(CFLAGS) -c $< -o $@
-
-$(OBJ_DIR)/%.o: execution/%.c | $(OBJ_DIR)
-	$(CC) $(CFLAGS) -c $< -o $@
-
-$(OBJ_DIR):
-	mkdir -p $(OBJ_DIR)
+$(OBJ_DIR)/subdirs:
+	@mkdir -p $(OBJ_DIR)
+	@mkdir -p $(OBJ_DIR)/parsing
+	@mkdir -p $(OBJ_DIR)/garbage_collector
+	@mkdir -p $(OBJ_DIR)/builtins
+	@mkdir -p $(OBJ_DIR)/execution
 
 clean:
-	rm -rf $(OBJ_DIR)
+	@rm -rf $(OBJ_DIR)
+	@printf "\033[0;32mClean up complete\033[0m\n"
 
 fclean: clean
-	rm -f $(EXECUTABLE) $(TXT_FILES)
-
-re: fclean all
+	@rm -f $(NAME)
+	@printf "\033[0;32mAll cleaned up\033[0m\n"
