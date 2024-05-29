@@ -6,7 +6,7 @@
 /*   By: ataoufik <ataoufik@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/01 16:38:40 by ataoufik          #+#    #+#             */
-/*   Updated: 2024/05/28 20:30:45 by ataoufik         ###   ########.fr       */
+/*   Updated: 2024/05/29 15:20:55 by ataoufik         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,9 @@ int	parsing_cmd(char *str)
 	int	i;
 
 	i = 0;
+	if ((str[0] == '.' && str[1] == '\0')
+		|| (str[0] == '.' && str[1] == '.' && str[2] == '\0'))
+		return (2);
 	if (str[0] == '.' && str[1] == '/')
 		return (-1);
 	while (str[i])
@@ -69,7 +72,7 @@ char	*find_path_executable(char **env_path, char *cmd)
 	i = 0;
 	str = NULL;
 	path = NULL;
-	if (cmd[0] == '\0')
+	if (cmd[0] == '\0' || parsing_cmd(cmd) == 2)
 		return (NULL);
 	if (ft_check_command(cmd) == 0)
 		return (cmd);

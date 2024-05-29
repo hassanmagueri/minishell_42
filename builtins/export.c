@@ -6,7 +6,7 @@
 /*   By: ataoufik <ataoufik@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/27 13:07:30 by ataoufik          #+#    #+#             */
-/*   Updated: 2024/05/27 18:23:39 by ataoufik         ###   ########.fr       */
+/*   Updated: 2024/05/29 14:30:58 by ataoufik         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ void	print_lst_order_alpha(t_lst_env **lst)
 	char		*temp1;
 
 	if (*lst == NULL)
-		ft_lst_add_back_env(lst, ft_new_env("OLDPWD", NULL));
+		return ;
 	cur = *lst;
 	while (cur->next != NULL)
 	{

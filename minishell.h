@@ -6,7 +6,7 @@
 /*   By: ataoufik <ataoufik@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/17 11:22:57 by emagueri          #+#    #+#             */
-/*   Updated: 2024/05/28 22:56:17 by ataoufik         ###   ########.fr       */
+/*   Updated: 2024/05/29 15:10:24 by ataoufik         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -225,7 +225,13 @@ int		ft_echo(t_cmd *cmd);
 int		ft_pwd(void);
 int		ft_unset(t_lst_env **lst, t_cmd *args);
 int	ft_env(t_lst_env **lst,t_cmd *args);
+/// exit
+
 int    ft_exit(t_cmd   *args,int *ex_state);
+char	*ft_skip_zero(char *str);
+int	ft_parsing_exit(char *str);
+int	error_msg_exit(char *str, int i);
+/////
 /////////
 char	*ft_handle_var(t_lst_env **lst_env, char *old_output, int *index);
 //ft_cmd

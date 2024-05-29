@@ -6,7 +6,7 @@
 /*   By: ataoufik <ataoufik@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/01 05:02:31 by emagueri          #+#    #+#             */
-/*   Updated: 2024/05/28 22:59:27 by ataoufik         ###   ########.fr       */
+/*   Updated: 2024/05/29 14:35:01 by ataoufik         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,6 +61,11 @@ int	init_env(t_lst_env **lst, char **env)
 	int		len;
 
 	i = 0;
+	if (*env == NULL)
+	{
+		ft_lst_add_back_env(lst, ft_new_env("OLDPWD", NULL));
+		return (1);
+	}
 	while (env[i])
 	{
 		len = index_of(env[i], '=');

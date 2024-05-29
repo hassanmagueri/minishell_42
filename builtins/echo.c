@@ -6,7 +6,7 @@
 /*   By: ataoufik <ataoufik@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/28 10:38:56 by emagueri          #+#    #+#             */
-/*   Updated: 2024/05/27 18:27:37 by ataoufik         ###   ########.fr       */
+/*   Updated: 2024/05/29 11:25:10 by ataoufik         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ int	ft_is_arg(char *str)
 	int	i;
 
 	i = 1;
-	if (str == NULL || str[0] != '-')
+	if (str == NULL || str[0] != '-' || str[1] != 'n')
 		return (0);
 	while (str[i])
 		if (str[i++] != 'n')
@@ -30,7 +30,7 @@ void	print_echo(char **str, int len)
 	int	i;
 
 	i = 0;
-	while (i < len)
+	while (str[i])
 	{
 		if (str[i])
 			ft_putstr_fd(str[i], 1);
