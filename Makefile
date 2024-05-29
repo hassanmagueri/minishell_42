@@ -25,16 +25,13 @@ NAME = minishell
 all: $(NAME)
 
 $(NAME): $(LIBFT_OBJ_FILES) $(OBJ_FILES)
-	@$(CC) $(CFLAGS) $^ -o $@ $(LDFLAGS)
-	@printf "\033[0;32mMinishell compiled\033[0m\n"
+	$(CC) $(CFLAGS) $^ -o $@ $(LDFLAGS)
 
 $(OBJ_DIR)/%.o: $(SRC_DIR)/%.c | $(OBJ_DIR)/subdirs
-	@printf "\033[0;32mCompiling minishell: \033[0;33m$<\033[0m\r"
-	@$(CC) $(CFLAGS) -c $< -o $@
+	$(CC) $(CFLAGS) -c $< -o $@
 
 $(OBJ_DIR)/%.o: libft/%.c | $(OBJ_DIR)/subdirs
-	@printf "\033[0;32mCompiling minishell: \033[0;33m$<\033[0m\r"
-	@$(CC) $(CFLAGS) -c $< -o $@
+	$(CC) $(CFLAGS) -c $< -o $@
 
 $(OBJ_DIR)/subdirs:
 	@mkdir -p $(OBJ_DIR)
@@ -44,9 +41,7 @@ $(OBJ_DIR)/subdirs:
 	@mkdir -p $(OBJ_DIR)/execution
 
 clean:
-	@rm -rf $(OBJ_DIR)
-	@printf "\033[0;32mClean up complete\033[0m\n"
+	rm -rf $(OBJ_DIR)
 
 fclean: clean
-	@rm -f $(NAME)
-	@printf "\033[0;32mAll cleaned up\033[0m\n"
+	rm -f $(NAME)
