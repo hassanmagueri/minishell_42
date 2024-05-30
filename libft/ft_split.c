@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_split.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ataoufik <ataoufik@student.42.fr>          +#+  +:+       +#+        */
+/*   By: emagueri <emagueri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/07 17:36:19 by emagueri          #+#    #+#             */
-/*   Updated: 2024/05/16 22:05:33 by ataoufik         ###   ########.fr       */
+/*   Updated: 2024/05/29 21:47:09 by emagueri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,6 @@ static char	*ft_strsdup(char const *s, int *index, char c, int type)
 	i = 0;
 	while (s[len] != c && s[len])
 		len++;
-	// str = malloc(len + 1);
 	str = gc_alloc(len + 1, type);
 	if (!str)
 		return (NULL);
@@ -73,7 +72,6 @@ char	**ft_split(char *s, char c, int type)
 	if (!s)
 		return (NULL);
 	res = gc_alloc((count_word(s, c) + 1) * sizeof(char *), type);
-	// res = malloc((count_word(s, c) + 1) * sizeof(char *));
 	if (!res)
 		return (NULL);
 	while (i < count_word(s, c) && s[index])
@@ -81,8 +79,6 @@ char	**ft_split(char *s, char c, int type)
 		while (s[index] == c)
 			index++;
 		res[i] = ft_strsdup(s + index, &index, c, type);
-		// if (!res[i])
-		// 	return (freetab(res, i));
 		i++;
 	}
 	res[i] = NULL;

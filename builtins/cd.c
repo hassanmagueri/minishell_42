@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cd.c                                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ataoufik <ataoufik@student.42.fr>          +#+  +:+       +#+        */
+/*   By: emagueri <emagueri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/21 19:18:53 by ataoufik          #+#    #+#             */
-/*   Updated: 2024/05/27 17:36:36 by ataoufik         ###   ########.fr       */
+/*   Updated: 2024/05/29 23:16:11 by emagueri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,7 +81,6 @@ int	ft_chdir_oldpwd(t_lst_env **lst)
 
 int	ft_not_access_parent(t_lst_env **lst, char *str, char *pwd)
 {
-	char	*oldpwd;
 	char	cmd[1024];
 
 	if (access(str, F_OK) == 0)

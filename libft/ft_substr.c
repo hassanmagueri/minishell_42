@@ -6,7 +6,7 @@
 /*   By: emagueri <emagueri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/07 17:41:16 by emagueri          #+#    #+#             */
-/*   Updated: 2024/05/10 19:21:45 by emagueri         ###   ########.fr       */
+/*   Updated: 2024/05/29 21:56:07 by emagueri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,6 @@ char	*ft_substr(char const *s, unsigned int start, size_t len, int type)
 		return (ft_strdup("", type));
 	if (len > ft_strlen(s) - start)
 		return (ft_strdup(s + start, type));
-	// res = malloc(len + 1);
 	res = gc_alloc(len + 1, type);
 	if (!res)
 		return (NULL);

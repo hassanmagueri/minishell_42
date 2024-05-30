@@ -3,16 +3,17 @@
 /*                                                        :::      ::::::::   */
 /*   ft_strnjoin.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ataoufik <ataoufik@student.42.fr>          +#+  +:+       +#+        */
+/*   By: emagueri <emagueri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/07 14:08:47 by emagueri          #+#    #+#             */
-/*   Updated: 2024/05/13 17:02:40 by ataoufik         ###   ########.fr       */
+/*   Updated: 2024/05/29 23:06:02 by emagueri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-char	*ft_strnjoin(char const *s1, char const *s2,unsigned int n, t_gc_type type)
+char	*ft_strnjoin(char const *s1, char const *s2, unsigned int n,
+			t_gc_type type)
 {
 	char	*res;
 	int		i;
@@ -23,7 +24,6 @@ char	*ft_strnjoin(char const *s1, char const *s2,unsigned int n, t_gc_type type)
 		return (NULL);
 	lens1 = ft_strlen((char *)s1);
 	size = n + lens1 + 1;
-	// res = malloc(size);
 	res = gc_alloc(size, type);
 	if (!res)
 		return (NULL);
@@ -41,7 +41,6 @@ char	*ft_strnjoin(char const *s1, char const *s2,unsigned int n, t_gc_type type)
 	res[i] = 0;
 	return (res);
 }
-
 
 /*
 int main(int argc, char const *argv[])

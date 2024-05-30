@@ -6,7 +6,7 @@
 /*   By: emagueri <emagueri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/07 14:08:47 by emagueri          #+#    #+#             */
-/*   Updated: 2024/05/10 19:16:12 by emagueri         ###   ########.fr       */
+/*   Updated: 2024/05/29 21:55:42 by emagueri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,6 @@ char	*ft_strjoin(char const *s1, char const *s2, t_gc_type type)
 		return (NULL);
 	lens1 = ft_strlen((char *)s1);
 	size = ft_strlen((char *)s2) + lens1 + 1;
-	// res = malloc(size);
 	res = gc_alloc(size, type);
 	if (!res)
 		return (NULL);

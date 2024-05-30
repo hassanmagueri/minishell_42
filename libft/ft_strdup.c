@@ -6,12 +6,11 @@
 /*   By: emagueri <emagueri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/07 14:04:02 by emagueri          #+#    #+#             */
-/*   Updated: 2024/05/10 19:07:19 by emagueri         ###   ########.fr       */
+/*   Updated: 2024/05/29 21:55:27 by emagueri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
-
 
 char	*ft_strdup(const char *s1, int type)
 {
@@ -20,10 +19,9 @@ char	*ft_strdup(const char *s1, int type)
 
 	len = 0;
 	if (!s1)
-		return NULL;
+		return (NULL);
 	while (s1[len])
 		len++;
-	// res = malloc(len * sizeof(char) + 1);
 	res = gc_alloc(len * sizeof(char) + 1, type);
 	if (!res)
 		return (0);

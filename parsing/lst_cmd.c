@@ -3,238 +3,133 @@
 /*                                                        :::      ::::::::   */
 /*   lst_cmd.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ataoufik <ataoufik@student.42.fr>          +#+  +:+       +#+        */
+/*   By: emagueri <emagueri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/20 10:43:06 by emagueri          #+#    #+#             */
-/*   Updated: 2024/05/27 16:09:39 by ataoufik         ###   ########.fr       */
+/*   Updated: 2024/05/30 00:15:29 by emagueri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-void print_lst_redir(t_redir *redir);
-
-t_redir *ft_new_redir(char *file_name, t_type redirection_type)
+void	ft_handle_redirs(t_redir **redirs, t__lst_token **cur_pointer,
+			t_type type)
 {
-	t_redir *cmds;
+	char			*file_name;
+	t__lst_token	*cur;
 
-	cmds = gc_alloc(sizeof(t_redir), ALLOC);
-	cmds->file_name = file_name;
-	cmds->redirection_type = redirection_type;
-	cmds->next = NULL;
-	return cmds;
-}
-
-int ft_add_back_redir(t_redir **redirs, t_redir *cmd)
-{
-	t_redir *cur;
-
-	if (redirs == NULL || cmd == NULL)
-		return (1);
-	if (*redirs == NULL)
-		*redirs = cmd;
-	else
+	cur = ft_next_token(cur_pointer);
+	file_name = "";
+	while (cur && (cur->type == VAR || cur->type == WORD
+			|| cur->type == DOUB_Q || cur->type == SING_Q))
 	{
-		cur = *redirs;
-		while (cur->next)
-			cur = cur->next;
-		cur->next = cmd;
-	}
-	return (0);
-}
-
-t_cmd *ft_new_cmd(char **cmd, t_redir *redir, int len)
-{
-	t_cmd *cmds;
-
-	// cmds = malloc(sizeof(t_cmd));
-	cmds = gc_alloc(sizeof(t_cmd), ALLOC);
-	cmds->cmd = cmd;
-	cmds->redir = redir;
-	cmds->len = len;
-	cmds->next = NULL;
-	return cmds;
-}
-
-int ft_add_back_cmd(t_cmd **cmds, t_cmd *cmd)
-{
-	t_cmd *cur;
-
-	if (cmds == NULL || cmd == NULL)
-		return (1);
-	if (*cmds == NULL)
-		*cmds = cmd;
-	else
-	{
-		cur = *cmds;
-		while (cur->next)
-			cur = cur->next;
-		cur->next = cmd;
-	}
-	return (0);
-}
-
-char **ft_prepare_cmd(t__lst_token **tokens, t_redir **redirs, int *lens)
-{
-	char **cmd;
-	t__lst_token *last_token;
-	t__lst_token *cur;
-	int len = 0;
-	int i = 0;
-
-	last_token = *tokens;
-	while (last_token && last_token->type != PIPE)
-	{
-		// if (last_token->type == WSP)
-		if (last_token->type == WSP ||
-			(last_token->type == VAR && last_token->str == NULL))
+		if (cur->str == NULL)
 		{
-			last_token = last_token->next;
-			continue;
+			cur = cur->next;
+			if (!(cur && cur->type == VAR))
+				file_name = NULL;
+			continue ;
 		}
-		else if (last_token->type <= OUTPUT)
+		file_name = ft_strjoin(file_name, cur->str, ALLOC);
+		cur = cur->next;
+		if (cur && cur->type == WSP && cur->str[0] == 0)
 		{
-			last_token = last_token->next;
-			if (last_token && last_token->type == WSP)
-				last_token = last_token->next;
-			if (last_token)
-				last_token = last_token->next;
-			continue;
+			file_name = NULL;
+			cur = cur->next;
 		}
-		len++;
-		last_token = last_token->next;
 	}
-	// printf("len : %d\n", len);
-	*lens = len - 1;
-	cmd = gc_alloc(sizeof(char *) * (len + 1), ALLOC);
-	cur = *tokens;
+	ft_add_back_redir(redirs, ft_new_redir(file_name, type));
+	*cur_pointer = cur;
+}
+
+char	**ft_prepare_cmd_loop(t__lst_token	**cur_pointer,
+			t_redir **lst_redir, int len)
+{
+	int				i;
+	char			**cmd;
+	t__lst_token	*cur;
+
 	i = 0;
+	cmd = gc_alloc(sizeof(char *) * (len + 1), ALLOC);
+	cur = *cur_pointer;
 	while (cur && cur->type != PIPE)
 	{
 		if (cur->type == WSP || cur->str == NULL)
 		{
 			cur = cur->next;
-			continue;
+			continue ;
 		}
 		else if (cur->type <= OUTPUT)
 		{
-			t_type type;
-			char *file_name;
-			file_name = "";
-			type = cur->type;
-			cur = cur->next;
-			if (cur && cur->type == WSP)
-				cur = cur->next;
-			// if (cur->type == VAR)
-			// {
-			while (cur && (cur->type == VAR || cur->type == WORD || cur->type == DOUB_Q || cur->type == SING_Q))
-			{
-				if (cur->str == NULL)
-				{
-					cur = cur->next;
-					if (!(cur && cur->type == VAR))
-						file_name = NULL;
-					continue;
-				}
-				file_name = ft_strjoin(file_name, cur->str, ALLOC);
-				cur = cur->next;
-				if (cur && cur->type == WSP && cur->str[0] == 0) // this is fake WSP
-				{
-					// which mean withe spaces in the var
-					file_name = NULL;
-					cur = cur->next;
-				}
-			}
-			// }
-			// else
-			// 	file_name = cur->str;
-			ft_add_back_redir(redirs, ft_new_redir(file_name, type));
-			// if (cur)
-			// 	cur = cur->next;
-			continue;
+			ft_handle_redirs(lst_redir, &cur, cur->type);
+			continue ;
 		}
 		cmd[i++] = cur->str;
 		cur = cur->next;
 	}
 	cmd[i] = NULL;
+	*cur_pointer = cur;
+	return (cmd);
+}
+
+char	**ft_prepare_cmd(t__lst_token **tokens, t_redir **lst_redir)
+{
+	char			**cmd;
+	t__lst_token	*cur;
+	int				len;
+
+	len = ft_len_cmd_part(tokens);
+	cur = *tokens;
+	cmd = ft_prepare_cmd_loop(&cur, lst_redir, len);
 	if (cur)
 		*tokens = cur->next;
 	else
 		*tokens = NULL;
 	if ((*tokens) && (*tokens)->type == PIPE)
 		*tokens = (*tokens)->next;
-	return cmd;
+	return (cmd);
 }
 
-void print_lst_cmd(t_cmd **cmd)
+void	print_lst_cmd(t_cmd **cmd)
 {
-	t_cmd *cur;
+	t_cmd	*cur;
+	int		i;
+	t_redir	*cur_red;
 
 	cur = *cmd;
 	while (cur)
 	{
-		int i = 0;
+		i = 0;
 		printf("[CMD]:");
 		while (cur->cmd && cur->cmd[i])
 			printf("[%s]", cur->cmd[i++]);
-		print_lst_redir(cur->redir);
+		cur_red = cur->redir;
+		printf("\n[FILES]:");
+		while (cur_red)
+		{
+			printf("{%s}", cur_red->file_name);
+			cur_red = cur_red->next;
+		}
+		printf("\n");
 		printf("\n");
 		cur = cur->next;
 	}
 }
 
-void print_lst_redir(t_redir *redir)
+int	ft_cmd(t_cmd **lst_cmd, t__lst_token **tokens)
 {
-	t_redir *cur;
-
-	cur = redir;
-	printf("\n[FILES]:");
-	while (cur)
-	{
-		printf("{%s}", cur->file_name);
-		cur = cur->next;
-	}
-	printf("\n");
-}
-
-int *ft_add_int(int **ref_arr, int *len, int n)
-{
-	int *res;
-	int *arr;
-	int i;
-
-	arr = *ref_arr;
-	i = 0;
-	// res = malloc(((*len) + 1) * sizeof(int));
-	res = gc_alloc(((*len) + 1) * sizeof(int), ALLOC);
-	while (i < *len)
-	{
-		res[i] = arr[i];
-		i++;
-	}
-	res[i] = n;
-	(*len) += 1;
-	// free(arr);
-	*ref_arr = res;
-	return (res);
-}
-
-int ft_cmd(t_cmd **lst_cmd, t__lst_token **tokens)
-{
-	char **cmd_str;
-	int i = 0;
-	int len = 0;
-	t_redir *lst_redir;
+	char	**cmd_str;
+	t_cmd	*cc;
+	t_redir	*lst_redir;
 
 	while (*tokens)
 	{
 		lst_redir = gc_alloc(sizeof(t_redir *), ALLOC);
 		lst_redir = NULL;
-		cmd_str = ft_prepare_cmd(tokens, &lst_redir, &len);
-		t_cmd *cc = NULL;
-		cc = ft_new_cmd(cmd_str, lst_redir, len);
+		cmd_str = ft_prepare_cmd(tokens, &lst_redir);
+		cc = NULL;
+		cc = ft_new_cmd(cmd_str, lst_redir);
 		ft_add_back_cmd(lst_cmd, cc);
-		i++;
 	}
-	return 0;
+	return (0);
 }
