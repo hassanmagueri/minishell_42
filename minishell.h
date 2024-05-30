@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: emagueri <emagueri@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ataoufik <ataoufik@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/17 11:22:57 by emagueri          #+#    #+#             */
-/*   Updated: 2024/05/30 00:28:15 by emagueri         ###   ########.fr       */
+/*   Updated: 2024/05/30 16:45:31 by ataoufik         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -268,6 +268,9 @@ int				error_msg_exit(char *str, int i);
 char			*ft_handle_var(t_lst_env **lst_env,
 					char *old_output, int *index);
 //ft_cmd
+int				ft_check_val(t_lst_env **lst_env, char *key);
+int				handle_env_entry(t_lst_env **lst, char *str);
+void			ft_add_last_cmd(t_lst_env **lst, t_cmd *args, int i);
 int				ft_cmd(t_cmd **cmd, t__lst_token **tokens);
 t_redir			*ft_new_redir(char *file_name, t_type redirection_type);
 int				ft_add_back_redir(t_redir **redirs, t_redir *cmd);

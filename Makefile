@@ -15,7 +15,7 @@ SRC_FILES = parsing/error.c parsing/expend.c parsing/expend_utils.c parsing/expe
 			builtins/exit_utils.c builtins/export.c builtins/export_utils.c builtins/export_utils1.c \
 			builtins/export_utils2.c builtins/ft_split_s_tab.c builtins/lst_env.c builtins/lst_env_utils.c \
 			builtins/pwd.c builtins/unset.c\
-			execution/binary_command.c execution/excut_cmdline.c  execution/pipe.c execution/redirection.c \
+			execution/binary_command.c execution/excut_cmdline.c  execution/pipe.c execution/redirection.c execution/ft_last_cmd.c  \
 			execution/utils.c execution/binary_command_utils.c execution/ft_execut.c execution/pipe_utils.c execution/signal.c\
 			libft/ft_atoi.c libft/ft_bzero.c libft/ft_calloc.c libft/ft_isalnum.c libft/ft_isalpha.c libft/ft_isascii.c \
 			libft/ft_isdigit.c libft/ft_isprint.c libft/ft_itoa.c libft/ft_lstadd_back_bonus.c libft/ft_lstadd_front_bonus.c \
@@ -36,7 +36,7 @@ all: $(NAME)
 $(NAME): $(OBJ_FILES)
 	$(CC) $(CFLAGS) $^ -o $@ $(LDFLAGS)
 
-$(OBJ_DIR)/%.o: $(SRC_DIR)/%.c| $(OBJ_DIR)/subdirs
+$(OBJ_DIR)/%.o: $(SRC_DIR)/%.c minishell.h| $(OBJ_DIR)/subdirs
 	$(CC) $(CFLAGS) -c $< -o $@
 
 $(OBJ_DIR)/subdirs:
