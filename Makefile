@@ -17,15 +17,10 @@ SRC_FILES = parsing/error.c parsing/expend.c parsing/expend_utils.c parsing/expe
 			builtins/pwd.c builtins/unset.c\
 			execution/binary_command.c execution/excut_cmdline.c  execution/pipe.c execution/redirection.c \
 			execution/utils.c execution/binary_command_utils.c execution/ft_execut.c execution/pipe_utils.c execution/signal.c execution/ft_last_cmd.c\
-			libft/ft_atoi.c libft/ft_bzero.c libft/ft_calloc.c libft/ft_isalnum.c libft/ft_isalpha.c libft/ft_isascii.c \
-			libft/ft_isdigit.c libft/ft_isprint.c libft/ft_itoa.c libft/ft_lstadd_back_bonus.c libft/ft_lstadd_front_bonus.c \
-			libft/ft_lstclear_bonus.c libft/ft_lstdelone_bonus.c libft/ft_lstiter_bonus.c libft/ft_lstlast_bonus.c libft/ft_lstmap_bonus.c \
-			libft/ft_lstnew_bonus.c libft/ft_lstsize_bonus.c libft/ft_memchr.c libft/ft_memcmp.c libft/ft_memcpy.c libft/ft_memmove.c \
-			libft/ft_memset.c libft/ft_putchar_fd.c libft/ft_putendl_fd.c libft/ft_putnbr_fd.c libft/ft_putstr_fd.c libft/ft_split.c \
-			libft/ft_split_ws.c libft/ft_strchr.c libft/ft_strdup.c libft/ft_striteri.c libft/ft_strjoin.c libft/ft_strlcat.c libft/ft_strlcpy.c \
-			libft/ft_strlen.c libft/ft_strmapi.c libft/ft_strncmp.c libft/ft_strnstr.c libft/ft_strrchr.c libft/ft_strtrim.c libft/ft_substr.c\
-			libft/ft_tolower.c libft/ft_toupper.c \
-			ft_strnjoin.c main.c\
+			utils/ft_atoi.c utils/ft_bzero.c utils/ft_calloc.c utils/ft_isalnum.c utils/ft_isdigit.c utils/ft_itoa.c utils/ft_putchar_fd.c utils/ft_putendl_fd.c\
+			utils/ft_putstr_fd.c utils/ft_split.c utils/ft_split_ws.c utils/ft_strchr.c utils/ft_strdup.c utils/ft_strjoin.c utils/ft_strlen.c\
+			utils/ft_strncmp.c utils/ft_strtrim.c utils/ft_substr.c\
+			utils/ft_strnjoin.c main.c\
 
 OBJ_FILES = $(addprefix $(OBJ_DIR)/, $(SRC_FILES:.c=.o))
 
@@ -40,7 +35,7 @@ $(OBJ_DIR)/%.o: $(SRC_DIR)/%.c minishell.h| $(OBJ_DIR)/subdirs
 	$(CC) $(CFLAGS) -c $< -o $@
 
 $(OBJ_DIR)/subdirs:
-	@mkdir -p $(OBJ_DIR)/libft
+	@mkdir -p $(OBJ_DIR)/utils
 	@mkdir -p $(OBJ_DIR)/parsing
 	@mkdir -p $(OBJ_DIR)/garbage_collector
 	@mkdir -p $(OBJ_DIR)/builtins

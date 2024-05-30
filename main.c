@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: emagueri <emagueri@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ataoufik <ataoufik@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/24 12:47:51 by ataoufik          #+#    #+#             */
-/*   Updated: 2024/05/30 15:06:06 by emagueri         ###   ########.fr       */
+/*   Updated: 2024/05/30 19:00:26 by ataoufik         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,12 +44,12 @@ int	generate_input(t_lst_env **lst_env, t_data *pip, int *ex_state)
 	signal(SIGINT, handle_c_slash_ctrol);
 	signal(SIGQUIT, handle_c_slash_ctrol);
 	input = readline("~ minishell 😎 ↪ ");
+	if (g_var == 1)
+		*ex_state = 1;
 	if (input == NULL)
 		return (ft_putendl_fd("exit", 1), exit(*ex_state), 1);
 	if (input[0] == '\0')
 		return (0);
-	if (g_var == 1)
-		*ex_state = 1;
 	add_history(input);
 	ft__lst_tokenize(&lst_token, input);
 	free(input);
