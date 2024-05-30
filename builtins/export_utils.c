@@ -6,7 +6,7 @@
 /*   By: ataoufik <ataoufik@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/27 13:07:01 by ataoufik          #+#    #+#             */
-/*   Updated: 2024/05/29 14:31:09 by ataoufik         ###   ########.fr       */
+/*   Updated: 2024/05/30 16:36:14 by ataoufik         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,11 @@ void	print_lst_export(t_lst_env *lst)
 	cur = lst;
 	while (cur)
 	{
+		if (ft_strncmp(cur->key, "_", 2) == 0)
+		{
+			cur = cur->next;
+			continue ;
+		}
 		printf("declare -x ");
 		if (cur->value)
 		{

@@ -6,7 +6,7 @@
 /*   By: ataoufik <ataoufik@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/01 05:02:31 by emagueri          #+#    #+#             */
-/*   Updated: 2024/05/29 14:35:01 by ataoufik         ###   ########.fr       */
+/*   Updated: 2024/05/30 16:35:52 by ataoufik         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,30 +53,40 @@ int	index_of(char *str, char c)
 	return (-1);
 }
 
+int	handle_env_entry(t_lst_env **lst, char *str)
+{
+	char	*key;
+	char	*value;
+	int		len;
+
+	len = index_of(str, '=');
+	if (len == -1)
+		return (-1);
+	if (ft_strncmp(str, "OLDPWD", len) == 0)
+		value = NULL;
+	else
+		value = ft_strdup(ft_strchr(str, '=') + 1, ALLOC_ENV);
+	key = ft_substr(str, 0, len, ALLOC_ENV);
+	ft_lst_add_back_env(lst, ft_new_env(key, value));
+	return (0);
+}
+
 int	init_env(t_lst_env **lst, char **env)
 {
-	char	*value;
-	char	*key;
-	int		i;
-	int		len;
+	int	i;
 
 	i = 0;
 	if (*env == NULL)
-	{
-		ft_lst_add_back_env(lst, ft_new_env("OLDPWD", NULL));
-		return (1);
-	}
+		return (ft_lst_add_back_env(lst, ft_new_env("OLDPWD", NULL)), 1);
 	while (env[i])
 	{
-		len = index_of(env[i], '=');
-		if (len == -1)
+		if (ft_strncmp(env[i], "_", 2) == 0)
+		{
+			i++;
+			continue ;
+		}
+		if (handle_env_entry(lst, env[i]) == -1)
 			return (-1);
-		if (ft_strncmp(env[i], "OLDPWD", len) == 0)
-			value = NULL;
-		else
-			value = ft_strchr(env[i], '=') + 1;
-		key = ft_substr(env[i], 0, len, ALLOC_ENV);
-		ft_lst_add_back_env(lst, ft_new_env(key, value));
 		i++;
 	}
 	return (1);

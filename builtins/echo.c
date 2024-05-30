@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   echo.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: emagueri <emagueri@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ataoufik <ataoufik@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/28 10:38:56 by emagueri          #+#    #+#             */
-/*   Updated: 2024/05/30 12:14:10 by emagueri         ###   ########.fr       */
+/*   Updated: 2024/05/30 14:55:51 by ataoufik         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,8 @@ void	print_echo(char **str, int len)
 	int	i;
 
 	i = 0;
+	if (!str)
+		return ;
 	while (str[i])
 	{
 		if (str[i])
@@ -49,12 +51,11 @@ int	ft_echo(t_cmd *cmd)
 	i = 0;
 	len = 0;
 	cmd_str = cmd->cmd + 1;
-	while (ft_is_arg(cmd_str[i]))
-		i++;
-	cmd_str = cmd_str + i;
 	while (cmd_str[len])
 		len++;
-	print_echo(cmd_str, len);
+	while (ft_is_arg(cmd_str[i]))
+		i++;
+	print_echo(cmd_str + i, len);
 	if (i == 0)
 		ft_putstr_fd("\n", 1);
 	return (0);

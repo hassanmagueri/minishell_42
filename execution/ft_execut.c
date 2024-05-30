@@ -6,7 +6,7 @@
 /*   By: ataoufik <ataoufik@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/17 11:18:33 by ataoufik          #+#    #+#             */
-/*   Updated: 2024/05/28 20:29:31 by ataoufik         ###   ########.fr       */
+/*   Updated: 2024/05/30 16:19:52 by ataoufik         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,6 +92,10 @@ void	ft_check_cmd(t_cmd *command, t_lst_env **lst, t_data *pip, int *ex_s)
 		i++;
 		cur = cur->next;
 	}
+	if (i == 1)
+		ft_add_last_cmd(lst, command, 1);
+	else
+		ft_add_last_cmd(lst, command, 0);
 	if (i == 1 && ft_check_buitin_cmd(command) == 1)
 		ft_excut_cmd_line(lst, command, pip, ex_s);
 	else
