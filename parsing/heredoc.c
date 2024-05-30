@@ -6,7 +6,7 @@
 /*   By: emagueri <emagueri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/22 22:34:15 by emagueri          #+#    #+#             */
-/*   Updated: 2024/05/30 00:01:14 by emagueri         ###   ########.fr       */
+/*   Updated: 2024/05/30 16:14:43 by emagueri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,14 +86,14 @@ int	ft_heredoc_loop(t__lst_token *token, t_lst_env **lst_env)
 
 	while (1)
 	{
-		if (isatty(0) == 0)
-			return (1);
 		token = ft_get_token_by_type(&token, HEARDOC);
 		if (token == NULL)
 			break ;
 		file_name = ft_file_name();
 		delimiter = ft_get_delimiter(token);
 		buffer = ft_buffering_heredoc(&token, lst_env, delimiter);
+		if (isatty(0) == 0)
+			return (token->type = WORD, token->next = NULL, 1);
 		fd = open(file_name, O_CREAT | O_WRONLY, 0600);
 		write(fd, buffer, ft_strlen(buffer));
 		close(fd);
@@ -107,14 +107,24 @@ int	ft_heredoc_loop(t__lst_token *token, t_lst_env **lst_env)
 
 int	ft_heredoc(t__lst_token **lst_token, t_lst_env **lst_env)
 {
-	t__lst_token	*token;
 	int				sec_fd_in;
+	t__lst_token	*token;
+	t__lst_token	*cur;
 
 	token = *lst_token;
 	sec_fd_in = dup(0);
 	signal(SIGINT, handle_heredoc);
 	if (ft_heredoc_loop(token, lst_env))
+	{
+		cur = *lst_token;
+		while (cur)
+		{
+			if (cur->type == HEARDOC)
+				close(ft_atoi(ft_next_token(&cur)->str));
+			cur = cur->next;
+		}
 		*lst_token = NULL;
+	}
 	dup2(sec_fd_in, 0);
 	close(sec_fd_in);
 	return (1);

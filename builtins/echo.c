@@ -6,7 +6,7 @@
 /*   By: emagueri <emagueri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/28 10:38:56 by emagueri          #+#    #+#             */
-/*   Updated: 2024/05/30 01:32:25 by emagueri         ###   ########.fr       */
+/*   Updated: 2024/05/30 12:14:10 by emagueri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,11 +49,12 @@ int	ft_echo(t_cmd *cmd)
 	i = 0;
 	len = 0;
 	cmd_str = cmd->cmd + 1;
-	while (cmd_str[len])
-		len++;
 	while (ft_is_arg(cmd_str[i]))
 		i++;
-	print_echo(cmd_str + i, len);
+	cmd_str = cmd_str + i;
+	while (cmd_str[len])
+		len++;
+	print_echo(cmd_str, len);
 	if (i == 0)
 		ft_putstr_fd("\n", 1);
 	return (0);

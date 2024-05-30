@@ -6,7 +6,7 @@
 /*   By: emagueri <emagueri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/01 10:12:12 by emagueri          #+#    #+#             */
-/*   Updated: 2024/05/30 01:32:15 by emagueri         ###   ########.fr       */
+/*   Updated: 2024/05/30 12:56:54 by emagueri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,7 +91,7 @@ void	ft_add_wsp_middle(t__lst_token **cur_pointer)
 	str = cur->str;
 	value_twod_array = ft_split_ws(cur->str, ALLOC);
 	cur->str = value_twod_array[i++];
-	while (value_twod_array[i])
+	while (value_twod_array[0] && value_twod_array[i])
 	{
 		if (value_twod_array[i] != 0)
 		{
