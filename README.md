@@ -22,4 +22,7 @@ Minishell is a simple implementation of a UNIX command line interpreter (shell) 
 1. Clone the repository:
    ```sh
    git clone https://github.com/AToufik01/minishell_42.git
-   cd minishell
+
+2.Build the project:
+  ```sh
+   make
