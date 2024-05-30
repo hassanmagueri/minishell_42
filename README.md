@@ -16,3 +16,10 @@ Minishell is a simple implementation of a UNIX command line interpreter (shell) 
 - Handle basic command execution with arguments.
 - Support single and double quotes for command arguments.
 - Basic error handling and reporting.
+
+## Installation
+
+1. Clone the repository:
+   ```sh
+   git clone https://github.com/AToufik01/minishell_42.git
+   cd minishell
