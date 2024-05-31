@@ -6,7 +6,7 @@
 /*   By: ataoufik <ataoufik@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/17 11:18:33 by ataoufik          #+#    #+#             */
-/*   Updated: 2024/05/30 16:19:52 by ataoufik         ###   ########.fr       */
+/*   Updated: 2024/05/31 20:23:48 by ataoufik         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,6 +80,14 @@ void	ft_lst_cmd(t_cmd	*command, t_lst_env **lst, t_data *pip, int *ex_s)
 	tcsetattr(STDOUT_FILENO, TCSANOW, &state);
 }
 
+void	ft_update_last_cmd(t_lst_env **lst, t_cmd *args, int i)
+{
+	if (i == 1)
+		ft_add_last_cmd(lst, args, 1);
+	else
+		ft_add_last_cmd(lst, args, 0);
+}
+
 void	ft_check_cmd(t_cmd *command, t_lst_env **lst, t_data *pip, int *ex_s)
 {
 	t_cmd	*cur;
@@ -92,12 +100,12 @@ void	ft_check_cmd(t_cmd *command, t_lst_env **lst, t_data *pip, int *ex_s)
 		i++;
 		cur = cur->next;
 	}
-	if (i == 1)
-		ft_add_last_cmd(lst, command, 1);
-	else
-		ft_add_last_cmd(lst, command, 0);
+	if (ft_strncmp(command->cmd[0], "unset", 6) != 0)
+		ft_update_last_cmd(lst, command, i);
 	if (i == 1 && ft_check_buitin_cmd(command) == 1)
 		ft_excut_cmd_line(lst, command, pip, ex_s);
 	else
 		ft_lst_cmd(command, lst, pip, ex_s);
+	if (ft_strncmp(command->cmd[0], "unset", 6) == 0)
+		ft_update_last_cmd(lst, command, i);
 }
