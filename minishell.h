@@ -6,7 +6,7 @@
 /*   By: ataoufik <ataoufik@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/17 11:22:57 by emagueri          #+#    #+#             */
-/*   Updated: 2024/05/30 19:09:49 by ataoufik         ###   ########.fr       */
+/*   Updated: 2024/05/31 11:45:36 by ataoufik         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,7 +95,6 @@ typedef struct s_gc
 typedef struct s_cmd
 {
 	char			**cmd;
-	int				len;
 	int				exit_status;
 	struct s_redir	*redir;
 	struct s_cmd	*next;

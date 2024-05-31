@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   excut_cmdline.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: emagueri <emagueri@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ataoufik <ataoufik@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/27 19:22:45 by ataoufik          #+#    #+#             */
-/*   Updated: 2024/05/29 23:16:52 by emagueri         ###   ########.fr       */
+/*   Updated: 2024/05/31 11:21:41 by ataoufik         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,8 @@ int	ft_excut_cmd_line(t_lst_env **lst, t_cmd *args, t_data *pip, int *ex_state)
 	if (pip->infile != 0)
 	{
 		perror("infile");
-		close(pip->infile);
+		close(infile);
+		close(outfile);
 		*ex_state = 1;
 		return (1);
 	}

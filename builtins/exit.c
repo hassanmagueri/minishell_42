@@ -6,7 +6,7 @@
 /*   By: ataoufik <ataoufik@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/18 17:18:39 by ataoufik          #+#    #+#             */
-/*   Updated: 2024/05/29 15:07:49 by ataoufik         ###   ########.fr       */
+/*   Updated: 2024/05/31 12:19:50 by ataoufik         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,9 +51,32 @@ int	ft_len_tab(char **str)
 	return (i);
 }
 
+int	ft_len_lst(char **str)
+{
+	int		i;
+
+	i = 0;
+	while (str[i])
+		i++;
+	return (i);
+}
+
+void	ft_exit_type(char **str, char *cmd, int len, int i)
+{
+	if (ft_len_tab(str) > 1)
+		exit(error_msg_exit(cmd, 1));
+	else if (ft_parsing_exit(str[0]) == -1)
+		exit(error_msg_exit(cmd, 1));
+	else if (ft_parsing_exit(str[0]) == 0 && i == 1 && len == 2)
+		exit(ft_number_exit(str[0]) % 256);
+	else if (ft_parsing_exit(str[0]) != 0)
+		exit(error_msg_exit(str[0], 1));
+}
+
 int	ft_exit(t_cmd *args, int *ex_state)
 {
 	char	**str;
+	int		len;
 	int		i;
 
 	i = 1;
@@ -61,10 +84,10 @@ int	ft_exit(t_cmd *args, int *ex_state)
 	if (args->cmd[1] == NULL)
 		exit(*ex_state);
 	str = ft_split_space_tab(args->cmd[1], ALLOC);
-	if (ft_len_tab(str) > 1)
+	len = ft_len_lst(args->cmd);
+	ft_exit_type(str, args->cmd[1], len, 1);
+	if (len > 2)
 		return (error_msg_exit(NULL, 0));
-	else if (ft_parsing_exit(str[0]) == 0 && i == 1 && args->len == 1)
-		exit(ft_number_exit(str[0]) % 256);
 	while (args->cmd[i])
 	{
 		if (i >= 2 && ft_parsing_exit(args->cmd[1]) == 0)

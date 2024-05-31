@@ -1,5 +1,5 @@
 CC = cc
-CFLAGS = -Wall -Wextra -Werror -I$(READLINE_INCLUDE) #-g -fsanitize=address
+CFLAGS = -Wall -Wextra -Werror -I$(READLINE_INCLUDE) -g -fsanitize=address
 SRC_DIR = .
 OBJ_DIR = obj
 READLINE_INCLUDE = $(shell brew --prefix readline)/include

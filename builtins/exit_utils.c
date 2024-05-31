@@ -6,7 +6,7 @@
 /*   By: ataoufik <ataoufik@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/29 15:07:15 by ataoufik          #+#    #+#             */
-/*   Updated: 2024/05/29 15:08:03 by ataoufik         ###   ########.fr       */
+/*   Updated: 2024/05/31 12:09:58 by ataoufik         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,8 @@ int	ft_parsing_exit(char *str)
 	int	i;
 
 	i = 0;
+	if (!str)
+		return (-1);
 	if (str[i] == '-' || str[i] == '+')
 		i++;
 	while (str[i])
