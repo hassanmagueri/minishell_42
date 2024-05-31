@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ataoufik <ataoufik@student.42.fr>          +#+  +:+       +#+        */
+/*   By: emagueri <emagueri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/17 11:22:57 by emagueri          #+#    #+#             */
-/*   Updated: 2024/05/30 19:09:49 by ataoufik         ###   ########.fr       */
+/*   Updated: 2024/05/31 16:57:34 by emagueri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -106,7 +106,7 @@ typedef struct s_token
 	char			*str;
 	t_type			type;
 	struct s_token	*next;
-}	t__lst_token;
+}	t_lst_token;
 
 typedef struct s_var
 {
@@ -121,37 +121,40 @@ typedef struct s_lst_env
 	struct s_lst_env	*next;
 }	t_lst_env;
 
-int				ft_join(t__lst_token **lst_token);
+int				ft_join(t_lst_token **lst_token);
 // heredoc
-int				ft_heredoc(t__lst_token **lst_token, t_lst_env **lst_env);
-char			*ft_get_delimiter(t__lst_token *token);
-int				ft_fake_heredoc(t__lst_token **lst_token);
-char			*ft_expand_var(char *input, t_lst_env **lst_env, int *index);
-char			*ft_expend_input(char *input, t_lst_env **lst_env);
-int				ft_buffering_fake_heredoc(t__lst_token *token);
-int				ft_fake_heredoc(t__lst_token **lst_token);
+int				ft_heredoc(t_lst_token **lst_token, t_lst_env **lst_env,
+					int exit_status);
+char			*ft_get_delimiter(t_lst_token *token);
+int				ft_fake_heredoc(t_lst_token **lst_token);
+char			*ft_expand_var(char *input, char *new_input,
+					t_lst_env **lst_env, int *index);
+char			*ft_expend_input(char *input, t_lst_env **lst_env,
+					int exit_status);
+int				ft_buffering_fake_heredoc(t_lst_token *token);
+int				ft_fake_heredoc(t_lst_token **lst_token);
 
 // lst token
-t__lst_token	*ft_new_token(char *str, t_type type);
-t__lst_token	*ft__lst_token_last(t__lst_token **lst);
-t__lst_token	*ft_get_token_by_type(t__lst_token **lst_token, t_type type);
-t__lst_token	*ft_get_next_token_by_type(t__lst_token **lst_token,
+t_lst_token		*ft_new_token(char *str, t_type type);
+t_lst_token		*ft_lst_token_last(t_lst_token **lst);
+t_lst_token		*ft_get_token_by_type(t_lst_token **lst_token, t_type type);
+t_lst_token		*ft_get_next_token_by_type(t_lst_token **lst_token,
 					t_type type);
-t__lst_token	*ft_next_token(t__lst_token **token);
-void			ft_lst_token_add_back(t__lst_token **lst, t__lst_token *token);
+t_lst_token		*ft_next_token(t_lst_token **token);
+void			ft_lst_token_add_back(t_lst_token **lst, t_lst_token *token);
 int				ft_is_with_spaces(int c);
 int				is_sep(int c);
 int				find_sec(char *s, char c);
-int				ft__lst_tokenize(t__lst_token **token, char *cmd);
+int				ft_lst_tokenize(t_lst_token **token, char *cmd);
 int				is_sep(int c);
-int				ft_token_redir(t__lst_token **token, char *input);
-void			print__lst_tokens(t__lst_token *lst);
+int				ft_token_redir(t_lst_token **token, char *input);
+void			print_lst_tokens(t_lst_token *lst);
 //parsing
-int				ft_parsing(t__lst_token **lst_token, t_lst_env **lst_env,
+int				ft_parsing(t_lst_token **lst_token, t_lst_env **lst_env,
 					t_cmd **lst_cmd, int *exit_status);
 //errors
 int				print_error(char *msg);
-int				generate_errors(t__lst_token **tokens);
+int				generate_errors(t_lst_token **tokens);
 // env
 int				init_env(t_lst_env **lst, char **env);
 int				ft_lst_add_back_env(t_lst_env **lst_env, t_lst_env *node_env);
@@ -166,20 +169,20 @@ t_lst_env		*ft_lst_env_last(t_lst_env *lst);
 char			*ft_handle_simple_string(char *old_output, char *new_output,
 					int *index);
 char			*ft_handle_var(t_lst_env **lst_env, char *key, int *index);
-int				ft_expand(t__lst_token **lst_token,
+int				ft_expand(t_lst_token **lst_token,
 					t_lst_env **lst_env, int *exit_state);
-int				ft_expand_vars(t__lst_token **lst_token, t_lst_env **lst_env,
-					t__lst_token **cur_pointer, t__lst_token *prev);
+int				ft_expand_vars(t_lst_token **lst_token, t_lst_env **lst_env,
+					t_lst_token **cur_pointer, t_lst_token *prev);
 char			*ft_expand_in_doub_q(t_lst_env **lst_env,
 					char *str, int exit_state);
-void			ft_skip_delimiter(t__lst_token **cur_pointer);
+void			ft_skip_delimiter(t_lst_token **cur_pointer);
 char			*ft_handle_var(t_lst_env **lst_env, char *key, int *index);
-char			*ft_first_cmd(t__lst_token **lst_token);
+char			*ft_first_cmd(t_lst_token **lst_token);
 int				ft_is_endl_with_with_space(char *str);
-int				ft_is_strong_word_befor(t__lst_token **lst_token,
-					t__lst_token *last);
-void			ft_add_wsp_middle(t__lst_token **cur_pointer);
-t__lst_token	*ft_add_wsp_before(t__lst_token **cur_pointer);
+int				ft_is_strong_word_befor(t_lst_token **lst_token,
+					t_lst_token *last);
+void			ft_add_wsp_middle(t_lst_token **cur_pointer);
+t_lst_token		*ft_add_wsp_before(t_lst_token **cur_pointer);
 //
 //execution
 //binry
@@ -266,12 +269,12 @@ char			*ft_handle_var(t_lst_env **lst_env,
 					char *old_output, int *index);
 //ft_cmd
 void			ft_add_last_cmd(t_lst_env **lst, t_cmd *args, int i);
-int				ft_cmd(t_cmd **cmd, t__lst_token **tokens);
+int				ft_cmd(t_cmd **cmd, t_lst_token **tokens);
 t_redir			*ft_new_redir(char *file_name, t_type redirection_type);
 int				ft_add_back_redir(t_redir **redirs, t_redir *cmd);
 t_cmd			*ft_new_cmd(char **cmd, t_redir *redir);
 int				ft_add_back_cmd(t_cmd **cmds, t_cmd *cmd);
-int				ft_len_cmd_part(t__lst_token **tokens);
+int				ft_len_cmd_part(t_lst_token **tokens);
 void			print_lst_cmd(t_cmd **cmd);//
 //
 int				ft_dup_and_close(int file, int i);
