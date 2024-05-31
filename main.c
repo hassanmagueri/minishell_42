@@ -6,7 +6,7 @@
 /*   By: emagueri <emagueri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/24 12:47:51 by ataoufik          #+#    #+#             */
-/*   Updated: 2024/05/31 17:20:59 by emagueri         ###   ########.fr       */
+/*   Updated: 2024/05/31 21:25:15 by emagueri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,14 +40,18 @@ int	generate_input(t_lst_env **lst_env, t_data *pip, int *ex_state)
 	t_cmd		*cmd;
 	t_lst_token	*lst_token;
 
-	(1) && (lst_token = NULL, cmd = NULL);
 	signal(SIGINT, handle_c_slash_ctrol);
 	signal(SIGQUIT, handle_c_slash_ctrol);
+	(1) && (lst_token = NULL, cmd = NULL);
 	input = readline("~ minishell 😎 ↪ ");
 	if (g_var == 1)
 		*ex_state = 1;
 	if (input == NULL)
+	{
+		gc_alloc(0, FREE);
+		gc_alloc(0, FREE_ENV);
 		return (ft_putendl_fd("exit", 1), exit(*ex_state), 1);
+	}
 	if (input[0] == '\0')
 		return (free(input), 0);
 	add_history(input);
@@ -57,8 +61,7 @@ int	generate_input(t_lst_env **lst_env, t_data *pip, int *ex_state)
 	if (pase_res)
 		return (*ex_state = pase_res, 1);
 	ft_check_cmd(cmd, lst_env, pip, ex_state);
-	ft_close_heredoc_files(&cmd);
-	return (1);
+	return (ft_close_heredoc_files(&cmd), 1);
 }
 
 int	main(int argc, char *argv[], char **env)
