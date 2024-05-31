@@ -6,7 +6,7 @@
 /*   By: ataoufik <ataoufik@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/30 15:13:00 by ataoufik          #+#    #+#             */
-/*   Updated: 2024/05/31 12:40:46 by ataoufik         ###   ########.fr       */
+/*   Updated: 2024/05/31 18:52:24 by ataoufik         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,14 @@ void	ft_add_last_cmd(t_lst_env **lst, t_cmd *args, int i)
 	int	j;
 
 	j = 0;
-	if (i == 1)
+	if (i == 0 || args->cmd[0] == NULL)
+	{
+		if (ft_check_val(lst, "_") == 0)
+			ft_change_value_lst(lst, "_", NULL);
+		else
+			ft_lst_add_back_env(lst, ft_new_env("_", NULL));
+	}
+	else
 	{
 		while (args->cmd[j])
 			j++;
@@ -40,12 +47,5 @@ void	ft_add_last_cmd(t_lst_env **lst, t_cmd *args, int i)
 			ft_change_value_lst(lst, "_", args->cmd[j]);
 		else
 			ft_lst_add_back_env(lst, ft_new_env("_", args->cmd[j]));
-	}
-	else
-	{
-		if (ft_check_val(lst, "_") == 0)
-			ft_change_value_lst(lst, "_", NULL);
-		else
-			ft_lst_add_back_env(lst, ft_new_env("_", NULL));
 	}
 }
