@@ -6,7 +6,7 @@
 /*   By: emagueri <emagueri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/01 10:12:34 by emagueri          #+#    #+#             */
-/*   Updated: 2024/05/30 00:18:32 by emagueri         ###   ########.fr       */
+/*   Updated: 2024/05/31 16:42:11 by emagueri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,7 @@ int	find_sec(char *s, char c)
 	return (-1);
 }
 
-int	ft_token_redir(t__lst_token **token, char *input)
+int	ft_token_redir(t_lst_token **token, char *input)
 {
 	int	i;
 

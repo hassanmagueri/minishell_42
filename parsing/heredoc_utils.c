@@ -6,24 +6,25 @@
 /*   By: emagueri <emagueri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/22 22:34:15 by emagueri          #+#    #+#             */
-/*   Updated: 2024/05/30 00:00:11 by emagueri         ###   ########.fr       */
+/*   Updated: 2024/05/31 16:58:50 by emagueri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-char	*ft_expand_var(char *input, t_lst_env **lst_env, int *index)
+char	*ft_expand_var(char *input, char *new_input,
+	t_lst_env **lst_env, int *index)
 {
 	int		start;
 	int		i;
 	char	*var;
-	char	*new_input;
 
-	new_input = "";
-	if (input[0] == '$')
+	if (input[*index] == '$'
+		&& (ft_isalnum(input[*index + 1]) || input[*index + 1] == '_'))
 	{
 		*index += 1;
-		var = ft_handle_var(lst_env, input + 1, index);
+		i = *index;
+		var = ft_handle_var(lst_env, input + i, index);
 		if (var == NULL)
 			var = "";
 		new_input = ft_strjoin(new_input, var, ALLOC);
@@ -31,7 +32,7 @@ char	*ft_expand_var(char *input, t_lst_env **lst_env, int *index)
 	else
 	{
 		i = *index;
-		start = i;
+		start = i++;
 		while (input[i] && input[i] != '$')
 			i++;
 		new_input = ft_strjoin(new_input,
@@ -41,7 +42,7 @@ char	*ft_expand_var(char *input, t_lst_env **lst_env, int *index)
 	return (new_input);
 }
 
-char	*ft_expend_input(char *input, t_lst_env **lst_env)
+char	*ft_expend_input(char *input, t_lst_env **lst_env, int exit_status)
 {
 	int		i;
 	int		start;
@@ -57,13 +58,18 @@ char	*ft_expend_input(char *input, t_lst_env **lst_env)
 			i += 2;
 			new_input = ft_substr(input, start, i, ALLOC);
 		}
+		if (input[i] == '$' && input[i + 1] == '?')
+		{
+			i += 2;
+			new_input = ft_itoa(exit_status, ALLOC);
+		}
 		else
-			new_input = ft_expand_var(input + i, lst_env, &i);
+			new_input = ft_expand_var(input, new_input, lst_env, &i);
 	}
 	return (new_input);
 }
 
-int	ft_buffering_fake_heredoc(t__lst_token *token)
+int	ft_buffering_fake_heredoc(t_lst_token *token)
 {
 	char	*delimiter;
 	char	*input;
@@ -89,9 +95,9 @@ int	ft_buffering_fake_heredoc(t__lst_token *token)
 	return (0);
 }
 
-int	ft_fake_heredoc(t__lst_token **lst_token)
+int	ft_fake_heredoc(t_lst_token **lst_token)
 {
-	t__lst_token	*token;
+	t_lst_token		*token;
 	int				sec_fd_in;
 
 	(1) && (token = *lst_token, sec_fd_in = dup(0));

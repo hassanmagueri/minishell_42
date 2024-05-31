@@ -6,18 +6,18 @@
 /*   By: emagueri <emagueri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/01 10:12:34 by emagueri          #+#    #+#             */
-/*   Updated: 2024/05/30 00:18:30 by emagueri         ###   ########.fr       */
+/*   Updated: 2024/05/31 17:00:22 by emagueri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-int	ft_tokenize_quotes(t__lst_token **token, char *input)
+int	ft_tokenize_quotes(t_lst_token **token, char *input)
 {
 	int				len;
 	char			quote;
 	char			*str;
-	t__lst_token	*node;
+	t_lst_token		*node;
 
 	node = NULL;
 	quote = '\"';
@@ -35,7 +35,7 @@ int	ft_tokenize_quotes(t__lst_token **token, char *input)
 	return (len);
 }
 
-int	ft_token_var(t__lst_token **token, char *input)
+int	ft_token_var(t_lst_token **token, char *input)
 {
 	int	start;
 	int	i;
@@ -53,7 +53,7 @@ int	ft_token_var(t__lst_token **token, char *input)
 	return (i);
 }
 
-int	ft_token_word(t__lst_token **token, char *input)
+int	ft_token_word(t_lst_token **token, char *input)
 {
 	int	i;
 	int	start;
@@ -74,7 +74,7 @@ int	ft_token_word(t__lst_token **token, char *input)
 	return (i);
 }
 
-int	ft_token_dollars_exit(t__lst_token **token, char *input, t_type type)
+int	ft_token_dollars_exit(t_lst_token **token, char *input, t_type type)
 {
 	int	i;
 
@@ -94,7 +94,7 @@ int	ft_token_dollars_exit(t__lst_token **token, char *input, t_type type)
 	return (i);
 }
 
-int	ft__lst_tokenize(t__lst_token **token, char *input)
+int	ft_lst_tokenize(t_lst_token **token, char *input)
 {
 	int	i;
 

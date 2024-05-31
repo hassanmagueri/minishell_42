@@ -6,17 +6,17 @@
 /*   By: emagueri <emagueri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/01 10:12:12 by emagueri          #+#    #+#             */
-/*   Updated: 2024/05/30 01:07:38 by emagueri         ###   ########.fr       */
+/*   Updated: 2024/05/31 16:57:51 by emagueri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-int	ft_expand_vars(t__lst_token **lst_token, t_lst_env **lst_env,
-		t__lst_token **cur_pointer, t__lst_token *prev)
+int	ft_expand_vars(t_lst_token **lst_token, t_lst_env **lst_env,
+		t_lst_token **cur_pointer, t_lst_token *prev)
 {
-	t__lst_token	*cur;
-	t__lst_token	*next;
+	t_lst_token		*cur;
+	t_lst_token		*next;
 	char			*first_cmd;
 	char			*str;
 
@@ -70,9 +70,9 @@ char	*ft_expand_in_doub_q(t_lst_env **lst_env, char *str, int exit_state)
 	return (res);
 }
 
-void	ft_skip_delimiter(t__lst_token **cur_pointer)
+void	ft_skip_delimiter(t_lst_token **cur_pointer)
 {
-	t__lst_token	*cur;
+	t_lst_token	*cur;
 
 	cur = *cur_pointer;
 	cur = cur->next;
@@ -83,10 +83,10 @@ void	ft_skip_delimiter(t__lst_token **cur_pointer)
 	*cur_pointer = cur;
 }
 
-int	ft_expand(t__lst_token **lst_token, t_lst_env **lst_env, int *exit_state)
+int	ft_expand(t_lst_token **lst_token, t_lst_env **lst_env, int *exit_state)
 {
-	t__lst_token	*cur;
-	t__lst_token	*prev;
+	t_lst_token	*cur;
+	t_lst_token	*prev;
 
 	prev = NULL;
 	cur = *lst_token;

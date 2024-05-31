@@ -6,22 +6,22 @@
 /*   By: emagueri <emagueri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/20 10:43:06 by emagueri          #+#    #+#             */
-/*   Updated: 2024/05/30 00:15:29 by emagueri         ###   ########.fr       */
+/*   Updated: 2024/05/31 16:59:53 by emagueri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-void	ft_handle_redirs(t_redir **redirs, t__lst_token **cur_pointer,
+void	ft_handle_redirs(t_redir **redirs, t_lst_token **cur_pointer,
 			t_type type)
 {
 	char			*file_name;
-	t__lst_token	*cur;
+	t_lst_token		*cur;
 
 	cur = ft_next_token(cur_pointer);
 	file_name = "";
-	while (cur && (cur->type == VAR || cur->type == WORD
-			|| cur->type == DOUB_Q || cur->type == SING_Q))
+	while (cur && (cur->type == EXIT_STATUS || cur->type == VAR
+			|| cur->type == WORD || cur->type == DOUB_Q || cur->type == SING_Q))
 	{
 		if (cur->str == NULL)
 		{
@@ -42,12 +42,12 @@ void	ft_handle_redirs(t_redir **redirs, t__lst_token **cur_pointer,
 	*cur_pointer = cur;
 }
 
-char	**ft_prepare_cmd_loop(t__lst_token	**cur_pointer,
+char	**ft_prepare_cmd_loop(t_lst_token	**cur_pointer,
 			t_redir **lst_redir, int len)
 {
 	int				i;
 	char			**cmd;
-	t__lst_token	*cur;
+	t_lst_token		*cur;
 
 	i = 0;
 	cmd = gc_alloc(sizeof(char *) * (len + 1), ALLOC);
@@ -72,10 +72,10 @@ char	**ft_prepare_cmd_loop(t__lst_token	**cur_pointer,
 	return (cmd);
 }
 
-char	**ft_prepare_cmd(t__lst_token **tokens, t_redir **lst_redir)
+char	**ft_prepare_cmd(t_lst_token **tokens, t_redir **lst_redir)
 {
 	char			**cmd;
-	t__lst_token	*cur;
+	t_lst_token		*cur;
 	int				len;
 
 	len = ft_len_cmd_part(tokens);
@@ -116,7 +116,7 @@ void	print_lst_cmd(t_cmd **cmd)
 	}
 }
 
-int	ft_cmd(t_cmd **lst_cmd, t__lst_token **tokens)
+int	ft_cmd(t_cmd **lst_cmd, t_lst_token **tokens)
 {
 	char	**cmd_str;
 	t_cmd	*cc;

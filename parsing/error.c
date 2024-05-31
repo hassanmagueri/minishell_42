@@ -6,7 +6,7 @@
 /*   By: emagueri <emagueri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/17 15:08:30 by emagueri          #+#    #+#             */
-/*   Updated: 2024/05/29 23:14:42 by emagueri         ###   ########.fr       */
+/*   Updated: 2024/05/31 17:21:09 by emagueri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ int	is_redirection(t_type type)
 	return (0);
 }
 
-int	ft_ender_tokens(t__lst_token **tokens, t__lst_token *node)
+int	ft_ender_tokens(t_lst_token **tokens, t_lst_token *node)
 {
 	if (node == NULL)
 		*tokens = NULL;
@@ -36,10 +36,10 @@ int	ft_ender_tokens(t__lst_token **tokens, t__lst_token *node)
 	return (print_error(NULL));
 }
 
-int	ft_generate_errors_loop(t__lst_token **tokens, t__lst_token **cur_pointer,
-		t__lst_token **prev, t__lst_token *next_node)
+int	ft_generate_errors_loop(t_lst_token **tokens, t_lst_token **cur_pointer,
+		t_lst_token **prev, t_lst_token *next_node)
 {
-	t__lst_token	*cur;
+	t_lst_token	*cur;
 
 	cur = *cur_pointer;
 	while (cur)
@@ -66,10 +66,10 @@ int	ft_generate_errors_loop(t__lst_token **tokens, t__lst_token **cur_pointer,
 	return (0);
 }
 
-int	generate_errors(t__lst_token **tokens)
+int	generate_errors(t_lst_token **tokens)
 {
-	t__lst_token	*prev;
-	t__lst_token	*cur;
+	t_lst_token	*prev;
+	t_lst_token	*cur;
 
 	cur = *tokens;
 	prev = NULL;
@@ -89,26 +89,3 @@ int	generate_errors(t__lst_token **tokens)
 	}
 	return (0);
 }
-
-	// ------******-------
-	// while (cur)
-	// {
-	// 	next_node = ft_next_token(&cur);
-	// 	if ((cur->type == DOUB_Q || cur->type == SING_Q)
-		// && ft_strlen(cur->str) == 1)
-	// 		return (ft_ender_tokens(tokens, prev));
-	// 	if (is_redirection(cur->type))
-	// 	{
-	// 		if (next_node == NULL)
-	// 			return (ft_ender_tokens(tokens, prev));
-	// 		else if (next_node &&
-	// 			(next_node->type == PIPE || is_redirection(next_node->type)))
-	// 			return (ft_ender_tokens(tokens, prev));
-	// 	}
-	// 	else if (cur->type == PIPE && next_node && next_node->type == PIPE)
-	// 		return (ft_ender_tokens(tokens, prev));
-	// 	if (cur->type != WSP)
-	// 		prev = cur;
-	// 	cur = cur->next;
-	// }
-	// ------******-------

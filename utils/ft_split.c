@@ -6,7 +6,7 @@
 /*   By: emagueri <emagueri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/07 17:36:19 by emagueri          #+#    #+#             */
-/*   Updated: 2024/05/29 21:47:09 by emagueri         ###   ########.fr       */
+/*   Updated: 2024/05/31 17:21:16 by emagueri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,14 +52,6 @@ static char	*ft_strsdup(char const *s, int *index, char c, int type)
 	*index += i;
 	return (str);
 }
-
-// static char	**freetab(char **res, int i)
-// {
-// 	while (i--)
-// 		free(res[i]);
-// 	free(res);
-// 	return (NULL);
-// }
 
 char	**ft_split(char *s, char c, int type)
 {

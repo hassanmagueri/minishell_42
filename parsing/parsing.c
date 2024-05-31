@@ -6,15 +6,15 @@
 /*   By: emagueri <emagueri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/23 17:36:44 by emagueri          #+#    #+#             */
-/*   Updated: 2024/05/30 09:56:42 by emagueri         ###   ########.fr       */
+/*   Updated: 2024/05/31 16:42:11 by emagueri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-int	ft_trim(t__lst_token **lst_token)
+int	ft_trim(t_lst_token **lst_token)
 {
-	t__lst_token	*cur;
+	t_lst_token	*cur;
 
 	cur = *lst_token;
 	while (cur)
@@ -28,14 +28,14 @@ int	ft_trim(t__lst_token **lst_token)
 	return (1);
 }
 
-int	ft_parsing(t__lst_token **lst_token, t_lst_env **lst_env, t_cmd **lst_cmd,
+int	ft_parsing(t_lst_token **lst_token, t_lst_env **lst_env, t_cmd **lst_cmd,
 			int *exit_status)
 {
-	int	n;
+	int	is_error;
 
-	n = generate_errors(lst_token);
+	is_error = generate_errors(lst_token);
 	ft_trim(lst_token);
-	if (n)
+	if (is_error)
 	{
 		ft_fake_heredoc(lst_token);
 		gc_alloc(0, FREE);
@@ -45,12 +45,12 @@ int	ft_parsing(t__lst_token **lst_token, t_lst_env **lst_env, t_cmd **lst_cmd,
 	if (*lst_token == NULL)
 		return (1);
 	ft_expand(lst_token, lst_env, exit_status);
+	print_lst_tokens(*lst_token);
 	ft_join(lst_token);
-	ft_heredoc(lst_token, lst_env);
+	ft_heredoc(lst_token, lst_env, *exit_status);
 	if (*lst_token == NULL)
 		return (1);
 	ft_cmd(lst_cmd, lst_token);
 	return (0);
-	print__lst_tokens(*lst_token);
 	print_lst_cmd(lst_cmd);
 }

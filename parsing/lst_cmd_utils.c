@@ -6,7 +6,7 @@
 /*   By: emagueri <emagueri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/20 10:43:06 by emagueri          #+#    #+#             */
-/*   Updated: 2024/05/30 00:10:25 by emagueri         ###   ########.fr       */
+/*   Updated: 2024/05/31 17:00:10 by emagueri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,9 +70,9 @@ int	ft_add_back_cmd(t_cmd **cmds, t_cmd *cmd)
 	return (0);
 }
 
-int	ft_len_cmd_part(t__lst_token **tokens)
+int	ft_len_cmd_part(t_lst_token **tokens)
 {
-	t__lst_token	*cur;
+	t_lst_token		*cur;
 	int				len;
 
 	len = 0;

@@ -6,16 +6,16 @@
 /*   By: emagueri <emagueri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/20 12:22:27 by emagueri          #+#    #+#             */
-/*   Updated: 2024/05/29 18:09:10 by emagueri         ###   ########.fr       */
+/*   Updated: 2024/05/31 16:42:11 by emagueri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-int	ft_join_token(t__lst_token **cur_pointer, t__lst_token **cur_cmd_pointer)
+int	ft_join_token(t_lst_token **cur_pointer, t_lst_token **cur_cmd_pointer)
 {
-	t__lst_token	*cur_cmd;
-	t__lst_token	*cur;
+	t_lst_token	*cur_cmd;
+	t_lst_token	*cur;
 
 	(1) && (cur_cmd = *cur_pointer, cur = *cur_pointer);
 	while (cur_cmd && cur_cmd->type != WSP
@@ -41,10 +41,10 @@ int	ft_join_token(t__lst_token **cur_pointer, t__lst_token **cur_cmd_pointer)
 	return (*cur_pointer = cur, *cur_cmd_pointer = cur_cmd, 1);
 }
 
-int	ft_join(t__lst_token **lst_token)
+int	ft_join(t_lst_token **lst_token)
 {
-	t__lst_token	*cur;
-	t__lst_token	*cur_cmd;
+	t_lst_token	*cur;
+	t_lst_token	*cur_cmd;
 
 	cur = *lst_token;
 	while (cur)

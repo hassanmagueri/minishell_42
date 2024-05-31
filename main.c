@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ataoufik <ataoufik@student.42.fr>          +#+  +:+       +#+        */
+/*   By: emagueri <emagueri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/24 12:47:51 by ataoufik          #+#    #+#             */
-/*   Updated: 2024/05/30 19:00:26 by ataoufik         ###   ########.fr       */
+/*   Updated: 2024/05/31 17:20:59 by emagueri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,10 +35,10 @@ void	ft_close_heredoc_files(t_cmd **lst_cmd)
 
 int	generate_input(t_lst_env **lst_env, t_data *pip, int *ex_state)
 {
-	int				pase_res;
-	char			*input;
-	t_cmd			*cmd;
-	t__lst_token	*lst_token;
+	int			pase_res;
+	char		*input;
+	t_cmd		*cmd;
+	t_lst_token	*lst_token;
 
 	(1) && (lst_token = NULL, cmd = NULL);
 	signal(SIGINT, handle_c_slash_ctrol);
@@ -49,9 +49,9 @@ int	generate_input(t_lst_env **lst_env, t_data *pip, int *ex_state)
 	if (input == NULL)
 		return (ft_putendl_fd("exit", 1), exit(*ex_state), 1);
 	if (input[0] == '\0')
-		return (0);
+		return (free(input), 0);
 	add_history(input);
-	ft__lst_tokenize(&lst_token, input);
+	ft_lst_tokenize(&lst_token, input);
 	free(input);
 	pase_res = ft_parsing(&lst_token, lst_env, &cmd, ex_state);
 	if (pase_res)

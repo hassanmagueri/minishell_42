@@ -6,7 +6,7 @@
 /*   By: emagueri <emagueri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/22 22:34:15 by emagueri          #+#    #+#             */
-/*   Updated: 2024/05/30 16:14:43 by emagueri         ###   ########.fr       */
+/*   Updated: 2024/05/31 16:58:36 by emagueri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,9 +32,9 @@ char	*ft_file_name(void)
 	return (file_name);
 }
 
-char	*ft_get_delimiter(t__lst_token *token)
+char	*ft_get_delimiter(t_lst_token *token)
 {
-	t__lst_token	*next_token;
+	t_lst_token		*next_token;
 	char			*delimiter;
 
 	next_token = token->next;
@@ -48,8 +48,8 @@ char	*ft_get_delimiter(t__lst_token *token)
 	return (delimiter);
 }
 
-char	*ft_buffering_heredoc(t__lst_token **token, t_lst_env **lst_env,
-			char *delimiter)
+char	*ft_buffering_heredoc(t_lst_token **token, t_lst_env **lst_env,
+			char *delimiter, int exit_status)
 {
 	char	*buffer;
 	char	*input;
@@ -63,21 +63,19 @@ char	*ft_buffering_heredoc(t__lst_token **token, t_lst_env **lst_env,
 			return (buffer);
 		tmp_input = input;
 		if (ft_strncmp(tmp_input, delimiter, ft_strlen(delimiter) + 1) == 0)
-		{
-			free(input);
-			return (buffer);
-		}
-		if (ft_next_token(token)->type == WORD)
-			tmp_input = ft_expend_input(tmp_input, lst_env);
+			return (free(input), buffer);
+		if (ft_next_token(token)->type == WORD
+			|| ft_next_token(token)->type == VAR
+			|| ft_next_token(token)->type == EXIT_STATUS)
+			tmp_input = ft_expend_input(tmp_input, lst_env, exit_status);
 		buffer = ft_strjoin(
 				ft_strjoin(buffer, tmp_input, ALLOC), "\n", ALLOC);
-		if (input)
-			free(input);
+		free(input);
 	}
 	return (buffer);
 }
 
-int	ft_heredoc_loop(t__lst_token *token, t_lst_env **lst_env)
+int	ft_heredoc_loop(t_lst_token *token, t_lst_env **lst_env, int exit_status)
 {
 	int		fd;
 	char	*buffer;
@@ -91,7 +89,7 @@ int	ft_heredoc_loop(t__lst_token *token, t_lst_env **lst_env)
 			break ;
 		file_name = ft_file_name();
 		delimiter = ft_get_delimiter(token);
-		buffer = ft_buffering_heredoc(&token, lst_env, delimiter);
+		buffer = ft_buffering_heredoc(&token, lst_env, delimiter, exit_status);
 		if (isatty(0) == 0)
 			return (token->type = WORD, token->next = NULL, 1);
 		fd = open(file_name, O_CREAT | O_WRONLY, 0600);
@@ -105,16 +103,16 @@ int	ft_heredoc_loop(t__lst_token *token, t_lst_env **lst_env)
 	return (0);
 }
 
-int	ft_heredoc(t__lst_token **lst_token, t_lst_env **lst_env)
+int	ft_heredoc(t_lst_token **lst_token, t_lst_env **lst_env, int exit_status)
 {
+	t_lst_token		*token;
+	t_lst_token		*cur;
 	int				sec_fd_in;
-	t__lst_token	*token;
-	t__lst_token	*cur;
 
 	token = *lst_token;
 	sec_fd_in = dup(0);
 	signal(SIGINT, handle_heredoc);
-	if (ft_heredoc_loop(token, lst_env))
+	if (ft_heredoc_loop(token, lst_env, exit_status))
 	{
 		cur = *lst_token;
 		while (cur)

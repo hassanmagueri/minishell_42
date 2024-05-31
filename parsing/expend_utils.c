@@ -6,15 +6,15 @@
 /*   By: emagueri <emagueri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/01 10:12:12 by emagueri          #+#    #+#             */
-/*   Updated: 2024/05/30 12:56:54 by emagueri         ###   ########.fr       */
+/*   Updated: 2024/05/31 16:58:11 by emagueri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-char	*ft_first_cmd(t__lst_token **lst_token)
+char	*ft_first_cmd(t_lst_token **lst_token)
 {
-	t__lst_token	*cur;
+	t_lst_token		*cur;
 	char			*res;
 
 	res = "";
@@ -41,9 +41,9 @@ int	ft_is_endl_with_with_space(char *str)
 	return (0);
 }
 
-int	ft_is_strong_word_befor(t__lst_token **lst_token, t__lst_token *last)
+int	ft_is_strong_word_befor(t_lst_token **lst_token, t_lst_token *last)
 {
-	t__lst_token	*cur;
+	t_lst_token	*cur;
 
 	cur = *lst_token;
 	while (cur
@@ -52,9 +52,9 @@ int	ft_is_strong_word_befor(t__lst_token **lst_token, t__lst_token *last)
 	while (cur
 		&& (cur->type == WORD || cur->type == DOUB_Q || cur->type == SING_Q))
 		cur = cur->next;
-	if (cur->type == VAR)
+	if (cur && cur->type == VAR)
 		return (1);
-	while (cur != last)
+	while (cur && cur != last)
 	{
 		if (((cur->type == WORD || cur->type == DOUB_Q || cur->type == SING_Q)
 				&& cur->str[0] != '\0'))
@@ -64,10 +64,10 @@ int	ft_is_strong_word_befor(t__lst_token **lst_token, t__lst_token *last)
 	return (0);
 }
 
-t__lst_token	*ft_add_wsp_before(t__lst_token **cur_pointer)
+t_lst_token	*ft_add_wsp_before(t_lst_token **cur_pointer)
 {
-	t__lst_token	*tmp;
-	t__lst_token	*cur;
+	t_lst_token	*tmp;
+	t_lst_token	*cur;
 
 	cur = *cur_pointer;
 	tmp = ft_new_token(cur->str, cur->type);
@@ -79,11 +79,11 @@ t__lst_token	*ft_add_wsp_before(t__lst_token **cur_pointer)
 	return (cur);
 }
 
-void	ft_add_wsp_middle(t__lst_token **cur_pointer)
+void	ft_add_wsp_middle(t_lst_token **cur_pointer)
 {
 	char			*str;
 	char			**value_twod_array;
-	t__lst_token	*cur;
+	t_lst_token		*cur;
 	int				i;
 
 	i = 0;

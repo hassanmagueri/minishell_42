@@ -6,7 +6,7 @@
 /*   By: emagueri <emagueri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/08 17:53:36 by emagueri          #+#    #+#             */
-/*   Updated: 2024/05/30 00:22:06 by emagueri         ###   ########.fr       */
+/*   Updated: 2024/05/31 17:20:40 by emagueri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,24 +90,3 @@ void	*gc_alloc(size_t size, t_gc_type type)
 		free_gc_env(&head_env);
 	return (ptr);
 }
-
-// ptr = malloc(size);
-// if (ptr == NULL)
-// 	return (free_gc(&head), free_gc_env(&head_env), exit(1), NULL);
-// new = ft_gcnew(ptr, type);
-// if (head == NULL)
-// 	head = new;
-// else
-// 	ft_gcadd_back(&head, new);
-// prev = new;
-
-// if (ft_alloc(&head, &prev))
-// ptr = malloc(size);
-// if (ptr == NULL)
-// 	return (free_gc(&head), free_gc_env(&head_env), exit(1), NULL);
-// new = ft_gcnew(ptr, type);
-// if (head_env == NULL)
-// 	head_env = new;
-// else
-// 	ft_gcadd_back(&head_env, new);
-// prev_env = new;

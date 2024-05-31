@@ -6,15 +6,15 @@
 /*   By: emagueri <emagueri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/01 22:43:35 by emagueri          #+#    #+#             */
-/*   Updated: 2024/05/30 00:16:23 by emagueri         ###   ########.fr       */
+/*   Updated: 2024/05/31 16:42:11 by emagueri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-t__lst_token	*ft_get_next_token(t__lst_token *node)
+t_lst_token	*ft_get_next_token(t_lst_token *node)
 {
-	t__lst_token	*cur;
+	t_lst_token	*cur;
 
 	cur = node;
 	while (cur)
@@ -26,22 +26,22 @@ t__lst_token	*ft_get_next_token(t__lst_token *node)
 	return (NULL);
 }
 
-t__lst_token	*ft_new_token(char *str, t_type type)
+t_lst_token	*ft_new_token(char *str, t_type type)
 {
-	t__lst_token	*token;
+	t_lst_token	*token;
 
 	if (str == NULL)
 		return (NULL);
-	token = gc_alloc(sizeof(t__lst_token), ALLOC);
+	token = gc_alloc(sizeof(t_lst_token), ALLOC);
 	token->str = str;
 	token->type = type;
 	token->next = NULL;
 	return (token);
 }
 
-t__lst_token	*ft__lst_token_last(t__lst_token **lst)
+t_lst_token	*ft_lst_token_last(t_lst_token **lst)
 {
-	t__lst_token	*cur;
+	t_lst_token	*cur;
 
 	cur = *lst;
 	if (!lst)
@@ -51,17 +51,17 @@ t__lst_token	*ft__lst_token_last(t__lst_token **lst)
 	return (cur);
 }
 
-void	ft_lst_token_add_back(t__lst_token **lst, t__lst_token *token)
+void	ft_lst_token_add_back(t_lst_token **lst, t_lst_token *token)
 {
 	if (lst == NULL || token == NULL)
 		return ;
 	if (*lst == NULL)
 		*lst = token;
 	else
-		ft__lst_token_last(lst)->next = token;
+		ft_lst_token_last(lst)->next = token;
 }
 
-void	print__lst_tokens(t__lst_token *lst)
+void	print_lst_tokens(t_lst_token *lst)
 {
 	while (lst)
 	{
