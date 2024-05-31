@@ -6,7 +6,7 @@
 /*   By: ataoufik <ataoufik@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/30 15:13:00 by ataoufik          #+#    #+#             */
-/*   Updated: 2024/05/30 18:42:01 by ataoufik         ###   ########.fr       */
+/*   Updated: 2024/05/31 12:40:46 by ataoufik         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,12 +33,9 @@ void	ft_add_last_cmd(t_lst_env **lst, t_cmd *args, int i)
 	j = 0;
 	if (i == 1)
 	{
-		if (ft_strncmp(args->cmd[0], "unset", 6) == 0)
-		{
-			while (args->cmd[j])
-				j++;
-			j--;
-		}
+		while (args->cmd[j])
+			j++;
+		j--;
 		if (ft_check_val(lst, "_") == 0)
 			ft_change_value_lst(lst, "_", args->cmd[j]);
 		else
