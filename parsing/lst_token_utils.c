@@ -6,7 +6,7 @@
 /*   By: emagueri <emagueri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/01 22:43:35 by emagueri          #+#    #+#             */
-/*   Updated: 2024/05/31 16:42:11 by emagueri         ###   ########.fr       */
+/*   Updated: 2024/06/01 09:52:03 by emagueri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,8 @@ t_lst_token	*ft_next_token(t_lst_token **token)
 {
 	t_lst_token	*cur;
 
+	if (*token == NULL)
+		return (NULL);
 	cur = (*token)->next;
 	while (cur && cur->type == WSP)
 		cur = cur->next;

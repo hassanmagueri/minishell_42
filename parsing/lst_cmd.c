@@ -6,7 +6,7 @@
 /*   By: emagueri <emagueri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/20 10:43:06 by emagueri          #+#    #+#             */
-/*   Updated: 2024/05/31 16:59:53 by emagueri         ###   ########.fr       */
+/*   Updated: 2024/06/01 09:54:13 by emagueri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,10 +32,10 @@ void	ft_handle_redirs(t_redir **redirs, t_lst_token **cur_pointer,
 		}
 		file_name = ft_strjoin(file_name, cur->str, ALLOC);
 		cur = cur->next;
-		if (cur && cur->type == WSP && cur->str[0] == 0)
+		if (cur && cur->type == WSP && cur->str[0] == 0 && cur->next
+			&& cur->next->type == VAR && cur->next->str)
 		{
-			file_name = NULL;
-			cur = cur->next;
+			(1) && (file_name = NULL, cur = cur->next);
 		}
 	}
 	ft_add_back_redir(redirs, ft_new_redir(file_name, type));

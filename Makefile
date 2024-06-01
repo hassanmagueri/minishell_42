@@ -1,10 +1,9 @@
 CC = cc
-CFLAGS = -Wall -Wextra -Werror -I$(READLINE_INCLUDE) -g -fsanitize=address
+CFLAGS = -Wall -Wextra -Werror -I$(READLINE_INCLUDE)
 SRC_DIR = .
 OBJ_DIR = obj
 READLINE_INCLUDE = $(shell brew --prefix readline)/include
 READLINE_LIB = $(shell brew --prefix readline)/lib
-# CFLAGS += -I$(READLINE_INCLUDE) #-g -fsanitize=addressmake
 LDFLAGS = -L$(READLINE_LIB) -lreadline 
 SRC_FILES = parsing/error.c parsing/expend.c parsing/expend_utils.c parsing/expend_utils_1.c \
 			parsing/heredoc.c parsing/heredoc_utils.c parsing/join.c \

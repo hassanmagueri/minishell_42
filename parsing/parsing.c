@@ -6,7 +6,7 @@
 /*   By: emagueri <emagueri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/23 17:36:44 by emagueri          #+#    #+#             */
-/*   Updated: 2024/05/31 16:42:11 by emagueri         ###   ########.fr       */
+/*   Updated: 2024/06/01 09:57:17 by emagueri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,12 +45,10 @@ int	ft_parsing(t_lst_token **lst_token, t_lst_env **lst_env, t_cmd **lst_cmd,
 	if (*lst_token == NULL)
 		return (1);
 	ft_expand(lst_token, lst_env, exit_status);
-	print_lst_tokens(*lst_token);
 	ft_join(lst_token);
 	ft_heredoc(lst_token, lst_env, *exit_status);
 	if (*lst_token == NULL)
 		return (1);
 	ft_cmd(lst_cmd, lst_token);
 	return (0);
-	print_lst_cmd(lst_cmd);
 }

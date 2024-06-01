@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   binary_command.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ataoufik <ataoufik@student.42.fr>          +#+  +:+       +#+        */
+/*   By: emagueri <emagueri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/01 16:38:40 by ataoufik          #+#    #+#             */
-/*   Updated: 2024/05/29 15:20:55 by ataoufik         ###   ########.fr       */
+/*   Updated: 2024/06/01 09:56:22 by emagueri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,11 +82,9 @@ char	*find_path_executable(char **env_path, char *cmd)
 	{
 		str = ft_strjoin(env_path[i], "/", ALLOC);
 		path = ft_strjoin(str, cmd, ALLOC);
-		free(str);
 		if (access(path, F_OK) == 0 && access(path, X_OK) == 0)
 			return (path);
 		i++;
-		free(path);
 	}
 	return (NULL);
 }

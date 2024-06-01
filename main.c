@@ -6,7 +6,7 @@
 /*   By: emagueri <emagueri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/24 12:47:51 by ataoufik          #+#    #+#             */
-/*   Updated: 2024/05/31 21:25:15 by emagueri         ###   ########.fr       */
+/*   Updated: 2024/06/01 09:30:58 by emagueri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,8 +40,6 @@ int	generate_input(t_lst_env **lst_env, t_data *pip, int *ex_state)
 	t_cmd		*cmd;
 	t_lst_token	*lst_token;
 
-	signal(SIGINT, handle_c_slash_ctrol);
-	signal(SIGQUIT, handle_c_slash_ctrol);
 	(1) && (lst_token = NULL, cmd = NULL);
 	input = readline("~ minishell 😎 ↪ ");
 	if (g_var == 1)
@@ -80,6 +78,8 @@ int	main(int argc, char *argv[], char **env)
 	ex_state = 0;
 	while (1 && isatty(STDIN_FILENO))
 	{
+		signal(SIGINT, handle_c_slash_ctrol);
+		signal(SIGQUIT, handle_c_slash_ctrol);
 		generate_input(&lst_env, &pip, &ex_state);
 		g_var = 0;
 		gc_alloc(0, FREE);
