@@ -63,7 +63,9 @@ char	**ft_split_space_tab(char *str, int type)
 	{
 		while (is_spliter(str[i]))
 			i++;
-		word = malloc(len_word(str + i) + 1);
+		word = gc_alloc(len_word(str + i) + 1, type)
+		if (!word)
+			return (NULL);
 		j = 0;
 		while (str[i] && !is_spliter(str[i]))
 			word[j++] = str[i++];
